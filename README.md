@@ -6,6 +6,7 @@ Minimal Next.js starter with Tailwind, TypeScript, Docker, and Nginx.
 
 ```bash
 npm install
+
 npm run dev
 ```
 
