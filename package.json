@@ -11,7 +11,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
-    "quality": "npm run typecheck && npm run lint && npm run test && npm run build && npm run test:e2e"
+    "performance:check": "node scripts/check-performance-budgets.mjs",
+    "quality": "npm run typecheck && npm run lint && npm run test && npm run build && npm run performance:check && npm run test:e2e"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.4.0",

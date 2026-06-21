@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { env } from "@/config/env";
 import { resolveUploadUrl } from "@/lib/upload-url";
 import { uploadApi } from "@/services/api/upload.api";
+import { PROFILE_IMAGE_TYPES, validateUploadFiles } from "@/lib/upload-policy";
 
 type FileUploaderProps = {
   value?: string;
@@ -35,14 +36,8 @@ export function FileUploader({ value, onChange, disabled }: FileUploaderProps) {
   function selectFile(file?: File) {
     setValidationError(null);
     if (!file) return;
-    if (!file.type.startsWith("image/")) {
-      setValidationError("فقط فایل تصویری قابل انتخاب است.");
-      return;
-    }
-    if (file.size > env.profileUploadMaxMb * 1024 * 1024) {
-      setValidationError(`حجم تصویر نباید بیشتر از ${env.profileUploadMaxMb.toLocaleString("fa-IR")} مگابایت باشد.`);
-      return;
-    }
+    const error = validateUploadFiles([file], { maxBytes: env.profileUploadMaxMb * 1024 * 1024, maxFiles: 1, mimeTypes: PROFILE_IMAGE_TYPES });
+    if (error) { setValidationError(error); return; }
     const localPreview = URL.createObjectURL(file);
     setPreviewUrl(localPreview);
     upload.mutate(file);
@@ -89,7 +84,7 @@ export function FileUploader({ value, onChange, disabled }: FileUploaderProps) {
       <input
         ref={inputRef}
         type="file"
-        accept="image/jpeg,image/png,image/webp"
+        accept={PROFILE_IMAGE_TYPES.join(",")}
         className="sr-only"
         disabled={disabled || upload.isPending}
         onChange={(event) => selectFile(event.target.files?.[0])}

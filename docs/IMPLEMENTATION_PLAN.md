@@ -165,14 +165,16 @@
 
 وضعیت: تکمیل‌شده در ۱۴۰۵/۰۳/۳۱. مراجع اجرایی: `QUALITY_ASSURANCE.md`، workflow در `.github/workflows/quality.yml`، تنظیمات Playwright/MSW و تست‌های `tests/e2e` و `tests/integration`.
 
-## فاز ۱۰ — Performance، امنیت و مشاهده‌پذیری
+## ✅ فاز ۱۰ — Performance، امنیت و مشاهده‌پذیری
 
 خروجی:
 
-- تحلیل bundle و حذف dependency/Client Component غیرضروری.
-- budgets برای JS، تصویر، فونت و Core Web Vitals.
-- image optimization، lazy loading، prefetch کنترل‌شده و compression/cache headers.
-- CSP، جلوگیری از XSS، محدودیت MIME/size upload و عدم log token/PII.
-- error monitoring، Web Vitals و logging بدون اطلاعات حساس.
+- [x] تحلیل bundle و حذف dependency/Client Component غیرضروری.
+- [x] budgets برای JS، تصویر، فونت و Core Web Vitals.
+- [x] image optimization، lazy loading، prefetch کنترل‌شده و compression/cache headers.
+- [x] CSP، جلوگیری از XSS، محدودیت MIME/size upload و عدم log token/PII.
+- [x] error monitoring، Web Vitals و logging بدون اطلاعات حساس.
 
 اهداف اولیه: LCP کمتر از ۲.۵ ثانیه، CLS کمتر از ۰.۱ و INP کمتر از ۲۰۰ میلی‌ثانیه روی موبایل میان‌رده.
+
+وضعیت: تکمیل‌شده در ۱۴۰۵/۰۳/۳۱. مرجع اجرایی: `PERFORMANCE_SECURITY_OBSERVABILITY.md`، تنظیمات header در `next.config.ts`، گیت `performance:check`، policy آپلود BFF و endpoint مشاهده‌پذیری `/api/telemetry`.
