@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   applicationName: env.appName,
   title: { default: env.appName, template: `%s | ${env.appName}` },
   description: env.appDescription,
+  manifest: "/manifest.webmanifest",
+  keywords: ["تحلیل آزمون", "مشاوره تحصیلی", "برنامه مطالعاتی", "دفترچه اشتباهات"],
+  creator: env.appName,
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",

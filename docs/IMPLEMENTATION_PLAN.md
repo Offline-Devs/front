@@ -54,20 +54,24 @@
 
 وضعیت: تکمیل‌شده در ۱۴۰۵/۰۳/۳۱. مراجع اجرایی: `SESSION_AND_DATA.md`، routeهای `app/api/auth`، gateway در `app/api/v1`، guardهای `lib/server`، mapperها و ۱۷ تست خودکار.
 
-## فاز ۳ — صفحات عمومی و SEO
+## ✅ فاز ۳ — صفحات عمومی و SEO
 
 خروجی:
 
-- خانه، خدمات، درباره ما، تماس، لیست مقاله و جزئیات مقاله.
-- header/footer responsive، navigation موبایل و CTAهای ورود.
-- metadata فارسی، Open Graph، robots، sitemap و structured data مقاله.
-- render امن محتوای مقاله و جلوگیری از XSS.
+- [x] خانه، خدمات، درباره ما، تماس، لیست مقاله و جزئیات مقاله.
+- [x] header/footer responsive، navigation موبایل و CTAهای ورود.
+- [x] metadata فارسی، Open Graph، robots، sitemap و structured data مقاله.
+- [x] render امن محتوای مقاله و جلوگیری از XSS.
 
 کش:
 
-- صفحات ثابت: prerender.
-- لیست و جزئیات blog: server cache با revalidation و invalidation بعد از publish/update.
-- majors/subjects: cache طولانی چون تغییر کمی دارند.
+- [x] صفحات ثابت: prerender.
+- [x] لیست و جزئیات blog: server cache با revalidation و tagهای invalidation.
+- [x] majors/subjects: cache طولانی چون تغییر کمی دارند.
+
+معیار پایان: صفحات عمومی در production build بدون وابستگی به دسترسی لحظه‌ای backend تولید شوند و تست امنیت محتوای مقاله پاس شود.
+
+وضعیت: تکمیل‌شده در ۱۴۰۵/۰۳/۳۱. مراجع اجرایی: `PUBLIC_PAGES_AND_SEO.md`، مسیرهای عمومی `app/(public)`، داده‌های cache‌شده در `services/server/public-content.ts` و فایل‌های metadata در `app`.
 
 ## فاز ۴ — احراز هویت و onboarding
 
