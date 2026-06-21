@@ -1,3 +1,4 @@
-import { PagePlaceholder } from "@/components/shared/page-placeholder";
-// نمای 360 درجه دانش‌آموز: profile، exams، mistakes، performance و statistics.
-export default async function AdminStudentPage({ params }: { params: Promise<{ id: string }> }) { const { id } = await params; return <PagePlaceholder title="پرونده دانش‌آموز" description={id} />; }
+import type { Metadata } from "next";
+import { StudentOverview } from "@/components/admin/student-overview";
+export const metadata: Metadata = { title: "پرونده دانش‌آموز" };
+export default async function AdminStudentPage({ params }: { params: Promise<{ id: string }> }) { const { id } = await params; return <StudentOverview studentId={id} />; }

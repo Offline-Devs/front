@@ -121,16 +121,18 @@
 
 وضعیت: تکمیل‌شده در ۱۴۰۵/۰۳/۳۱. مراجع اجرایی: `STUDENT_STATISTICS_AND_PERFORMANCE.md`، صفحات `/statistics` و `/performance`، componentهای `statistics` و `performance` و تست helperهای بازه.
 
-## فاز ۷ — پنل مدیریت دانش‌آموزان
+## ✅ فاز ۷ — پنل مدیریت دانش‌آموزان
 
 خروجی:
 
-- جدول صفحه‌دار با filter تایید، loading/empty/error و URL state.
-- پرونده کامل دانش‌آموز با profile، exams، mistakes، statistics و performance.
-- تایید/لغو تایید، ویرایش و حذف با سطح دسترسی و confirm.
-- ثبت/ویرایش/حذف گزارش، برنامه مطالعاتی و آپلود چند فایل.
+- [x] جدول صفحه‌دار با filter تایید، loading/empty/error و URL state.
+- [x] پرونده کامل دانش‌آموز با profile، exams، mistakes، statistics و performance.
+- [x] تایید/لغو تایید، ویرایش و حذف با سطح دسترسی و confirm.
+- [x] ثبت/ویرایش/حذف گزارش، برنامه مطالعاتی و آپلود چند فایل.
 
 معیار پایان: هیچ داده مدیر برای role دانش‌آموز render یا cache نشود.
+
+وضعیت: تکمیل‌شده در ۱۴۰۵/۰۳/۳۱. مراجع اجرایی: `ADMIN_STUDENTS.md`، صفحات `app/(admin)/admin/students`، componentهای `components/admin` و فرم گزارش عملکرد.
 
 ## فاز ۸ — مدیریت محتوا و فیلدهای پویا
 
