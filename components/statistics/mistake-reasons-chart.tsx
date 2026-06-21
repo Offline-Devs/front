@@ -1,3 +1,7 @@
 "use client";
-// نمودار دلایل اشتباه از mistakes_by_reason.
-export function MistakeReasonsChart() { return <div role="img" aria-label="نمودار دلایل اشتباه" />; }
+import { useMemo } from "react";
+import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
+import { DataTable, TableBody, TableCell, TableContainer, TableHead, TableHeader, TableRow } from "@/components/ui/data-table";
+import { formatNumber } from "@/lib/formatters";
+const COLORS = ["#1f7a61", "#3aa17e", "#e6a23c", "#d95d5d", "#55736b"];
+export function MistakeReasonsChart({ data }: { data: Record<string, number> }) { const chartData = useMemo(() => Object.entries(data).map(([name, value]) => ({ name, value })).sort((a, b) => b.value - a.value), [data]); return <div className="grid gap-4"><div role="img" aria-label="نمودار دلایل اشتباه" className="h-72 w-full" dir="ltr"><ResponsiveContainer width="100%" height="100%"><PieChart><Pie data={chartData} dataKey="value" nameKey="name" innerRadius={55} outerRadius={95} paddingAngle={2}>{chartData.map((item, index) => <Cell key={item.name} fill={COLORS[index % COLORS.length]} />)}</Pie><Tooltip formatter={(value) => [formatNumber(Number(value)), "تعداد"]} /></PieChart></ResponsiveContainer></div><TableContainer><DataTable><TableHeader><TableRow><TableHead>دلیل اشتباه</TableHead><TableHead>تعداد</TableHead></TableRow></TableHeader><TableBody>{chartData.map((item) => <TableRow key={item.name}><TableCell>{item.name}</TableCell><TableCell>{formatNumber(item.value)}</TableCell></TableRow>)}</TableBody></DataTable></TableContainer></div>; }
