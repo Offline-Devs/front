@@ -149,17 +149,21 @@
 
 وضعیت: تکمیل‌شده در ۱۴۰۵/۰۳/۳۱. مراجع اجرایی: `CONTENT_AND_DYNAMIC_FIELDS.md`، صفحات مدیریت blog/dynamic-fields، route امن revalidation و renderer مشترک فرم‌ها.
 
-## فاز ۹ — تست، کیفیت و دسترس‌پذیری
+## ✅ فاز ۹ — تست، کیفیت و دسترس‌پذیری
 
 خروجی:
 
-- unit test برای formatter، mapper، schema، Jalali و API error handling.
-- component test برای فرم‌ها، modal، table و حالات async.
-- integration test با mock server برای هر feature.
-- E2E مسیرهای ورود، تکمیل پروفایل، آزمون، اشتباه، تایید مدیر و مقاله.
-- بررسی keyboard، focus order، contrast، reduced motion و screen reader.
+- [x] unit test برای formatter، mapper، schema، Jalali و API error handling.
+- [x] component test برای فرم‌ها، modal، table و حالات async.
+- [x] integration test با mock server برای featureهای اصلی.
+- [x] E2E مسیرهای ورود، تکمیل پروفایل، آزمون، اشتباه، تایید مدیر و مقاله.
+- [x] بررسی keyboard، focus order، contrast، reduced motion و screen reader.
 
-گیت کیفیت: typecheck، lint، unit، E2E smoke و production build در CI.
+گیت کیفیت: [x] typecheck، lint، unit، E2E smoke و production build در CI.
+
+معیار پایان: گیت محلی و CI با mock backend تکرارپذیر، در viewport دسکتاپ و موبایل، بدون وابستگی به سرویس خارجی پاس شود.
+
+وضعیت: تکمیل‌شده در ۱۴۰۵/۰۳/۳۱. مراجع اجرایی: `QUALITY_ASSURANCE.md`، workflow در `.github/workflows/quality.yml`، تنظیمات Playwright/MSW و تست‌های `tests/e2e` و `tests/integration`.
 
 ## فاز ۱۰ — Performance، امنیت و مشاهده‌پذیری
 

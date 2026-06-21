@@ -27,7 +27,7 @@ export function SubjectScoreRow({ index, register, errors, subjectName, subjectO
         <FormField label="نام درس" error={errors?.subject_name?.message} required>
           {subjectOptions.length ? (
             <Select value={subjectName} onValueChange={onSubjectChange}>
-              <SelectTrigger><SelectValue placeholder="انتخاب درس" /></SelectTrigger>
+              <SelectTrigger aria-label="نام درس"><SelectValue placeholder="انتخاب درس" /></SelectTrigger>
               <SelectContent>{subjectOptions.map((name) => <SelectItem key={name} value={name}>{name}</SelectItem>)}</SelectContent>
             </Select>
           ) : <Input {...register(`subjects.${index}.subject_name`)} />}

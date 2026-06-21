@@ -9,8 +9,8 @@ export const Select = SelectPrimitive.Root;
 export const SelectValue = SelectPrimitive.Value;
 export const SelectGroup = SelectPrimitive.Group;
 
-export function SelectTrigger({ className, children, ...props }: ComponentProps<typeof SelectPrimitive.Trigger>) {
-  return <SelectPrimitive.Trigger className={cn("flex h-10 w-full items-center justify-between gap-2 rounded-md border border-input bg-card px-3 text-sm shadow-sm outline-none focus:ring-2 focus:ring-ring/25 disabled:cursor-not-allowed disabled:opacity-60 data-[placeholder]:text-muted-foreground aria-invalid:border-destructive", className)} {...props}>{children}<SelectPrimitive.Icon asChild><ChevronDown className="size-4 opacity-60" /></SelectPrimitive.Icon></SelectPrimitive.Trigger>;
+export function SelectTrigger({ className, children, "aria-label": ariaLabel = "انتخاب گزینه", ...props }: ComponentProps<typeof SelectPrimitive.Trigger>) {
+  return <SelectPrimitive.Trigger aria-label={ariaLabel} className={cn("flex h-10 w-full items-center justify-between gap-2 rounded-md border border-input bg-card px-3 text-sm shadow-sm outline-none focus:ring-2 focus:ring-ring/25 disabled:cursor-not-allowed disabled:opacity-60 data-[placeholder]:text-muted-foreground aria-invalid:border-destructive", className)} {...props}>{children}<SelectPrimitive.Icon asChild><ChevronDown className="size-4 opacity-60" /></SelectPrimitive.Icon></SelectPrimitive.Trigger>;
 }
 
 export function SelectContent({ className, children, position = "popper", ...props }: ComponentProps<typeof SelectPrimitive.Content>) {

@@ -1,5 +1,11 @@
 import "@testing-library/jest-dom/vitest";
 import { webcrypto } from "node:crypto";
+import { afterAll, afterEach, beforeAll } from "vitest";
+import { mockServer } from "./mocks/server";
+
+beforeAll(() => mockServer.listen({ onUnhandledRequest: "bypass" }));
+afterEach(() => mockServer.resetHandlers());
+afterAll(() => mockServer.close());
 
 if (!globalThis.crypto?.subtle) Object.defineProperty(globalThis, "crypto", { value: webcrypto });
 

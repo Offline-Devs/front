@@ -44,7 +44,7 @@ export function DynamicFieldRenderer({
     return (
       <FormField label={field.label} error={error} required={field.is_required}>
         <Select value={typeof value === "string" ? value : ""} onValueChange={onChange} disabled={disabled}>
-          <SelectTrigger><SelectValue placeholder="انتخاب کنید" /></SelectTrigger>
+          <SelectTrigger aria-label={field.label}><SelectValue placeholder="انتخاب کنید" /></SelectTrigger>
           <SelectContent>
             {options.map((option) => <SelectItem key={option} value={option}>{option}</SelectItem>)}
           </SelectContent>

@@ -114,7 +114,7 @@ export function ProfileForm({ profile, dynamicFields = [], onboarding = false }:
           {majors.data?.length ? (
             <FormField label="رشته تحصیلی" error={form.formState.errors.major?.message} required>
               <Select value={selectedMajor} onValueChange={(value) => form.setValue("major", value, { shouldValidate: true })}>
-                <SelectTrigger><SelectValue placeholder="انتخاب رشته" /></SelectTrigger>
+                <SelectTrigger aria-label="رشته تحصیلی"><SelectValue placeholder="انتخاب رشته" /></SelectTrigger>
                 <SelectContent>
                   {majors.data.map(({ major }) => <SelectItem key={major} value={major}>{major}</SelectItem>)}
                 </SelectContent>
