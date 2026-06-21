@@ -134,16 +134,20 @@
 
 وضعیت: تکمیل‌شده در ۱۴۰۵/۰۳/۳۱. مراجع اجرایی: `ADMIN_STUDENTS.md`، صفحات `app/(admin)/admin/students`، componentهای `components/admin` و فرم گزارش عملکرد.
 
-## فاز ۸ — مدیریت محتوا و فیلدهای پویا
+## ✅ فاز ۸ — مدیریت محتوا و فیلدهای پویا
 
 خروجی:
 
-- لیست draft/published، editor مقاله، preview، publish و delete.
-- slug فارسی/لاتین قابل کنترل و sanitization محتوا.
-- CRUD dynamic fields و validation JSON options.
-- renderer واحد dynamic fields در profile، exam و mistake.
+- [x] لیست draft/published، editor مقاله، preview، publish و delete.
+- [x] slug فارسی/لاتین قابل کنترل و sanitization محتوا.
+- [x] CRUD dynamic fields و validation JSON options.
+- [x] renderer واحد dynamic fields در profile، exam و mistake.
 
-کش: publish/update/delete باید cache عمومی blog و cache admin را هدفمند invalidate کند.
+کش: [x] publish/update/delete، cache عمومی blog و cache admin را هدفمند invalidate می‌کنند.
+
+معیار پایان: چرخه کامل مدیریت مقاله و تعریف فیلد پویا بدون render محتوای خام ناامن اجرا شود؛ محدودیت endpoint خواندن تعریف‌ها برای دانش‌آموز صریح باقی بماند.
+
+وضعیت: تکمیل‌شده در ۱۴۰۵/۰۳/۳۱. مراجع اجرایی: `CONTENT_AND_DYNAMIC_FIELDS.md`، صفحات مدیریت blog/dynamic-fields، route امن revalidation و renderer مشترک فرم‌ها.
 
 ## فاز ۹ — تست، کیفیت و دسترس‌پذیری
 
@@ -168,16 +172,3 @@
 - error monitoring، Web Vitals و logging بدون اطلاعات حساس.
 
 اهداف اولیه: LCP کمتر از ۲.۵ ثانیه، CLS کمتر از ۰.۱ و INP کمتر از ۲۰۰ میلی‌ثانیه روی موبایل میان‌رده.
-
-## فاز ۱۱ — استقرار و تحویل
-
-خروجی:
-
-- envهای dev/staging/production، Docker health check و Nginx cache headers.
-- تست staging با backend واقعی و داده فارسی.
-- migration/release checklist، rollback و runbook خطاهای auth/API.
-- مستندات توسعه، componentها، قرارداد cache و راهنمای افزودن feature.
-
-## ترتیب پیشنهادی commit/PR
-
-هر فاز به PRهای کوچک تقسیم شود: ابتدا زیرساخت، سپس UI، سپس اتصال API و در پایان تست. route یا component ناقص وارد production branch نشود؛ هر PR باید معیار پایان همان بخش را پاس کند.

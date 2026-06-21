@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Plus, Save } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useFieldArray, useForm, useWatch } from "react-hook-form";
 import { SubjectScoreRow } from "./subject-score-row";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -17,21 +18,28 @@ import { invalidateDependencies, invalidation } from "@/services/api/invalidatio
 import { queryKeys } from "@/services/api/query-keys";
 import { subjectsApi } from "@/services/api/subjects.api";
 import type { Exam } from "@/types/exam";
+import { DynamicFieldsSection } from "@/components/forms/dynamic-fields-section";
+import { dynamicFieldsApi } from "@/services/api/dynamic-fields.api";
+import { validateDynamicFieldValues } from "@/lib/dynamic-fields";
 
 const emptySubject = { subject_name: "", total_questions: 0, answered: 0, correct: 0, wrong: 0, blank: 0 };
 
 export function ExamForm({ exam }: { exam?: Exam }) {
   const router = useRouter();
   const queryClient = useQueryClient();
+  const [dynamicErrors, setDynamicErrors] = useState<Record<string, string>>({});
   const form = useForm<ExamFormValues, unknown, ExamFormOutput>({ resolver: zodResolver(examSchema), defaultValues: { title: exam?.title ?? "", jalali_date: exam?.jalali_date ?? "", major: exam?.major ?? "", dynamic_fields: exam?.dynamic_fields ?? {}, subjects: exam?.subjects?.length ? exam.subjects.map(({ subject_name, total_questions, answered, correct, wrong, blank }) => ({ subject_name, total_questions, answered, correct, wrong, blank })) : [{ ...emptySubject }] } });
   const { fields, append, remove } = useFieldArray({ control: form.control, name: "subjects" });
   const major = useWatch({ control: form.control, name: "major" });
   const watchedSubjects = useWatch({ control: form.control, name: "subjects" });
+  const dynamicValues = useWatch({ control: form.control, name: "dynamic_fields" });
   const majors = useQuery({ queryKey: queryKeys.majors, queryFn: subjectsApi.majors, staleTime: 86_400_000 });
   const subjectConfig = useQuery({ queryKey: ["subjects", major], queryFn: () => subjectsApi.byMajor(major), enabled: Boolean(major), staleTime: 86_400_000 });
+  const dynamicFields = useQuery({ queryKey: ["dynamic-fields", "exam"], queryFn: () => dynamicFieldsApi.list("exam"), retry: false, staleTime: 300_000 });
   const save = useMutation({ mutationFn: (values: ExamFormOutput) => { const input = { ...values, total_subjects: values.subjects.length }; return exam ? examsApi.update(exam.id, input) : examsApi.create(input); }, onSuccess: async (saved) => { queryClient.setQueryData(queryKeys.exam(saved.id), saved); await invalidateDependencies(queryClient, invalidation.exam); router.replace(`/exams/${saved.id}`); router.refresh(); } });
 
-  return <form className="grid gap-6" noValidate onSubmit={form.handleSubmit((values) => save.mutate(values))}>
+  function submit(values: ExamFormOutput) { const errors = validateDynamicFieldValues(dynamicFields.data ?? [], values.dynamic_fields); setDynamicErrors(errors); if (!Object.keys(errors).length) save.mutate(values); }
+  return <form className="grid gap-6" noValidate onSubmit={form.handleSubmit(submit)}>
     {exam && <Alert variant="warning"><AlertDescription>با ذخیره ویرایش، فهرست درس‌های قبلی به‌طور کامل با این فهرست جایگزین می‌شود.</AlertDescription></Alert>}
     <div className="grid gap-4 sm:grid-cols-3">
       <FormField label="عنوان آزمون" error={form.formState.errors.title?.message} required><Input {...form.register("title")} placeholder="مثلاً آزمون جامع خرداد" autoFocus /></FormField>
@@ -42,6 +50,7 @@ export function ExamForm({ exam }: { exam?: Exam }) {
       {fields.map((field, index) => <SubjectScoreRow key={field.id} index={index} register={form.register} errors={form.formState.errors.subjects?.[index]} subjectName={watchedSubjects[index]?.subject_name ?? ""} subjectOptions={subjectConfig.data?.subjects ?? []} onSubjectChange={(value) => form.setValue(`subjects.${index}.subject_name`, value, { shouldValidate: true })} onRemove={() => remove(index)} canRemove={fields.length > 1} />)}
       {typeof form.formState.errors.subjects?.message === "string" && <p className="text-sm text-destructive" role="alert">{form.formState.errors.subjects.message}</p>}
     </section>
+    <DynamicFieldsSection fields={dynamicFields.data ?? []} values={dynamicValues} errors={dynamicErrors} disabled={save.isPending} onChange={(name, value) => { form.setValue("dynamic_fields", { ...dynamicValues, [name]: value }); setDynamicErrors((current) => ({ ...current, [name]: "" })); }} />
     {save.isError && <Alert variant="destructive"><AlertDescription>{save.error.message}</AlertDescription></Alert>}
     <div className="flex justify-end"><Button type="submit" size="lg" loading={save.isPending}><Save className="size-4" />{exam ? "ذخیره ویرایش" : "ثبت آزمون"}</Button></div>
   </form>;

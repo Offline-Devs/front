@@ -6,7 +6,7 @@ import { Save } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
-import { DynamicFieldRenderer } from "@/components/forms/dynamic-field-renderer";
+import { DynamicFieldsSection } from "@/components/forms/dynamic-fields-section";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { FormField } from "@/components/ui/form-field";
@@ -23,8 +23,10 @@ import { invalidation, invalidateDependencies } from "@/services/api/invalidatio
 import { queryKeys } from "@/services/api/query-keys";
 import { studentApi } from "@/services/api/student.api";
 import { subjectsApi } from "@/services/api/subjects.api";
+import { dynamicFieldsApi } from "@/services/api/dynamic-fields.api";
 import type { DynamicFieldDefinition } from "@/types/dynamic-field";
 import type { Student } from "@/types/student";
+import { validateDynamicFieldValues } from "@/lib/dynamic-fields";
 
 type ProfileFormProps = {
   profile?: Student;
@@ -54,6 +56,8 @@ export function ProfileForm({ profile, dynamicFields = [], onboarding = false }:
     queryFn: subjectsApi.majors,
     staleTime: 24 * 60 * 60 * 1000,
   });
+  const runtimeFields = useQuery({ queryKey: ["dynamic-fields", "student"], queryFn: () => dynamicFieldsApi.list("student"), retry: false, staleTime: 300_000 });
+  const resolvedDynamicFields = dynamicFields.length ? dynamicFields : (runtimeFields.data ?? []);
   const saveProfile = useMutation({
     mutationFn: studentApi.saveProfile,
     onSuccess: async (savedProfile) => {
@@ -69,14 +73,7 @@ export function ProfileForm({ profile, dynamicFields = [], onboarding = false }:
   const selectedMajor = useWatch({ control: form.control, name: "major" });
 
   function submit(values: ProfileFormOutput) {
-    const errors: Record<string, string> = {};
-    dynamicFields.forEach((field) => {
-      if (!field.is_active || !field.is_required) return;
-      const value = values.dynamic_fields[field.name];
-      if (value === undefined || value === null || value === "" || value === false) {
-        errors[field.name] = `${field.label} الزامی است.`;
-      }
-    });
+    const errors = validateDynamicFieldValues(resolvedDynamicFields, values.dynamic_fields);
     setDynamicErrors(errors);
     if (Object.keys(errors).length > 0) return;
     saveProfile.mutate(values);
@@ -148,29 +145,7 @@ export function ProfileForm({ profile, dynamicFields = [], onboarding = false }:
         />
       </section>
 
-      {dynamicFields.some((field) => field.is_active) && (
-        <section className="grid gap-4 border-t pt-6" aria-labelledby="extra-heading">
-          <div>
-            <h2 id="extra-heading" className="font-bold">اطلاعات تکمیلی</h2>
-            <p className="mt-1 text-sm text-muted-foreground">این موارد توسط مدیر سامانه تعریف شده‌اند.</p>
-          </div>
-          <div className="grid gap-4 sm:grid-cols-2">
-            {dynamicFields.map((field) => (
-              <DynamicFieldRenderer
-                key={field.id}
-                field={field}
-                value={dynamicValues[field.name]}
-                error={dynamicErrors[field.name]}
-                disabled={saveProfile.isPending}
-                onChange={(value) => {
-                  form.setValue("dynamic_fields", { ...dynamicValues, [field.name]: value }, { shouldDirty: true });
-                  setDynamicErrors((current) => ({ ...current, [field.name]: "" }));
-                }}
-              />
-            ))}
-          </div>
-        </section>
-      )}
+      <DynamicFieldsSection fields={resolvedDynamicFields} values={dynamicValues} errors={dynamicErrors} disabled={saveProfile.isPending} onChange={(name, value) => { form.setValue("dynamic_fields", { ...dynamicValues, [name]: value }, { shouldDirty: true }); setDynamicErrors((current) => ({ ...current, [name]: "" })); }} />
 
       {saveProfile.isError && (
         <Alert variant="destructive">

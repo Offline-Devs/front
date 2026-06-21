@@ -1,0 +1,2 @@
+import { describe, expect, it } from "vitest"; import { blogSchema, normalizeBlogSlug } from "./blog.schema";
+describe("blog schema", () => { it("normalizes Persian and Latin slug spacing", () => { expect(normalizeBlogSlug("  تحلیل  آزمون Test  ")).toBe("تحلیل-آزمون-test"); }); it("rejects very short content", () => { expect(blogSchema.safeParse({ title: "عنوان مقاله", slug: "article", content: "کوتاه", author_id: "11111111-1111-4111-8111-111111111111", published: false }).success).toBe(false); }); });

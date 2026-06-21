@@ -1,3 +1,3 @@
-import { PagePlaceholder } from "@/components/shared/page-placeholder";
-// CRUD تعریف فیلدهای پویا با entity_type و parser امن options JSON.
-export default function DynamicFieldsPage() { return <PagePlaceholder title="فیلدهای سفارشی" />; }
+import type { Metadata } from "next"; import { DynamicFieldForm } from "@/components/admin/dynamic-field-form"; import { DynamicFieldsTable } from "@/components/admin/dynamic-fields-table"; import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+export const metadata: Metadata = { title: "فیلدهای سفارشی" };
+export default function DynamicFieldsPage() { return <div className="grid gap-6"><div><h1 className="text-2xl font-black">فیلدهای سفارشی</h1><p className="mt-2 text-sm text-muted-foreground">تعریف‌های قابل استفاده در پروفایل، آزمون و دفترچه اشتباهات.</p></div><Card><CardHeader><CardTitle>فیلد جدید</CardTitle></CardHeader><CardContent><DynamicFieldForm /></CardContent></Card><DynamicFieldsTable /></div>; }
