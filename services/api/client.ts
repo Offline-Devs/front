@@ -23,7 +23,7 @@ let refreshPromise: Promise<string> | null = null;
 export async function apiRequest<T>(path: string, options: RequestOptions = {}): Promise<T> {
   const { auth = true, retryAuth = true, headers, ...init } = options;
   const token = useAuthStore.getState().accessToken;
-  const response = await fetch(`${env.apiBaseUrl}${path}`, { ...init, headers: { ...(init.body instanceof FormData ? {} : { "Content-Type": "application/json" }), ...(auth && token ? { Authorization: `Bearer ${token}` } : {}), ...headers } });
+  const response = await fetch(`${env.apiBasePath}${path}`, { ...init, headers: { ...(init.body instanceof FormData ? {} : { "Content-Type": "application/json" }), ...(auth && token ? { Authorization: `Bearer ${token}` } : {}), ...headers } });
   if (response.status === 401 && auth && retryAuth && useAuthStore.getState().refreshToken) {
     const newToken = await refreshAccessToken();
     return apiRequest<T>(path, { ...options, headers: { ...headers, Authorization: `Bearer ${newToken}` }, retryAuth: false });

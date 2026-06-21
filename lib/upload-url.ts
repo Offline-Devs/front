@@ -4,5 +4,5 @@ import { env } from "@/config/env";
 export function resolveUploadUrl(value: string) {
   if (/^https?:\/\//i.test(value)) return value;
   const normalized = value.startsWith("/") ? value : `/${value}`;
-  return `${env.apiBaseUrl}${normalized}`;
+  return `${env.apiBasePath}${normalized}`;
 }
