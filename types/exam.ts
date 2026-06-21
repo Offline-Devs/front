@@ -1,0 +1,8 @@
+import type { DynamicValues } from "./student";
+
+// SubjectExam شامل فیلدهای محاسباتی backend است؛ هنگام create شناسه‌ها ارسال نشوند.
+export type SubjectExam = { id: string; exam_id: string; subject_name: string; total_questions: number; answered: number; correct: number; wrong: number; blank: number; percentage: number };
+export type Exam = { id: string; student_id: string; title: string; exam_date: string; jalali_date: string; major: string; total_subjects: number; dynamic_fields: DynamicValues; created_at: string; updated_at: string; subjects?: SubjectExam[] };
+export type SubjectExamInput = Omit<SubjectExam, "id" | "exam_id" | "percentage">;
+export type ExamInput = { title: string; exam_date?: string; jalali_date: string; major: string; total_subjects: number; dynamic_fields: DynamicValues; subjects: SubjectExamInput[] };
+export type ExamUpdateInput = Partial<ExamInput>;
