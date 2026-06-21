@@ -30,7 +30,7 @@ services:
         NEXT_PUBLIC_ENABLE_QUERY_DEVTOOLS: ${NEXT_PUBLIC_ENABLE_QUERY_DEVTOOLS:-false}
     environment:
       - NODE_ENV=production
-      - APP_ENV=${APP_ENV:-production}
+      - APP_ENV=${APP_ENV:-development}
       - LOG_LEVEL=${LOG_LEVEL:-info}
       - API_BASE_URL=${API_BASE_URL:-http://host.docker.internal:8080}
       - API_TIMEOUT_MS=${API_TIMEOUT_MS:-15000}

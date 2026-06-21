@@ -1,5 +1,5 @@
 import type { PaginatedResponse, StatusResponse } from "@/types/api";
-import type { AuthResponse, OtpResponse, RefreshResponse } from "@/types/auth";
+import type { BackendAuthResponse, BackendRefreshResponse, OtpResponse, SessionResponse } from "@/types/auth";
 import type { BlogPost } from "@/types/blog";
 import type { DynamicFieldDefinition } from "@/types/dynamic-field";
 import type { Exam } from "@/types/exam";
@@ -137,8 +137,9 @@ export const dynamicFieldFixture = {
 export const majorsFixture = [{ major: "تجربی", subjects: ["زیست‌شناسی", "شیمی", "فیزیک", "ریاضی"] }] satisfies SubjectConfig[];
 export const uploadFixture = { url: "/uploads/profile/student.webp", filename: "student.webp", size: 42_000 } satisfies UploadResponse;
 export const otpFixture = { message: "otp sent", otp: "123456" } satisfies OtpResponse;
-export const authFixture = { access_token: "fixture-access-token", refresh_token: "fixture-refresh-token", user: userFixture, expires_in: 3600 } satisfies AuthResponse;
-export const refreshFixture = { access_token: "fixture-new-access-token", expires_in: 3600 } satisfies RefreshResponse;
+export const backendAuthFixture = { access_token: "fixture-access-token", refresh_token: "fixture-refresh-token", user: userFixture, expires_in: 3600 } satisfies BackendAuthResponse;
+export const backendRefreshFixture = { access_token: "fixture-new-access-token", expires_in: 3600 } satisfies BackendRefreshResponse;
+export const sessionFixture = { user: userFixture, expires_in: 3600 } satisfies SessionResponse;
 export const studentWithStatsFixture = { ...studentFixture, exam_count: 4, mistake_count: 7 } satisfies StudentWithStats;
 export const studentsPageFixture = { data: [studentWithStatsFixture], total: 1, page: 1, limit: 20 } satisfies PaginatedResponse<StudentWithStats>;
 export const statusFixtures = {

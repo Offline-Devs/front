@@ -40,17 +40,19 @@
 
 وضعیت: تکمیل‌شده در ۱۴۰۵/۰۳/۳۱. مراجع اجرایی: `DESIGN_SYSTEM.md`، مسیر داخلی `/design-system`، primitiveهای `components/ui` و تست `design-system.test.tsx`.
 
-## فاز ۲ — زیرساخت داده، session و خطا
+## ✅ فاز ۲ — زیرساخت داده، session و خطا
 
 خروجی:
 
-- BFF/session امن، refresh تک‌پروازه، logout کامل و پاک‌سازی cache خصوصی.
-- route guard برای guest/student/admin و redirect پروفایل ناقص.
-- mapperهای response، parse امن `files/options` و نرمال‌سازی تاریخ جلالی.
-- error boundary، toast، retry policy، offline state و صفحه 403/404/500.
-- query key factory و mutation invalidation دقیق برای هر feature.
+- [x] BFF/session امن، refresh تک‌پروازه، logout کامل و پاک‌سازی cache خصوصی.
+- [x] route guard برای guest/student/admin و redirect پروفایل ناقص.
+- [x] mapperهای response، parse امن `files/options` و نرمال‌سازی تاریخ جلالی.
+- [x] error boundary، toast، retry policy، offline state و صفحه 403/404/500.
+- [x] query key factory و mutation invalidation دقیق برای هر feature.
 
 معیار پایان: تست جریان 401/403/404/429، refresh همزمان و logout در چند tab.
+
+وضعیت: تکمیل‌شده در ۱۴۰۵/۰۳/۳۱. مراجع اجرایی: `SESSION_AND_DATA.md`، routeهای `app/api/auth`، gateway در `app/api/v1`، guardهای `lib/server`، mapperها و ۱۷ تست خودکار.
 
 ## فاز ۳ — صفحات عمومی و SEO
 

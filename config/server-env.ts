@@ -29,6 +29,12 @@ const parsed = serverEnvSchema.parse({
   BFF_SESSION_SECRET: process.env.BFF_SESSION_SECRET,
 });
 
+if (parsed.APP_ENV === "production" && parsed.BFF_SESSION_SECRET.length < 32) {
+  throw new Error("BFF_SESSION_SECRET must contain at least 32 characters in production");
+}
+
+const sessionSecret = parsed.BFF_SESSION_SECRET || "development-only-session-secret-change-me";
+
 export const serverEnv = {
   apiBaseUrl: parsed.API_BASE_URL.replace(/\/$/, ""),
   apiTimeoutMs: parsed.API_TIMEOUT_MS,
@@ -40,6 +46,6 @@ export const serverEnv = {
     cookieSecure: parsed.BFF_SESSION_COOKIE_SECURE === "auto" ? parsed.APP_ENV === "production" : parsed.BFF_SESSION_COOKIE_SECURE === "true",
     cookieSameSite: parsed.BFF_SESSION_COOKIE_SAME_SITE,
     maxAgeSeconds: parsed.BFF_SESSION_MAX_AGE_SECONDS,
-    secret: parsed.BFF_SESSION_SECRET,
+    secret: sessionSecret,
   },
 } as const;

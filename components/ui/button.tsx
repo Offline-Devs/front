@@ -24,6 +24,7 @@ export const buttonVariants = cva("inline-flex shrink-0 items-center justify-cen
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & VariantProps<typeof buttonVariants> & { asChild?: boolean; loading?: boolean };
 
 export function Button({ asChild, loading, disabled, className, variant, size, children, ...props }: ButtonProps) {
-  const Component = asChild ? Slot : "button";
-  return <Component className={cn(buttonVariants({ variant, size }), className)} type={!asChild ? props.type ?? "button" : undefined} disabled={!asChild ? disabled || loading : undefined} aria-disabled={asChild ? disabled || loading : undefined} aria-busy={loading || undefined} {...props}>{loading && <LoaderCircle className="size-4 animate-spin" aria-hidden="true" />}{children}</Component>;
+  const classes = cn(buttonVariants({ variant, size }), className);
+  if (asChild) return <Slot className={classes} aria-disabled={disabled || loading || undefined} aria-busy={loading || undefined} {...props}>{children}</Slot>;
+  return <button className={classes} type={props.type ?? "button"} disabled={disabled || loading} aria-busy={loading || undefined} {...props}>{loading && <LoaderCircle className="size-4 animate-spin" aria-hidden="true" />}{children}</button>;
 }

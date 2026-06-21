@@ -4,14 +4,14 @@
 
 ## تصمیم session و BFF
 
-تصمیم قطعی: browser فقط با Next same-origin gateway ارتباط دارد. در فاز زیرساخت session، endpointهای auth روی همین مرز به BFF کامل تبدیل می‌شوند:
+تصمیم قطعی و پیاده‌سازی‌شده: browser فقط با Next same-origin gateway ارتباط دارد و endpointهای auth روی همین مرز به BFF کامل تبدیل شده‌اند:
 
 - refresh token فقط `HttpOnly + Secure + SameSite=Lax` cookie.
 - access token در حافظه کوتاه‌عمر؛ هیچ token در localStorage ذخیره نمی‌شود.
 - refresh تک‌پروازه و rotation/revocation در صورت پشتیبانی backend.
 - logout تمام cookie، state و query cache خصوصی را پاک می‌کند.
 
-تا اجرای فاز session، store حافظه‌ای فعلی صرفاً scaffold توسعه است و production-ready محسوب نمی‌شود.
+مرورگر فقط user غیرحساس را در حافظه نگه می‌دارد؛ access/refresh token فقط داخل JWE رمزگذاری‌شده و HttpOnly cookie قرار دارند.
 
 ## اشکالات ثبت‌شده و تصمیم مصرف‌کننده
 

@@ -16,7 +16,7 @@
 
 TanStack Query مالک server-state است؛ stale time پیش‌فرض 60 ثانیه و GC ده دقیقه است. mutationها باید فقط query key مرتبط را invalidate کنند و logout تمام cache خصوصی را پاک کند. Zustand فقط نشست و UI را نگه می‌دارد و داده API در آن کپی نمی‌شود.
 
-scaffold token را persist نمی‌کند. برای production، BFF در Next و refresh token داخل HttpOnly/Secure/SameSite cookie توصیه می‌شود؛ localStorage برای refresh token مناسب نیست.
+BFF در Next فعال است و tokenها را داخل JWE رمزگذاری‌شده و HttpOnly/Secure/SameSite cookie نگه می‌دارد. هیچ tokenی در localStorage یا JavaScript مرورگر قرار نمی‌گیرد.
 
 ## rendering و بهینه‌سازی
 

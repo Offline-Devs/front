@@ -1,4 +1,10 @@
 import { apiRequest } from "./client";
-import type { AuthResponse, OtpRequest, OtpResponse, OtpVerifyRequest, RefreshResponse } from "@/types/auth";
-// endpointهای عمومی OTP و refresh.
-export const authApi = { requestOtp: (input: OtpRequest) => apiRequest<OtpResponse>("/auth/request-otp", { method: "POST", body: JSON.stringify(input), auth: false }), verifyOtp: (input: OtpVerifyRequest) => apiRequest<AuthResponse>("/auth/verify-otp", { method: "POST", body: JSON.stringify(input), auth: false }), refresh: (refresh_token: string) => apiRequest<RefreshResponse>("/auth/refresh", { method: "POST", body: JSON.stringify({ refresh_token }), auth: false }) };
+import type { AuthResponse, OtpRequest, OtpResponse, OtpVerifyRequest, SessionResponse } from "@/types/auth";
+
+export const authApi = {
+  requestOtp: (input: OtpRequest) => apiRequest<OtpResponse>("/api/auth/request-otp", { method: "POST", body: JSON.stringify(input), auth: false }),
+  verifyOtp: (input: OtpVerifyRequest) => apiRequest<AuthResponse>("/api/auth/verify-otp", { method: "POST", body: JSON.stringify(input), auth: false }),
+  session: () => apiRequest<SessionResponse>("/api/auth/session", { auth: false }),
+  refresh: () => apiRequest<SessionResponse>("/api/auth/refresh", { method: "POST", auth: false }),
+  logout: () => apiRequest<void>("/api/auth/logout", { method: "POST", auth: false }),
+};
