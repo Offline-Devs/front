@@ -1,2 +1,188 @@
-// فرم مشترک تکمیل/ویرایش پروفایل با majors، تاریخ جلالی، upload و dynamic fields.
-export function ProfileForm() { return <form aria-label="فرم پروفایل" />; }
+"use client";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Save } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useForm, useWatch } from "react-hook-form";
+import { DynamicFieldRenderer } from "@/components/forms/dynamic-field-renderer";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import { FormField } from "@/components/ui/form-field";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { FileUploader } from "@/components/upload/file-uploader";
+import {
+  profileSchema,
+  type ProfileFormOutput,
+  type ProfileFormValues,
+} from "@/schemas/profile.schema";
+import { invalidation, invalidateDependencies } from "@/services/api/invalidation";
+import { queryKeys } from "@/services/api/query-keys";
+import { studentApi } from "@/services/api/student.api";
+import { subjectsApi } from "@/services/api/subjects.api";
+import type { DynamicFieldDefinition } from "@/types/dynamic-field";
+import type { Student } from "@/types/student";
+
+type ProfileFormProps = {
+  profile?: Student;
+  dynamicFields?: DynamicFieldDefinition[];
+  onboarding?: boolean;
+};
+
+export function ProfileForm({ profile, dynamicFields = [], onboarding = false }: ProfileFormProps) {
+  const router = useRouter();
+  const queryClient = useQueryClient();
+  const [dynamicErrors, setDynamicErrors] = useState<Record<string, string>>({});
+  const form = useForm<ProfileFormValues, unknown, ProfileFormOutput>({
+    resolver: zodResolver(profileSchema),
+    defaultValues: {
+      first_name: profile?.first_name ?? "",
+      last_name: profile?.last_name ?? "",
+      city: profile?.city ?? "",
+      jalali_birth_date: profile?.jalali_birth_date ?? "",
+      school: profile?.school ?? "",
+      major: profile?.major ?? "",
+      profile_photo: profile?.profile_photo ?? "",
+      dynamic_fields: profile?.dynamic_fields ?? {},
+    },
+  });
+  const majors = useQuery({
+    queryKey: queryKeys.majors,
+    queryFn: subjectsApi.majors,
+    staleTime: 24 * 60 * 60 * 1000,
+  });
+  const saveProfile = useMutation({
+    mutationFn: studentApi.saveProfile,
+    onSuccess: async (savedProfile) => {
+      queryClient.setQueryData(queryKeys.profile, savedProfile);
+      await invalidateDependencies(queryClient, invalidation.profile);
+      router.replace("/dashboard");
+      router.refresh();
+    },
+  });
+  const dynamicValues = useWatch({ control: form.control, name: "dynamic_fields" });
+  const profilePhoto = useWatch({ control: form.control, name: "profile_photo" });
+  const selectedMajor = useWatch({ control: form.control, name: "major" });
+
+  function submit(values: ProfileFormOutput) {
+    const errors: Record<string, string> = {};
+    dynamicFields.forEach((field) => {
+      if (!field.is_active || !field.is_required) return;
+      const value = values.dynamic_fields[field.name];
+      if (value === undefined || value === null || value === "" || value === false) {
+        errors[field.name] = `${field.label} الزامی است.`;
+      }
+    });
+    setDynamicErrors(errors);
+    if (Object.keys(errors).length > 0) return;
+    saveProfile.mutate(values);
+  }
+
+  return (
+    <form className="grid gap-7" noValidate onSubmit={form.handleSubmit(submit)}>
+      <section className="grid gap-4" aria-labelledby="identity-heading">
+        <div>
+          <h2 id="identity-heading" className="font-bold">اطلاعات هویتی</h2>
+          <p className="mt-1 text-sm text-muted-foreground">اطلاعات را مطابق مشخصات واقعی خود وارد کنید.</p>
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <FormField label="نام" error={form.formState.errors.first_name?.message} required>
+            <Input {...form.register("first_name")} autoComplete="given-name" autoFocus />
+          </FormField>
+          <FormField label="نام خانوادگی" error={form.formState.errors.last_name?.message} required>
+            <Input {...form.register("last_name")} autoComplete="family-name" />
+          </FormField>
+          <FormField label="تاریخ تولد شمسی" hint="نمونه: ۱۳۸۵/۰۷/۱۵" error={form.formState.errors.jalali_birth_date?.message} required>
+            <Input {...form.register("jalali_birth_date")} dir="ltr" inputMode="numeric" placeholder="۱۳۸۵/۰۷/۱۵" className="text-left" />
+          </FormField>
+          <FormField label="شهر" error={form.formState.errors.city?.message} required>
+            <Input {...form.register("city")} autoComplete="address-level2" />
+          </FormField>
+        </div>
+      </section>
+
+      <section className="grid gap-4 border-t pt-6" aria-labelledby="education-heading">
+        <div>
+          <h2 id="education-heading" className="font-bold">اطلاعات تحصیلی</h2>
+          <p className="mt-1 text-sm text-muted-foreground">رشته در ساخت آزمون‌ها و گزارش‌ها استفاده می‌شود.</p>
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <FormField label="مدرسه" error={form.formState.errors.school?.message} required>
+            <Input {...form.register("school")} />
+          </FormField>
+          {majors.data?.length ? (
+            <FormField label="رشته تحصیلی" error={form.formState.errors.major?.message} required>
+              <Select value={selectedMajor} onValueChange={(value) => form.setValue("major", value, { shouldValidate: true })}>
+                <SelectTrigger><SelectValue placeholder="انتخاب رشته" /></SelectTrigger>
+                <SelectContent>
+                  {majors.data.map(({ major }) => <SelectItem key={major} value={major}>{major}</SelectItem>)}
+                </SelectContent>
+              </Select>
+            </FormField>
+          ) : (
+            <FormField
+              label="رشته تحصیلی"
+              hint={majors.isError ? "فهرست رشته‌ها در دسترس نیست؛ نام رشته را وارد کنید." : "در حال دریافت رشته‌ها…"}
+              error={form.formState.errors.major?.message}
+              required
+            >
+              <Input {...form.register("major")} disabled={majors.isLoading} />
+            </FormField>
+          )}
+        </div>
+      </section>
+
+      <section className="grid gap-4 border-t pt-6" aria-labelledby="photo-heading">
+        <div>
+          <h2 id="photo-heading" className="font-bold">عکس پروفایل</h2>
+          <p className="mt-1 text-sm text-muted-foreground">این بخش اختیاری است و بعداً قابل تغییر خواهد بود.</p>
+        </div>
+        <FileUploader
+          value={profilePhoto}
+          disabled={saveProfile.isPending}
+          onChange={(url) => form.setValue("profile_photo", url, { shouldDirty: true })}
+        />
+      </section>
+
+      {dynamicFields.some((field) => field.is_active) && (
+        <section className="grid gap-4 border-t pt-6" aria-labelledby="extra-heading">
+          <div>
+            <h2 id="extra-heading" className="font-bold">اطلاعات تکمیلی</h2>
+            <p className="mt-1 text-sm text-muted-foreground">این موارد توسط مدیر سامانه تعریف شده‌اند.</p>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2">
+            {dynamicFields.map((field) => (
+              <DynamicFieldRenderer
+                key={field.id}
+                field={field}
+                value={dynamicValues[field.name]}
+                error={dynamicErrors[field.name]}
+                disabled={saveProfile.isPending}
+                onChange={(value) => {
+                  form.setValue("dynamic_fields", { ...dynamicValues, [field.name]: value }, { shouldDirty: true });
+                  setDynamicErrors((current) => ({ ...current, [field.name]: "" }));
+                }}
+              />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {saveProfile.isError && (
+        <Alert variant="destructive">
+          <AlertDescription>{saveProfile.error.message}</AlertDescription>
+        </Alert>
+      )}
+
+      <div className="flex flex-col-reverse gap-3 border-t pt-6 sm:flex-row sm:items-center sm:justify-end">
+        {!onboarding && <Button type="button" variant="ghost" onClick={() => router.back()}>انصراف</Button>}
+        <Button type="submit" size="lg" loading={saveProfile.isPending}>
+          {!saveProfile.isPending && <Save className="size-4" aria-hidden="true" />}
+          {onboarding ? "ثبت و ورود به پنل" : "ذخیره تغییرات"}
+        </Button>
+      </div>
+    </form>
+  );
+}

@@ -35,6 +35,7 @@
 | notifications | خارج از scope نسخه اول؛ UI جعلی ساخته نمی‌شود | تصمیم محصول قبل از طراحی اعلان |
 | admin dashboard summary | آمار محدود از `students/with-stats` مشتق می‌شود | پیش از حجم داده بالا endpoint aggregate اضافه شود |
 | blog search/pagination | client filter فقط روی داده دریافت‌شده دقیق نیست | پیش از رشد محتوا query سروری اضافه شود |
+| student dynamic-field definitions | renderer فرانت آماده است؛ endpoint مدیریتی برای session دانش‌آموز قابل مصرف نیست و فرم فعلاً object خالی ارسال می‌کند | پیش از تعریف اولین فیلد پویا، endpoint read-only احراز‌شده برای `entity_type=student` اضافه شود |
 
 ## منبع حقیقت
 
