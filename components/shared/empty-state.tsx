@@ -1,2 +1,6 @@
-// وضعیت خالی با عنوان، توضیح و action اختیاری.
-export function EmptyState({ title }: { title: string }) { return <div className="p-8 text-center text-slate-500">{title}</div>; }
+import { Inbox } from "lucide-react";
+import type { ReactNode } from "react";
+import { cn } from "@/lib/cn";
+
+type EmptyStateProps = { title: string; description?: string; action?: ReactNode; icon?: ReactNode; className?: string };
+export function EmptyState({ title, description, action, icon, className }: EmptyStateProps) { return <div className={cn("grid justify-items-center gap-3 rounded-lg border border-dashed bg-card px-6 py-12 text-center", className)}>{icon ?? <Inbox className="size-10 text-muted-foreground" aria-hidden="true" />}<div className="grid gap-1"><h3 className="font-bold">{title}</h3>{description && <p className="max-w-md text-sm leading-6 text-muted-foreground">{description}</p>}</div>{action}</div>; }

@@ -26,7 +26,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fa" dir="rtl" className="h-full">
-      <body className="min-h-full bg-slate-50 text-slate-900 antialiased">
+      <body className="min-h-full bg-background text-foreground antialiased">
         {/* همه providerهای سراسری فقط در این مرز client قرار می‌گیرند. */}
         <AppProviders>{children}</AppProviders>
       </body>

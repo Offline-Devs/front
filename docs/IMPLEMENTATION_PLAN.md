@@ -26,17 +26,19 @@
 
 وضعیت: تکمیل‌شده در ۱۴۰۵/۰۳/۳۱. مراجع اجرایی: `API_CONTRACT.md`، `BACKEND_DECISIONS.md`، `contracts/endpoints.ts`، `mocks/fixtures` و same-origin gateway در `app/api/v1`.
 
-## فاز ۱ — Design system فارسی و RTL
+## ✅ فاز ۱ — Design system فارسی و RTL
 
 خروجی:
 
-- تعریف رنگ، spacing، radius، typography، shadow و breakpointها.
-- primitiveهای Button، Input، Select، Textarea، Checkbox، Radio، Card، Badge، Alert، Modal، Drawer، Tabs، Table، Pagination، Tooltip، Skeleton و Toast.
-- حالت‌های hover، focus-visible، disabled، loading، error و empty.
-- layout عمومی و پنل در موبایل، تبلت و دسکتاپ.
-- بررسی نمایش اعداد فارسی/لاتین، متن ترکیبی، شماره موبایل، تاریخ و URL در RTL.
+- [x] تعریف رنگ، spacing، radius، typography، shadow و breakpointها.
+- [x] primitiveهای Button، Input، Select، Textarea، Checkbox، Radio، Card، Badge، Alert، Modal، Drawer، Tabs، Table، Pagination، Tooltip، Skeleton و Toast.
+- [x] حالت‌های hover، focus-visible، disabled، loading، error و empty.
+- [x] layout عمومی و پنل در موبایل، تبلت و دسکتاپ.
+- [x] بررسی نمایش اعداد فارسی/لاتین، متن ترکیبی، شماره موبایل، تاریخ و URL در RTL.
 
 معیار پایان: Story/demo داخلی تمام primitiveها و تست دسترس‌پذیری پایه.
+
+وضعیت: تکمیل‌شده در ۱۴۰۵/۰۳/۳۱. مراجع اجرایی: `DESIGN_SYSTEM.md`، مسیر داخلی `/design-system`، primitiveهای `components/ui` و تست `design-system.test.tsx`.
 
 ## فاز ۲ — زیرساخت داده، session و خطا
 

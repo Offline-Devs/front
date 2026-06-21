@@ -1,2 +1,2 @@
-// کنترل صفحه server-side برای ListResponse؛ page از URL searchParams خوانده شود تا shareable باشد.
-export function Pagination() { return <nav aria-label="صفحه‌بندی" />; }
+// Stable shared import for the design-system pagination primitive.
+export { Pagination } from "@/components/ui/pagination";

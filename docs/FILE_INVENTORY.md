@@ -8,6 +8,7 @@
 - ورود: `/login`، `/verify-otp`، `/complete-profile`.
 - دانش‌آموز: `/dashboard`، همه مسیرهای `/exams`، `/mistakes`، `/performance`، `/statistics`، `/profile`.
 - مدیر: `/admin`، `/admin/students/*`، `/admin/blog/*`، `/admin/dynamic-fields`.
+- داخلی: `/design-system` فقط در development/test/staging و مخفی در production.
 
 ## componentها
 
@@ -16,4 +17,4 @@
 - Exams/Mistakes: فرم، لیست، score row و summary.
 - Analytics: summary، سه chart، timeline و performance form.
 - Admin/Blog: students table، student overview، approval، dynamic-field CRUD و post editor.
-- Shared/UI: button، input، card، modal، table، pagination، empty/status و uploader.
+- Shared/UI: button، input، textarea، select، checkbox، radio، form-field، card، badge، alert، modal، drawer، tabs، table، pagination، tooltip، skeleton، toast، empty/status و uploader.
