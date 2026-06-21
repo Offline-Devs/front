@@ -2,6 +2,8 @@
 
 <!-- در تعارض مستندات، router و handlerهای Go منبع حقیقت‌اند. -->
 
+> قرارداد تثبیت‌شده محیط‌ها و رفتار HTTP در `API_CONTRACT.md` و تصمیم‌های هماهنگی در `BACKEND_DECISIONS.md` نگهداری می‌شوند.
+
 ## معماری و دسترسی
 
 بک‌اند با Go/Gin، GORM/PostgreSQL، Redis برای OTP و JWT access/refresh ساخته شده است. routeها در root ثبت شده‌اند و prefix مانند `/api/v1` فقط ممکن است توسط reverse proxy اضافه شود. خطاها `{ "error": string }` هستند، ولی پاسخ موفق envelope یکسان ندارد.

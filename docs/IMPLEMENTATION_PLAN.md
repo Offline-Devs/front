@@ -12,17 +12,19 @@
 - طراحی mobile-first، دسترس‌پذیر و قابل استفاده با keyboard و screen reader.
 - هیچ مقدار رشته، درس، role، وضعیت یا قرارداد API خارج از منابع مرکزی hard-code نشود.
 
-## فاز ۰ — تثبیت قرارداد و پیش‌نیاز backend
+## ✅ فاز ۰ — تثبیت قرارداد و پیش‌نیاز backend
 
 خروجی:
 
-- نهایی‌کردن base URL در dev، Docker و production.
-- تصمیم قطعی درباره BFF و نگهداری refresh token در HttpOnly cookie.
-- اصلاح یا ثبت تصمیم برای refresh کاربر غیرفعال، موفقیت کاذب update/delete، مالکیت mistake و تاریخ جلالی.
-- مشخص‌کردن نیاز endpointهای مفقود: مقاله مدیر با ID، contact، اعلان و summary مدیر.
-- ساخت fixture واقعی برای تمام responseها و جدول status/error قابل نمایش به کاربر.
+- [x] نهایی‌کردن base URL در dev، Docker و production.
+- [x] تصمیم قطعی درباره BFF و نگهداری refresh token در HttpOnly cookie.
+- [x] اصلاح یا ثبت تصمیم برای refresh کاربر غیرفعال، موفقیت کاذب update/delete، مالکیت mistake و تاریخ جلالی.
+- [x] مشخص‌کردن نیاز endpointهای مفقود: مقاله مدیر با ID، contact، اعلان و summary مدیر.
+- [x] ساخت fixture واقعی برای تمام responseها و جدول status/error قابل نمایش به کاربر.
 
 معیار پایان: قراردادهای فرانت و backend بدون ابهام و قابل تست باشند.
+
+وضعیت: تکمیل‌شده در ۱۴۰۵/۰۳/۳۱. مراجع اجرایی: `API_CONTRACT.md`، `BACKEND_DECISIONS.md`، `contracts/endpoints.ts`، `mocks/fixtures` و same-origin gateway در `app/api/v1`.
 
 ## فاز ۱ — Design system فارسی و RTL
 

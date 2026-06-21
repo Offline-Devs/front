@@ -3,6 +3,10 @@ services:
     build: .
     environment:
       - NODE_ENV=production
+      - API_BASE_URL=${API_BASE_URL:-http://host.docker.internal:8080}
+      - API_TIMEOUT_MS=${API_TIMEOUT_MS:-15000}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     expose:
       - "3000"
   nginx:

@@ -8,4 +8,4 @@ npm install
 npm run dev
 ```
 
-مراجع: `docs/BACKEND_ANALYSIS.md`، `docs/FRONTEND_ARCHITECTURE.md` و `docs/FILE_INVENTORY.md`.
+مراجع: `docs/API_CONTRACT.md`، `docs/BACKEND_DECISIONS.md`، `docs/BACKEND_ANALYSIS.md`، `docs/FRONTEND_ARCHITECTURE.md`، `docs/FILE_INVENTORY.md` و `docs/IMPLEMENTATION_PLAN.md`.
