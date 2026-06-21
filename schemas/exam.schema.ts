@@ -3,7 +3,7 @@ import { normalizeNumericInput } from "@/lib/auth-flow";
 
 const count = z.number().int("عدد صحیح وارد کنید.").min(0, "مقدار منفی مجاز نیست.");
 
-export const subjectExamSchema = z.object({
+const subjectExamSchema = z.object({
   subject_name: z.string().trim().min(1, "درس را انتخاب کنید."),
   total_questions: count,
   answered: count,

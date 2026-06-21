@@ -8,4 +8,3 @@ export function TableBody({ className, ...props }: HTMLAttributes<HTMLTableSecti
 export function TableRow({ className, ...props }: HTMLAttributes<HTMLTableRowElement>) { return <tr className={cn("border-b transition-colors hover:bg-muted/50", className)} {...props} />; }
 export function TableHead({ className, ...props }: ThHTMLAttributes<HTMLTableCellElement>) { return <th className={cn("h-11 px-4 text-start align-middle font-semibold text-muted-foreground", className)} {...props} />; }
 export function TableCell({ className, ...props }: TdHTMLAttributes<HTMLTableCellElement>) { return <td className={cn("p-4 align-middle", className)} {...props} />; }
-export function TableCaption({ className, ...props }: HTMLAttributes<HTMLTableCaptionElement>) { return <caption className={cn("mt-3 text-sm text-muted-foreground", className)} {...props} />; }

@@ -1,3 +1,2 @@
-// ورودی واحد fixtureها برای تست‌ها و محیط توسعه.
+// Single fixture entry point used by automated tests. Production code never imports this module.
 export * from "./api.fixtures";
-export * from "./error.fixtures";

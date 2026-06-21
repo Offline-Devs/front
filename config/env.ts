@@ -8,7 +8,6 @@ const publicEnvSchema = z.object({
   appShortName: z.string().trim().min(1),
   appDescription: z.string().trim().min(1),
   appVersion: z.string().trim().min(1),
-  appEnvironment: z.enum(["development", "test", "staging", "production"]),
   siteUrl: z.string().url(),
   apiBasePath: z.string().startsWith("/").refine((value) => !value.endsWith("/"), "مسیر API نباید slash انتهایی داشته باشد"),
   locale: z.string().trim().min(2),
@@ -28,16 +27,14 @@ const publicEnvSchema = z.object({
   multipleUploadMaxFiles: z.coerce.number().int().min(1).max(10),
   enableBlog: booleanString,
   enableContactPage: booleanString,
-  enableQueryDevtools: booleanString,
 });
 
-// دسترسی explicit برای جایگزینی build-time متغیرهای NEXT_PUBLIC توسط Next.js الزامی است.
+// Each public variable is accessed explicitly because Next.js performs compile-time replacement only for statically referenced NEXT_PUBLIC keys. These values are configuration, never secrets.
 export const env = publicEnvSchema.parse({
   appName: process.env.NEXT_PUBLIC_APP_NAME ?? "آکادمی نوشیروانی",
   appShortName: process.env.NEXT_PUBLIC_APP_SHORT_NAME ?? "نوشیروانی",
   appDescription: process.env.NEXT_PUBLIC_APP_DESCRIPTION ?? "سامانه مدیریت آزمون و مشاوره تحصیلی آکادمی نوشیروانی",
   appVersion: process.env.NEXT_PUBLIC_APP_VERSION ?? "0.1.0",
-  appEnvironment: process.env.NEXT_PUBLIC_APP_ENV ?? "development",
   siteUrl: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
   apiBasePath: process.env.NEXT_PUBLIC_API_BASE_PATH ?? "/api/v1",
   locale: process.env.NEXT_PUBLIC_LOCALE ?? "fa-IR",
@@ -57,5 +54,4 @@ export const env = publicEnvSchema.parse({
   multipleUploadMaxFiles: process.env.NEXT_PUBLIC_MULTIPLE_UPLOAD_MAX_FILES ?? "10",
   enableBlog: process.env.NEXT_PUBLIC_ENABLE_BLOG ?? "true",
   enableContactPage: process.env.NEXT_PUBLIC_ENABLE_CONTACT_PAGE ?? "true",
-  enableQueryDevtools: process.env.NEXT_PUBLIC_ENABLE_QUERY_DEVTOOLS ?? "true",
 });

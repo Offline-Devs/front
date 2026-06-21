@@ -1,7 +1,7 @@
 export const PROFILE_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"] as const;
 export const DOCUMENT_TYPES = [...PROFILE_IMAGE_TYPES, "application/pdf"] as const;
 
-export type UploadPolicy = { maxBytes: number; maxFiles: number; mimeTypes: readonly string[] };
+type UploadPolicy = { maxBytes: number; maxFiles: number; mimeTypes: readonly string[] };
 
 export function validateUploadFiles(files: Array<Pick<File, "size" | "type">>, policy: UploadPolicy): string | null {
   if (!files.length) return "حداقل یک فایل الزامی است.";

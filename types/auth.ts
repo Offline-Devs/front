@@ -1,6 +1,6 @@
 import type { User } from "./student";
 
-// قراردادهای سه endpoint احراز هویت.
+// Defines request and response contracts for OTP request, OTP verification, and access-token refresh operations handled through the BFF.
 export type UserRole = "student" | "admin";
 export type OtpRequest = { phone: string };
 export type OtpVerifyRequest = { phone: string; code: string };
@@ -9,4 +9,3 @@ export type BackendAuthResponse = { access_token: string; refresh_token: string;
 export type BackendRefreshResponse = { access_token: string; expires_in: number };
 export type SessionResponse = { user: User; expires_in: number };
 export type AuthResponse = SessionResponse;
-export type RefreshResponse = SessionResponse;

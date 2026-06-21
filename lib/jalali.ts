@@ -1,4 +1,4 @@
-// تاریخ ارسالی به بک‌اند باید دقیقاً YYYY/MM/DD و zero-padded باشد تا فیلتر lexicographic خراب نشود.
+// Backend Jalali dates must use zero-padded YYYY/MM/DD strings because date-range handlers compare these values lexicographically.
 export function normalizeJalaliDate(value: string) {
   const parts = value.split("/").map(Number);
   if (parts.length !== 3 || parts.some(Number.isNaN)) throw new Error("تاریخ جلالی نامعتبر است");

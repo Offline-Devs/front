@@ -30,7 +30,7 @@ export default function RootLayout({
   return (
     <html lang="fa" dir="rtl" className="h-full" data-scroll-behavior="smooth">
       <body className="min-h-full bg-background text-foreground antialiased">
-        {/* همه providerهای سراسری فقط در این مرز client قرار می‌گیرند. */}
+        {/* Global browser providers are isolated behind this client boundary so the root layout and route tree remain server-rendered by default. */}
         <AppProviders>{children}</AppProviders>
       </body>
     </html>

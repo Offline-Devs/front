@@ -1,4 +1,6 @@
 import "@testing-library/jest-dom/vitest";
+process.env.BFF_SESSION_SECRET = "test-session-secret-with-at-least-32-characters";
+process.env.BFF_SESSION_COOKIE_SECURE = "false";
 import { webcrypto } from "node:crypto";
 import { afterAll, afterEach, beforeAll } from "vitest";
 import { mockServer } from "./mocks/server";

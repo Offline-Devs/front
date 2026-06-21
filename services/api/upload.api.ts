@@ -1,3 +1,3 @@
 import { apiRequest } from "./client"; import type { UploadKind, UploadResponse } from "@/types/upload";
-// multipart upload؛ محدودیت backend برای profile ده MB و حداکثر ده فایل در multiple است.
+// Builds multipart upload requests. Browser validation improves UX, while the BFF and backend independently enforce MIME, signature, count, and size limits.
 export const uploadApi = { one: (file: File, type: UploadKind) => { const body = new FormData(); body.append("file", file); return apiRequest<UploadResponse>(`/upload?type=${type}`, { method: "POST", body }); }, multiple: (files: File[], type: UploadKind) => { const body = new FormData(); files.forEach((file) => body.append("files", file)); return apiRequest<UploadResponse[]>(`/upload/multiple?type=${type}`, { method: "POST", body }); } };

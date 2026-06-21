@@ -1,4 +1,4 @@
-export type AuthEvent = "logout" | "session-updated";
+type AuthEvent = "logout" | "session-updated";
 const channelName = "noshirvani-auth"; const storageKey = "noshirvani:auth-event";
 
 export function broadcastAuthEvent(event: AuthEvent) { if (typeof window === "undefined") return; if ("BroadcastChannel" in window) { const channel = new BroadcastChannel(channelName); channel.postMessage(event); channel.close(); } localStorage.setItem(storageKey, JSON.stringify({ event, at: Date.now() })); }

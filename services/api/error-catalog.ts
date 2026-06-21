@@ -27,7 +27,7 @@ const BACKEND_MESSAGES: Record<string, string> = {
   "backend request timed out": "پاسخ سرور بیش از حد طول کشید.",
 };
 
-// متن خام backend فقط برای تشخیص استفاده می‌شود و پیام کنترل‌شده فارسی به UI می‌رسد.
+// Raw backend text is used only for error classification. Components receive controlled Persian messages and retry metadata rather than arbitrary server output.
 export function describeApiError(status: number, body: ApiErrorBody): ErrorDescriptor {
   const fallback = STATUS_ERRORS[status] ?? { code: "unknown" as const, message: "خطای پیش‌بینی‌نشده‌ای رخ داد.", retryable: status >= 500 };
   return { ...fallback, message: BACKEND_MESSAGES[body.error.toLowerCase()] ?? fallback.message };

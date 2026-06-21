@@ -1,4 +1,4 @@
-export type TelemetryEvent = {
+type TelemetryEvent = {
   type: "error" | "web-vital";
   name: string;
   value?: number;
