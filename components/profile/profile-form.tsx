@@ -13,6 +13,7 @@ import { FormField } from "@/components/ui/form-field";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { FileUploader } from "@/components/upload/file-uploader";
+import { toast } from "@/components/ui/toast";
 import {
   profileSchema,
   type ProfileFormOutput,
@@ -58,7 +59,8 @@ export function ProfileForm({ profile, dynamicFields = [], onboarding = false }:
     onSuccess: async (savedProfile) => {
       queryClient.setQueryData(queryKeys.profile, savedProfile);
       await invalidateDependencies(queryClient, invalidation.profile);
-      router.replace("/dashboard");
+      if (onboarding) router.replace("/dashboard");
+      else toast.success("تغییرات پروفایل ذخیره شد.");
       router.refresh();
     },
   });

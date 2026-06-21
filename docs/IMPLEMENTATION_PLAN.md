@@ -86,21 +86,25 @@
 
 وضعیت: تکمیل‌شده در ۱۴۰۵/۰۳/۳۱. مراجع اجرایی: `AUTH_AND_ONBOARDING.md`، صفحات `app/(auth)`، فرم‌های `components/auth` و `components/profile`، schemaهای احراز هویت/پروفایل و تست‌های خودکار جریان OTP.
 
-## فاز ۵ — پنل دانش‌آموز: هسته عملیاتی
+## ✅ فاز ۵ — پنل دانش‌آموز: هسته عملیاتی
 
 خروجی:
 
-- dashboard با وضعیت تایید، summary، آخرین آزمون‌ها و برنامه مطالعاتی.
-- CRUD آزمون با subject field array و validation سازگاری تعداد پاسخ‌ها.
-- CRUD دفترچه اشتباهات با انتخاب exam/subject متعلق به خود کاربر.
-- مشاهده/ویرایش پروفایل و آپلود عکس.
-- confirm عملیات destructive، optimistic UX فقط در عملیات قابل rollback.
+- [x] dashboard با وضعیت تایید، summary، آخرین آزمون‌ها و برنامه مطالعاتی.
+- [x] CRUD آزمون با subject field array و validation سازگاری تعداد پاسخ‌ها.
+- [x] CRUD دفترچه اشتباهات با انتخاب exam/subject متعلق به خود کاربر.
+- [x] مشاهده/ویرایش پروفایل و آپلود عکس.
+- [x] confirm عملیات destructive، optimistic UX فقط در عملیات قابل rollback.
 
 کش:
 
-- dashboard/profile: stale کوتاه و invalidation پس از mutation مرتبط.
-- exams/mistakes: cache لیست و detail جدا، prefetch هنگام hover/link intent.
-- mutationها به‌جای refetch سراسری فقط entity و summary وابسته را invalidate کنند.
+- [x] dashboard/profile: stale کوتاه و invalidation پس از mutation مرتبط.
+- [x] exams/mistakes: cache لیست و detail جدا و prefetch بومی Linkهای Next.
+- [x] mutationها به‌جای refetch سراسری فقط entity و summary وابسته را invalidate کنند.
+
+معیار پایان: dashboard و عملیات create/read/update/delete آزمون و اشتباه، همراه ویرایش پروفایل، در موبایل و دسکتاپ قابل استفاده و قراردادهای عددی آزمون پیش از ارسال کنترل شوند.
+
+وضعیت: تکمیل‌شده در ۱۴۰۵/۰۳/۳۱. مراجع اجرایی: `STUDENT_CORE.md`، صفحات `app/(student)`، componentهای `dashboard`، `exams`، `mistakes` و تست schemaهای عملیاتی.
 
 ## فاز ۶ — آمار و عملکرد دانش‌آموز
 

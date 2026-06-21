@@ -1,3 +1,3 @@
-import { PagePlaceholder } from "@/components/shared/page-placeholder";
-// دفترچه اشتباهات با فیلتر موضوع/دسته، edit و delete.
-export default function MistakesPage() { return <PagePlaceholder title="دفترچه اشتباهات" />; }
+import type { Metadata } from "next"; import { Plus } from "lucide-react"; import Link from "next/link"; import { MistakeList } from "@/components/mistakes/mistake-list"; import { Button } from "@/components/ui/button";
+export const metadata: Metadata = { title: "دفترچه اشتباهات" };
+export default function MistakesPage() { return <div className="grid gap-6"><div className="flex items-center justify-between gap-4"><div><h1 className="text-2xl font-black">دفترچه اشتباهات</h1><p className="mt-2 text-sm text-muted-foreground">اشتباهات پرتکرار و راه‌حل صحیح آن‌ها را نگه دارید.</p></div><Button asChild><Link href="/mistakes/new"><Plus className="size-4" />ثبت اشتباه</Link></Button></div><MistakeList /></div>; }
