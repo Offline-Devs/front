@@ -63,7 +63,7 @@ export function StudentDashboard() {
       )}
       <div className="grid gap-4 sm:grid-cols-3">
         {cards.map(({ title, value, icon: Icon }) => (
-          <Card key={title}>
+          <Card key={title} className="border-primary/10 hover:shadow-[var(--shadow-md)]">
             <CardContent className="flex items-center justify-between pt-5">
               <div>
                 <p className="text-sm text-muted-foreground">{title}</p>
@@ -71,7 +71,7 @@ export function StudentDashboard() {
                   {typeof value === "number" ? formatNumber(value) : value}
                 </p>
               </div>
-              <span className="grid size-11 place-items-center rounded-full bg-accent text-primary">
+              <span className="grid size-12 place-items-center rounded-lg bg-secondary text-primary">
                 <Icon className="size-5" />
               </span>
             </CardContent>
@@ -92,7 +92,7 @@ export function StudentDashboard() {
                 <Link
                   key={exam.id}
                   href={`/exams/${exam.id}`}
-                  className="rounded-lg border bg-card p-4 transition-colors hover:bg-muted"
+                  className="rounded-lg border border-primary/10 bg-card p-4 shadow-[var(--shadow-sm)] transition-all hover:-translate-y-0.5 hover:border-primary/25 hover:shadow-[var(--shadow-md)]"
                 >
                   <h3 className="font-bold">{exam.title}</h3>
                   <p className="mt-2 text-sm text-muted-foreground">

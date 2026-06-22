@@ -38,7 +38,7 @@ export function DashboardNavigation({
 }) {
   const pathname = usePathname();
   return (
-    <nav aria-label="ناوبری پنل" className="grid gap-1">
+    <nav aria-label="ناوبری پنل" className="grid gap-1.5">
       {navigation[role].map((item) => {
         const Icon = icons[item.href];
         const active =
@@ -52,8 +52,9 @@ export function DashboardNavigation({
             onClick={onNavigate}
             aria-current={active ? "page" : undefined}
             className={cn(
-              "flex min-h-11 items-center gap-3 rounded-md px-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring",
-              active && "bg-accent text-accent-foreground",
+              "flex min-h-12 items-center gap-3 rounded-md px-3.5 text-sm font-semibold text-muted-foreground transition-all hover:bg-secondary hover:text-primary focus-visible:ring-2 focus-visible:ring-ring",
+              active &&
+                "bg-primary text-white shadow-sm hover:bg-[var(--brand-strong)] hover:text-white",
             )}
           >
             <Icon className="size-5 shrink-0" aria-hidden="true" />

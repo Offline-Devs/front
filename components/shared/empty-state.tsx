@@ -13,11 +13,15 @@ export function EmptyState({ title, description, action, icon, className }: Empt
   return (
     <div
       className={cn(
-        "grid justify-items-center gap-3 rounded-lg border border-dashed bg-card px-6 py-12 text-center",
+        "grid justify-items-center gap-3 rounded-lg border border-dashed border-primary/25 bg-card px-6 py-12 text-center shadow-[var(--shadow-sm)]",
         className,
       )}
     >
-      {icon ?? <Inbox className="size-10 text-muted-foreground" aria-hidden="true" />}
+      {icon ?? (
+        <span className="grid size-14 place-items-center rounded-full bg-secondary text-primary">
+          <Inbox className="size-7" aria-hidden="true" />
+        </span>
+      )}
       <div className="grid gap-1">
         <h3 className="font-bold">{title}</h3>
         {description && (

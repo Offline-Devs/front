@@ -7,22 +7,24 @@ import type { ButtonHTMLAttributes } from "react";
 import { cn } from "@/lib/cn";
 
 export const buttonVariants = cva(
-  "inline-flex shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+  "inline-flex shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-md font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 active:translate-y-px",
   {
     variants: {
       variant: {
-        primary: "bg-primary text-primary-foreground shadow-sm hover:brightness-95",
+        primary:
+          "bg-primary text-primary-foreground shadow-sm hover:bg-[var(--brand-strong)] hover:shadow-md",
         secondary: "bg-secondary text-secondary-foreground hover:bg-accent",
-        outline: "border bg-card text-foreground hover:bg-muted",
+        outline:
+          "border border-primary/25 bg-card text-[var(--brand-strong)] hover:border-primary/50 hover:bg-secondary",
         ghost: "text-foreground hover:bg-muted",
         destructive: "bg-destructive text-destructive-foreground hover:brightness-95",
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {
-        sm: "h-9 px-3 text-sm",
-        md: "h-10 px-4 text-sm",
-        lg: "h-12 px-6 text-base",
-        icon: "size-10",
+        sm: "h-9 px-4 text-sm",
+        md: "h-11 px-5 text-sm",
+        lg: "h-12 px-7 text-base",
+        icon: "size-11",
       },
     },
     defaultVariants: { variant: "primary", size: "md" },

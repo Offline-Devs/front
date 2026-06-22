@@ -14,7 +14,7 @@ export default function ContactPage() {
   if (!env.enableContactPage) notFound();
   return (
     <>
-      <section className="border-b bg-muted/40">
+      <section className="brand-grid border-b border-primary/10 bg-white">
         <div className="page-container py-14 sm:py-20">
           <SectionHeading
             eyebrow="ارتباط با ما"
@@ -23,8 +23,8 @@ export default function ContactPage() {
           />
         </div>
       </section>
-      <section className="page-container py-14 sm:py-20">
-        <div className="grid gap-4 md:grid-cols-2">
+      <section className="page-container py-16 sm:py-24">
+        <div className="grid gap-5 md:grid-cols-2">
           <Card>
             <CardHeader>
               <Mail className="size-7 text-primary" aria-hidden="true" />

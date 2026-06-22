@@ -7,7 +7,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 
 export function PostCard({ post }: { post: BlogPost }) {
   return (
-    <Card className="group relative flex h-full flex-col transition-transform hover:-translate-y-1 hover:shadow-[var(--shadow-md)]">
+    <Card className="group relative flex h-full flex-col border-primary/10 transition-transform hover:-translate-y-1 hover:border-primary/25 hover:shadow-[var(--shadow-md)]">
       <CardHeader>
         <div className="mb-1 flex items-center gap-2 text-xs text-muted-foreground">
           <CalendarDays className="size-4" aria-hidden="true" />

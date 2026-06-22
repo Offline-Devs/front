@@ -1,6 +1,6 @@
 "use client";
 
-import { LogOut, Menu } from "lucide-react";
+import { Bell, LogOut, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Drawer,
@@ -17,7 +17,7 @@ import { useLogout } from "@/hooks/use-logout";
 export function DashboardHeader({ role }: { role: "student" | "admin" }) {
   const logout = useLogout();
   return (
-    <header className="sticky top-0 z-40 flex h-16 items-center gap-3 border-b bg-background/90 px-4 backdrop-blur-md sm:px-6">
+    <header className="sticky top-0 z-40 flex h-20 items-center gap-3 border-b border-border/80 bg-white/95 px-4 backdrop-blur-xl sm:px-8">
       <Drawer>
         <DrawerTrigger asChild>
           <Button variant="ghost" size="icon" className="lg:hidden" aria-label="بازکردن منوی پنل">
@@ -34,8 +34,17 @@ export function DashboardHeader({ role }: { role: "student" | "admin" }) {
           <DashboardNavigation role={role} />
         </DrawerContent>
       </Drawer>
-      <p className="font-bold lg:hidden">{env.appShortName}</p>
+      <div>
+        <p className="font-bold text-[var(--brand-strong)] lg:hidden">{env.appShortName}</p>
+        <p className="hidden text-sm font-bold text-[var(--brand-strong)] lg:block">
+          {role === "admin" ? "پنل مدیریت" : "پنل دانش‌آموز"}
+        </p>
+        <p className="hidden text-xs text-muted-foreground lg:block">مدیریت و تحلیل مسیر آموزشی</p>
+      </div>
       <div className="ms-auto flex items-center gap-2">
+        <Button variant="ghost" size="icon" aria-label="اعلان‌ها">
+          <Bell className="size-5" />
+        </Button>
         <Button variant="ghost" size="icon" onClick={() => void logout()} aria-label="خروج از حساب">
           <LogOut className="size-5" />
         </Button>

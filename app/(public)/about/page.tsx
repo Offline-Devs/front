@@ -36,7 +36,7 @@ const values = [
 export default function AboutPage() {
   return (
     <>
-      <section className="border-b bg-muted/40">
+      <section className="brand-grid border-b border-primary/10 bg-white">
         <div className="page-container py-14 sm:py-20">
           <SectionHeading
             eyebrow="درباره ما"
@@ -57,14 +57,14 @@ export default function AboutPage() {
             دقیق‌تری از مسیر داشته باشند.
           </p>
         </div>
-        <div className="rounded-lg border bg-card p-6 shadow-[var(--shadow-md)]">
+        <div className="rounded-lg border border-primary/15 bg-card p-7 shadow-[var(--shadow-md)]">
           <p className="text-sm font-bold text-primary">ماموریت</p>
           <blockquote className="mt-3 text-balance text-2xl font-black leading-10">
             کمک به دانش‌آموز برای شناخت بهتر عملکرد خود و انتخاب گام بعدی با اطمینان بیشتر.
           </blockquote>
         </div>
       </section>
-      <section className="border-y bg-card">
+      <section className="border-y border-primary/10 bg-white">
         <div className="page-container py-14 sm:py-20">
           <SectionHeading title="اصول طراحی و خدمت" centered />
           <div className="mt-8 grid gap-4 sm:grid-cols-2">

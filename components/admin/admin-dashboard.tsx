@@ -42,13 +42,15 @@ export function AdminDashboard() {
     <div className="grid gap-6">
       <div className="grid gap-4 sm:grid-cols-3">
         {items.map(({ label, value, icon: Icon }) => (
-          <Card key={label}>
+          <Card key={label} className="border-primary/10 hover:shadow-[var(--shadow-md)]">
             <CardContent className="flex items-center justify-between pt-5">
               <div>
                 <p className="text-sm text-muted-foreground">{label}</p>
                 <p className="mt-2 text-2xl font-black">{formatNumber(value)}</p>
               </div>
-              <Icon className="size-8 text-primary" />
+              <span className="grid size-12 place-items-center rounded-lg bg-secondary text-primary">
+                <Icon className="size-6" />
+              </span>
             </CardContent>
           </Card>
         ))}

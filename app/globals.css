@@ -24,33 +24,36 @@
 
 :root {
   color-scheme: light;
-  --background: oklch(0.985 0.006 165);
-  --foreground: oklch(0.25 0.035 166);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.25 0.035 166);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.25 0.035 166);
-  --primary: oklch(0.48 0.12 166);
-  --primary-foreground: oklch(0.99 0 0);
-  --secondary: oklch(0.94 0.025 166);
-  --secondary-foreground: oklch(0.34 0.07 166);
-  --muted: oklch(0.95 0.01 166);
-  --muted-foreground: oklch(0.49 0.025 166);
-  --accent: oklch(0.91 0.045 166);
-  --accent-foreground: oklch(0.3 0.075 166);
-  --destructive: oklch(0.57 0.21 25);
-  --destructive-foreground: oklch(0.99 0 0);
-  --success: oklch(0.55 0.14 145);
-  --warning: oklch(0.72 0.15 72);
-  --border: oklch(0.89 0.018 166);
-  --input: oklch(0.87 0.02 166);
-  --ring: oklch(0.56 0.13 166);
+  --background: #f1f1f2;
+  --foreground: #343535;
+  --card: #ffffff;
+  --card-foreground: #343535;
+  --popover: #ffffff;
+  --popover-foreground: #343535;
+  --primary: #408a71;
+  --primary-foreground: #ffffff;
+  --secondary: #e8f4ef;
+  --secondary-foreground: #285a48;
+  --muted: #f8faf9;
+  --muted-foreground: #6a6a6a;
+  --accent: #b0e4cc;
+  --accent-foreground: #285a48;
+  --destructive: #dc2626;
+  --destructive-foreground: #ffffff;
+  --success: #16a34a;
+  --warning: #ea580c;
+  --border: #e2e7e5;
+  --input: #d9d9d9;
+  --ring: #408a71;
+  --brand-strong: #285a48;
+  --brand-soft: #eaf7f1;
   --radius-sm: 0.5rem;
-  --radius-md: 0.75rem;
+  --radius-md: 0.625rem;
   --radius-lg: 1rem;
-  --shadow-sm: 0 1px 2px rgb(9 45 35 / 0.05);
-  --shadow-md: 0 8px 24px rgb(9 45 35 / 0.09);
-  --content-width: 75rem;
+  --shadow-sm: 0 2px 8px rgb(40 90 72 / 0.05);
+  --shadow-md: 0 12px 32px rgb(40 90 72 / 0.1);
+  --shadow-lg: 0 24px 64px rgb(40 90 72 / 0.14);
+  --content-width: 76rem;
 }
 
 @theme inline {
@@ -94,6 +97,7 @@
     color: var(--foreground);
     font-family: "Vazirmatn", sans-serif;
     text-rendering: optimizeLegibility;
+    line-height: 1.75;
   }
   button,
   input,
@@ -119,6 +123,17 @@
   .page-container {
     width: min(100% - 2rem, var(--content-width));
     margin-inline: auto;
+  }
+  .dashboard-content {
+    width: min(100%, 90rem);
+    margin-inline: auto;
+    padding: 1.25rem;
+  }
+  .brand-grid {
+    background-image:
+      linear-gradient(rgb(64 138 113 / 0.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(64 138 113 / 0.045) 1px, transparent 1px);
+    background-size: 28px 28px;
   }
   .text-balance {
     text-wrap: balance;
@@ -182,6 +197,12 @@
     background: var(--foreground);
     color: var(--background);
     padding: 1rem;
+  }
+}
+
+@media (min-width: 640px) {
+  .dashboard-content {
+    padding: 2rem;
   }
 }
 

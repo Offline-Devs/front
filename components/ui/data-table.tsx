@@ -7,7 +7,15 @@ import type {
 import { cn } from "@/lib/cn";
 
 export function TableContainer({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
-  return <div className={cn("w-full overflow-x-auto rounded-md border", className)} {...props} />;
+  return (
+    <div
+      className={cn(
+        "w-full overflow-x-auto rounded-lg border border-primary/10 bg-white shadow-[var(--shadow-sm)]",
+        className,
+      )}
+      {...props}
+    />
+  );
 }
 export function DataTable({ className, ...props }: TableHTMLAttributes<HTMLTableElement>) {
   return (
@@ -15,7 +23,7 @@ export function DataTable({ className, ...props }: TableHTMLAttributes<HTMLTable
   );
 }
 export function TableHeader({ className, ...props }: HTMLAttributes<HTMLTableSectionElement>) {
-  return <thead className={cn("bg-muted/70 [&_tr]:border-b", className)} {...props} />;
+  return <thead className={cn("bg-secondary/80 [&_tr]:border-b", className)} {...props} />;
 }
 export function TableBody({ className, ...props }: HTMLAttributes<HTMLTableSectionElement>) {
   return <tbody className={cn("[&_tr:last-child]:border-0", className)} {...props} />;
@@ -29,7 +37,7 @@ export function TableHead({ className, ...props }: ThHTMLAttributes<HTMLTableCel
   return (
     <th
       className={cn(
-        "h-11 px-4 text-start align-middle font-semibold text-muted-foreground",
+        "h-12 px-4 text-start align-middle font-bold text-[var(--brand-strong)]",
         className,
       )}
       {...props}

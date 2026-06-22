@@ -1,6 +1,6 @@
 "use client";
 
-import { Menu } from "lucide-react";
+import { GraduationCap, Menu } from "lucide-react";
 import Link from "next/link";
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
@@ -25,17 +25,23 @@ const publicLinks = [
 
 export function PublicHeader() {
   return (
-    <header className="sticky top-0 z-40 border-b bg-background/90 backdrop-blur-md">
-      <nav aria-label="ناوبری اصلی" className="page-container flex h-16 items-center gap-6">
-        <Link href="/" className="text-lg font-extrabold text-primary">
-          {env.appShortName}
+    <header className="sticky top-0 z-40 border-b border-border/80 bg-white/95 backdrop-blur-xl">
+      <nav aria-label="ناوبری اصلی" className="page-container flex h-20 items-center gap-7">
+        <Link
+          href="/"
+          className="flex items-center gap-2.5 text-lg font-extrabold text-[var(--brand-strong)]"
+        >
+          <span className="grid size-10 place-items-center rounded-md bg-primary text-white shadow-sm">
+            <GraduationCap className="size-6" aria-hidden="true" />
+          </span>
+          <span>{env.appShortName}</span>
         </Link>
         <div className="hidden items-center gap-1 md:flex">
           {publicLinks.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
+              className="rounded-md px-3 py-2 text-sm font-semibold text-muted-foreground transition-colors hover:bg-secondary hover:text-primary"
             >
               {item.label}
             </Link>
@@ -43,7 +49,7 @@ export function PublicHeader() {
         </div>
         <Link
           href="/login"
-          className={cn(buttonVariants({ size: "sm" }), "ms-auto hidden md:inline-flex")}
+          className={cn(buttonVariants({ size: "sm" }), "ms-auto hidden min-w-32 md:inline-flex")}
         >
           ورود به سامانه
         </Link>

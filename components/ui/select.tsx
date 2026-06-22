@@ -18,7 +18,7 @@ export function SelectTrigger({
     <SelectPrimitive.Trigger
       aria-label={ariaLabel}
       className={cn(
-        "flex h-10 w-full items-center justify-between gap-2 rounded-md border border-input bg-card px-3 text-sm shadow-sm outline-none focus:ring-2 focus:ring-ring/25 disabled:cursor-not-allowed disabled:opacity-60 data-[placeholder]:text-muted-foreground aria-invalid:border-destructive",
+        "flex h-11 w-full items-center justify-between gap-2 rounded-md border border-input bg-card px-4 text-sm shadow-sm outline-none transition-all hover:border-primary/40 focus:border-ring focus:ring-3 focus:ring-ring/15 disabled:cursor-not-allowed disabled:opacity-60 data-[placeholder]:text-muted-foreground aria-invalid:border-destructive",
         className,
       )}
       {...props}
@@ -43,7 +43,7 @@ export function SelectContent({
         dir="rtl"
         position={position}
         className={cn(
-          "z-50 max-h-72 min-w-[8rem] overflow-hidden rounded-md border bg-popover text-popover-foreground shadow-md data-[state=open]:animate-in",
+          "z-50 max-h-72 min-w-[8rem] overflow-hidden rounded-md border border-primary/10 bg-popover text-popover-foreground shadow-[var(--shadow-md)] data-[state=open]:animate-in",
           position === "popper" && "w-[var(--radix-select-trigger-width)]",
           className,
         )}

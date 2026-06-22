@@ -11,9 +11,9 @@ export function ServiceCard({
   description: string;
 }) {
   return (
-    <Card className="h-full transition-transform hover:-translate-y-1 hover:shadow-[var(--shadow-md)]">
+    <Card className="group h-full border-primary/10 hover:-translate-y-1 hover:border-primary/25 hover:shadow-[var(--shadow-md)]">
       <CardHeader>
-        <div className="mb-2 grid size-11 place-items-center rounded-md bg-accent text-primary">
+        <div className="mb-2 grid size-12 place-items-center rounded-md bg-secondary text-primary transition-colors group-hover:bg-primary group-hover:text-white">
           <Icon className="size-6" aria-hidden="true" />
         </div>
         <CardTitle>{title}</CardTitle>

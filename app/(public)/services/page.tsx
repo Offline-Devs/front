@@ -55,7 +55,7 @@ export default async function ServicesPage() {
   const majors = await getMajors();
   return (
     <>
-      <section className="border-b bg-muted/40">
+      <section className="brand-grid border-b border-primary/10 bg-white">
         <div className="page-container py-14 sm:py-20">
           <SectionHeading
             eyebrow="خدمات سامانه"
@@ -64,15 +64,15 @@ export default async function ServicesPage() {
           />
         </div>
       </section>
-      <section className="page-container py-14 sm:py-20">
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <section className="page-container py-16 sm:py-24">
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {items.map((item) => (
             <ServiceCard key={item.title} {...item} />
           ))}
         </div>
       </section>
       {majors.length > 0 && (
-        <section className="border-y bg-card">
+        <section className="border-y border-primary/10 bg-white">
           <div className="page-container py-12">
             <SectionHeading
               title="رشته‌ها و درس‌های تحت پوشش"
