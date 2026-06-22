@@ -16,15 +16,20 @@ export function DrawerContent({
   ...props
 }: ComponentProps<typeof DialogPrimitive.Content> & { side?: "right" | "left" | "bottom" }) {
   const sideClasses = {
-    right: "inset-y-0 end-0 h-full w-[min(22rem,90vw)] border-s",
-    left: "inset-y-0 start-0 h-full w-[min(22rem,90vw)] border-e",
+    right: "inset-y-0 right-0 h-full w-[min(22rem,90vw)] border-l",
+    left: "inset-y-0 left-0 h-full w-[min(22rem,90vw)] border-r",
     bottom: "inset-x-0 bottom-0 max-h-[85vh] rounded-t-lg border-t",
   };
   return (
     <DialogPrimitive.Portal>
-      <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-foreground/45 backdrop-blur-[2px]" />
+      <DialogPrimitive.Overlay
+        data-drawer-overlay
+        className="fixed inset-0 z-50 bg-foreground/45 backdrop-blur-[2px]"
+      />
       <DialogPrimitive.Content
         dir="rtl"
+        data-drawer-content
+        data-side={side}
         className={cn(
           "fixed z-50 overflow-y-auto bg-card p-5 shadow-[var(--shadow-md)] outline-none",
           sideClasses[side],
@@ -33,7 +38,12 @@ export function DrawerContent({
         {...props}
       >
         {children}
-        <DialogPrimitive.Close className="absolute end-4 top-4 rounded-sm p-1 text-muted-foreground hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring">
+        <DialogPrimitive.Close
+          className={cn(
+            "absolute top-4 rounded-sm p-1 text-muted-foreground transition-transform hover:rotate-90 hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring",
+            side === "left" ? "left-4" : "right-4",
+          )}
+        >
           <X className="size-4" />
           <span className="sr-only">بستن</span>
         </DialogPrimitive.Close>
@@ -42,7 +52,7 @@ export function DrawerContent({
   );
 }
 export function DrawerHeader({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
-  return <div className={cn("grid gap-2 pe-8", className)} {...props} />;
+  return <div className={cn("grid gap-2 ps-8", className)} {...props} />;
 }
 export function DrawerTitle({ className, ...props }: ComponentProps<typeof DialogPrimitive.Title>) {
   return <DialogPrimitive.Title className={cn("text-lg font-bold", className)} {...props} />;

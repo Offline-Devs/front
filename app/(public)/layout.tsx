@@ -8,7 +8,7 @@ export default function PublicLayout({ children }: Readonly<{ children: React.Re
     <div className="flex min-h-screen flex-col">
       <PublicHeader />
       <main className="flex-1">
-        <div className="border-b border-primary/10 bg-white">
+        <div className="border-b border-primary/10 bg-card">
           <PageBreadcrumbs contained />
         </div>
         {children}

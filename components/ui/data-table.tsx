@@ -10,7 +10,7 @@ export function TableContainer({ className, ...props }: HTMLAttributes<HTMLDivEl
   return (
     <div
       className={cn(
-        "w-full overflow-x-auto rounded-lg border border-primary/10 bg-white shadow-[var(--shadow-sm)]",
+        "w-full overflow-x-auto rounded-lg border border-primary/10 bg-card shadow-[var(--shadow-sm)]",
         className,
       )}
       {...props}

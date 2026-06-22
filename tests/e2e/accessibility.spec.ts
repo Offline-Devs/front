@@ -24,3 +24,35 @@ test("keyboard focus and reduced-motion preference are honored", async ({ page }
     .evaluate((element) => getComputedStyle(element).transitionDuration);
   expect(Number.parseFloat(duration)).toBeLessThanOrEqual(0.00001);
 });
+
+test("dark theme persists and remains accessible", async ({ page }) => {
+  await page.emulateMedia({ colorScheme: "light" });
+  await page.goto("/");
+  await page.evaluate(() => localStorage.removeItem("noshirvani-theme"));
+  await page.reload();
+  await page.getByRole("button", { name: "فعال‌کردن تم تیره" }).click();
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+  await page.reload();
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+  const results = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze();
+  expect(results.violations).toEqual([]);
+});
+
+test("mobile navigation opens from the physical right side", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+  const trigger = page.getByRole("button", { name: "بازکردن منوی اصلی" });
+  const triggerBox = await trigger.boundingBox();
+  expect(Math.abs((triggerBox?.x ?? 0) + (triggerBox?.width ?? 0) - 390)).toBeLessThanOrEqual(16);
+  await trigger.click();
+  const drawer = page.getByRole("dialog");
+  await expect(drawer).toBeVisible();
+  await drawer.evaluate((element) =>
+    Promise.all(element.getAnimations().map((animation) => animation.finished)),
+  );
+  const box = await drawer.boundingBox();
+  expect(box).not.toBeNull();
+  expect(Math.abs((box?.x ?? 0) + (box?.width ?? 0) - 390)).toBeLessThanOrEqual(1);
+  await drawer.getByRole("button", { name: "بستن" }).click();
+  await expect(drawer).toBeHidden();
+});

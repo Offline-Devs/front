@@ -12,7 +12,7 @@ export function DashboardShell({
       <div className="min-w-0">
         <DashboardHeader role={role} />
         <main className="dashboard-content">
-          <PageBreadcrumbs className="mb-6 rounded-lg border border-primary/10 bg-white px-4 py-3 shadow-[var(--shadow-sm)]" />
+          <PageBreadcrumbs className="mb-6 rounded-lg border border-primary/10 bg-card px-4 py-3 shadow-[var(--shadow-sm)]" />
           {children}
         </main>
       </div>

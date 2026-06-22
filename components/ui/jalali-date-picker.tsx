@@ -229,7 +229,7 @@ export function JalaliDatePicker({
                     className={cn(
                       "grid aspect-square place-items-center rounded-md text-sm font-semibold transition-colors hover:bg-secondary hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
                       day === item &&
-                        "bg-primary text-white shadow-sm hover:bg-[var(--brand-strong)] hover:text-white",
+                        "bg-primary text-primary-foreground shadow-sm hover:bg-[var(--brand-strong)] hover:text-primary-foreground",
                     )}
                     onClick={() => setDay(item)}
                   >

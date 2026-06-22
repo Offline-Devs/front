@@ -108,13 +108,14 @@ export function PageBreadcrumbs({
                   />
                 )}
                 {current ? (
-                  <span
+                  <Link
+                    href={crumb.href}
                     aria-current="page"
-                    className="flex items-center gap-1.5 font-bold text-[var(--brand-strong)]"
+                    className="flex items-center gap-1.5 font-bold text-[var(--brand-strong)] transition-colors hover:text-primary"
                   >
                     {index === 0 && <Home className="size-4" aria-hidden="true" />}
                     {crumb.label}
-                  </span>
+                  </Link>
                 ) : (
                   <Link
                     href={crumb.href}

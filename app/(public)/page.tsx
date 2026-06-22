@@ -41,7 +41,7 @@ export default async function HomePage() {
   return (
     <>
       <JsonLd data={organizationJsonLd()} />
-      <section className="brand-grid relative overflow-hidden border-b border-primary/10 bg-white">
+      <section className="brand-grid relative overflow-hidden border-b border-primary/10 bg-card">
         <div className="absolute -right-32 -top-40 size-96 rounded-full bg-accent/35 blur-3xl" />
         <div className="page-container relative grid min-h-[680px] gap-12 py-14 sm:py-20 lg:grid-cols-[1fr_.95fr] lg:items-center">
           <div className="grid gap-7">
@@ -69,7 +69,7 @@ export default async function HomePage() {
           </div>
           <div className="relative mx-auto w-full max-w-[32rem]">
             <div className="absolute -inset-4 rounded-[2rem] bg-primary/8" />
-            <div className="relative overflow-hidden rounded-[1.75rem] border-8 border-white bg-white shadow-[var(--shadow-lg)]">
+            <div className="relative overflow-hidden rounded-[1.75rem] border-8 border-card bg-card shadow-[var(--shadow-lg)]">
               <Image
                 src="/images/design/student-study.webp"
                 alt="دانش‌آموز در حال مطالعه و برنامه‌ریزی"
@@ -80,7 +80,7 @@ export default async function HomePage() {
                 className="aspect-square w-full object-cover"
               />
             </div>
-            <div className="absolute -bottom-5 -right-3 w-[min(19rem,80%)] rounded-lg border border-primary/15 bg-white p-4 shadow-[var(--shadow-md)]">
+            <div className="absolute -bottom-5 -right-3 w-[min(19rem,80%)] rounded-lg border border-primary/15 bg-card p-4 shadow-[var(--shadow-md)]">
               <div className="flex items-center gap-3">
                 <div className="grid size-11 shrink-0 place-items-center rounded-full bg-accent text-primary">
                   <Route className="size-6" />
@@ -108,7 +108,7 @@ export default async function HomePage() {
         </div>
       </section>
       {posts.length > 0 && (
-        <section className="border-y border-primary/10 bg-white">
+        <section className="border-y border-primary/10 bg-card">
           <div className="page-container py-14 sm:py-20">
             <div className="flex items-end justify-between gap-4">
               <SectionHeading eyebrow="مطالب آموزشی" title="تازه‌ترین مقالات" />

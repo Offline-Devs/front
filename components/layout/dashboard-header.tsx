@@ -1,6 +1,7 @@
 "use client";
 
-import { Bell, LogOut, Menu } from "lucide-react";
+import { Bell, LogOut } from "lucide-react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Drawer,
@@ -13,18 +14,26 @@ import {
 import { env } from "@/config/env";
 import { DashboardNavigation } from "./dashboard-navigation";
 import { useLogout } from "@/hooks/use-logout";
+import { MobileMenuIcon } from "@/components/ui/mobile-menu-icon";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 export function DashboardHeader({ role }: { role: "student" | "admin" }) {
   const logout = useLogout();
+  const [menuOpen, setMenuOpen] = useState(false);
   return (
-    <header className="sticky top-0 z-40 flex h-20 items-center gap-3 border-b border-border/80 bg-white/95 px-4 backdrop-blur-xl sm:px-8">
-      <Drawer>
+    <header className="sticky top-0 z-40 flex h-20 items-center gap-3 border-b border-border/80 bg-card/95 px-4 backdrop-blur-xl sm:px-8">
+      <Drawer open={menuOpen} onOpenChange={setMenuOpen}>
         <DrawerTrigger asChild>
-          <Button variant="ghost" size="icon" className="lg:hidden" aria-label="بازکردن منوی پنل">
-            <Menu className="size-5" />
+          <Button
+            variant="ghost"
+            size="icon"
+            className="lg:hidden"
+            aria-label={menuOpen ? "بستن منوی پنل" : "بازکردن منوی پنل"}
+          >
+            <MobileMenuIcon open={menuOpen} />
           </Button>
         </DrawerTrigger>
-        <DrawerContent>
+        <DrawerContent side="right">
           <DrawerHeader className="mb-6">
             <DrawerTitle>{env.appName}</DrawerTitle>
             <DrawerDescription>
@@ -42,6 +51,7 @@ export function DashboardHeader({ role }: { role: "student" | "admin" }) {
         <p className="hidden text-xs text-muted-foreground lg:block">مدیریت و تحلیل مسیر آموزشی</p>
       </div>
       <div className="ms-auto flex items-center gap-2">
+        <ThemeToggle />
         <Button variant="ghost" size="icon" aria-label="اعلان‌ها">
           <Bell className="size-5" />
         </Button>

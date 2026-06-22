@@ -36,7 +36,7 @@ const values = [
 export default function AboutPage() {
   return (
     <>
-      <section className="brand-grid border-b border-primary/10 bg-white">
+      <section className="brand-grid border-b border-primary/10 bg-card">
         <div className="page-container py-14 sm:py-20">
           <SectionHeading
             eyebrow="درباره ما"
@@ -64,7 +64,7 @@ export default function AboutPage() {
           </blockquote>
         </div>
       </section>
-      <section className="border-y border-primary/10 bg-white">
+      <section className="border-y border-primary/10 bg-card">
         <div className="page-container py-14 sm:py-20">
           <SectionHeading title="اصول طراحی و خدمت" centered />
           <div className="mt-8 grid gap-4 sm:grid-cols-2">

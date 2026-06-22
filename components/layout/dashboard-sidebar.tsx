@@ -5,12 +5,12 @@ import { DashboardNavigation } from "./dashboard-navigation";
 
 export function DashboardSidebar({ role }: { role: "student" | "admin" }) {
   return (
-    <aside className="sticky top-0 hidden h-screen border-e border-border/80 bg-white p-5 shadow-[var(--shadow-sm)] lg:flex lg:flex-col">
+    <aside className="sticky top-0 hidden h-screen border-e border-border/80 bg-card p-5 shadow-[var(--shadow-sm)] lg:flex lg:flex-col">
       <Link
         href={role === "admin" ? "/admin" : "/dashboard"}
         className="mb-8 flex min-h-12 items-center gap-3 rounded-md px-2 text-lg font-extrabold text-[var(--brand-strong)]"
       >
-        <span className="grid size-10 place-items-center rounded-md bg-primary text-white">
+        <span className="grid size-10 place-items-center rounded-md bg-primary text-primary-foreground">
           <GraduationCap className="size-6" aria-hidden="true" />
         </span>
         <span>{env.appShortName}</span>

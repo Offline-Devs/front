@@ -55,7 +55,7 @@ export default async function ServicesPage() {
   const majors = await getMajors();
   return (
     <>
-      <section className="brand-grid border-b border-primary/10 bg-white">
+      <section className="brand-grid border-b border-primary/10 bg-card">
         <div className="page-container py-14 sm:py-20">
           <SectionHeading
             eyebrow="خدمات سامانه"
@@ -72,7 +72,7 @@ export default async function ServicesPage() {
         </div>
       </section>
       {majors.length > 0 && (
-        <section className="border-y border-primary/10 bg-white">
+        <section className="border-y border-primary/10 bg-card">
           <div className="page-container py-12">
             <SectionHeading
               title="رشته‌ها و درس‌های تحت پوشش"

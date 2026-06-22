@@ -54,7 +54,7 @@ export function DashboardNavigation({
             className={cn(
               "flex min-h-12 items-center gap-3 rounded-md px-3.5 text-sm font-semibold text-muted-foreground transition-all hover:bg-secondary hover:text-primary focus-visible:ring-2 focus-visible:ring-ring",
               active &&
-                "bg-primary text-white shadow-sm hover:bg-[var(--brand-strong)] hover:text-white",
+                "bg-primary text-primary-foreground shadow-sm hover:bg-[var(--brand-strong)] hover:text-primary-foreground",
             )}
           >
             <Icon className="size-5 shrink-0" aria-hidden="true" />

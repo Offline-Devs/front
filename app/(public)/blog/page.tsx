@@ -17,7 +17,7 @@ export default async function BlogPage() {
   const posts = await getPublicPosts();
   return (
     <>
-      <section className="brand-grid border-b border-primary/10 bg-white">
+      <section className="brand-grid border-b border-primary/10 bg-card">
         <div className="page-container py-14 sm:py-20">
           <SectionHeading
             eyebrow="مجله آموزشی"

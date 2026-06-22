@@ -5,11 +5,11 @@ import { formatNumber } from "@/lib/formatters";
 
 export function PublicFooter() {
   return (
-    <footer className="mt-auto border-t border-primary/10 bg-white">
+    <footer className="mt-auto border-t border-primary/10 bg-card">
       <div className="page-container grid gap-10 py-12 sm:grid-cols-2 lg:grid-cols-[1.35fr_.7fr_.7fr_1fr] lg:py-16">
         <div>
           <p className="flex items-center gap-2.5 text-lg font-extrabold text-[var(--brand-strong)]">
-            <span className="grid size-10 place-items-center rounded-md bg-primary text-white">
+            <span className="grid size-10 place-items-center rounded-md bg-primary text-primary-foreground">
               <GraduationCap className="size-6" aria-hidden="true" />
             </span>
             {env.appName}
