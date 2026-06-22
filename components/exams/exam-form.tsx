@@ -12,19 +12,13 @@ import { Button } from "@/components/ui/button";
 import { FormField } from "@/components/ui/form-field";
 import { Input } from "@/components/ui/input";
 import { JalaliDatePicker } from "@/components/ui/jalali-date-picker";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { examSchema, type ExamFormOutput, type ExamFormValues } from "@/schemas/exam.schema";
 import { examsApi } from "@/services/api/exams.api";
 import { invalidateDependencies, invalidation } from "@/services/api/invalidation";
 import { queryKeys } from "@/services/api/query-keys";
+import { studentApi } from "@/services/api/student.api";
 import { subjectsApi } from "@/services/api/subjects.api";
-import type { Exam } from "@/types/exam";
+import type { Exam, ExamInput } from "@/types/exam";
 import { DynamicFieldsSection } from "@/components/forms/dynamic-fields-section";
 import { dynamicFieldsApi } from "@/services/api/dynamic-fields.api";
 import { validateDynamicFieldValues } from "@/lib/dynamic-fields";
@@ -47,7 +41,6 @@ export function ExamForm({ exam }: { exam?: Exam }) {
     defaultValues: {
       title: exam?.title ?? "",
       jalali_date: exam?.jalali_date ?? "",
-      major: exam?.major ?? "",
       dynamic_fields: exam?.dynamic_fields ?? {},
       subjects: exam?.subjects?.length
         ? exam.subjects.map(
@@ -64,15 +57,16 @@ export function ExamForm({ exam }: { exam?: Exam }) {
     },
   });
   const { fields, append, remove } = useFieldArray({ control: form.control, name: "subjects" });
-  const major = useWatch({ control: form.control, name: "major" });
   const watchedSubjects = useWatch({ control: form.control, name: "subjects" });
   const dynamicValues = useWatch({ control: form.control, name: "dynamic_fields" });
   const examDate = useWatch({ control: form.control, name: "jalali_date" });
-  const majors = useQuery({
-    queryKey: queryKeys.majors,
-    queryFn: subjectsApi.majors,
-    staleTime: 86_400_000,
+  const profile = useQuery({
+    queryKey: queryKeys.profile,
+    queryFn: studentApi.getProfile,
+    enabled: !exam,
+    staleTime: 300_000,
   });
+  const major = exam?.major ?? profile.data?.major ?? "";
   const subjectConfig = useQuery({
     queryKey: ["subjects", major],
     queryFn: () => subjectsApi.byMajor(major),
@@ -87,7 +81,12 @@ export function ExamForm({ exam }: { exam?: Exam }) {
   });
   const save = useMutation({
     mutationFn: (values: ExamFormOutput) => {
-      const input = { ...values, total_subjects: values.subjects.length };
+      if (!major) throw new Error("رشته تحصیلی در پروفایل شما مشخص نشده است.");
+      const input: ExamInput = {
+        ...values,
+        major,
+        total_subjects: values.subjects.length,
+      };
       return exam ? examsApi.update(exam.id, input) : examsApi.create(input);
     },
     onSuccess: async (saved) => {
@@ -112,7 +111,7 @@ export function ExamForm({ exam }: { exam?: Exam }) {
           </AlertDescription>
         </Alert>
       )}
-      <div className="grid gap-4 sm:grid-cols-3">
+      <div className="grid gap-4 sm:grid-cols-2">
         <FormField label="عنوان آزمون" error={form.formState.errors.title?.message} required>
           <Input {...form.register("title")} placeholder="مثلاً آزمون جامع خرداد" autoFocus />
         </FormField>
@@ -129,27 +128,6 @@ export function ExamForm({ exam }: { exam?: Exam }) {
               })
             }
           />
-        </FormField>
-        <FormField label="رشته" error={form.formState.errors.major?.message} required>
-          {majors.data?.length ? (
-            <Select
-              value={major}
-              onValueChange={(value) => form.setValue("major", value, { shouldValidate: true })}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="انتخاب رشته" />
-              </SelectTrigger>
-              <SelectContent>
-                {majors.data.map((item) => (
-                  <SelectItem key={item.major} value={item.major}>
-                    {item.major}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          ) : (
-            <Input {...form.register("major")} />
-          )}
         </FormField>
       </div>
       <section className="grid gap-4">
@@ -202,7 +180,7 @@ export function ExamForm({ exam }: { exam?: Exam }) {
         </Alert>
       )}
       <div className="flex justify-end">
-        <Button type="submit" size="lg" loading={save.isPending}>
+        <Button type="submit" size="lg" loading={save.isPending || (!exam && profile.isLoading)}>
           <Save className="size-4" />
           {exam ? "ذخیره ویرایش" : "ثبت آزمون"}
         </Button>

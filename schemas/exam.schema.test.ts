@@ -4,7 +4,6 @@ import { examSchema } from "./exam.schema";
 const validExam = {
   title: "آزمون جامع",
   jalali_date: "۱۴۰۵-۰۳-۳۱",
-  major: "تجربی",
   dynamic_fields: {},
   subjects: [
     { subject_name: "زیست", total_questions: 20, answered: 18, correct: 14, wrong: 4, blank: 2 },

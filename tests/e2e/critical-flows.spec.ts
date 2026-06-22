@@ -44,8 +44,6 @@ test("student onboarding, exam and mistake flow", async ({ page }) => {
   await page.getByRole("option", { name: "خرداد" }).click();
   await page.getByRole("button", { name: "۳۱", exact: true }).click();
   await page.getByRole("button", { name: "تأیید تاریخ" }).click();
-  await page.getByRole("combobox").first().click();
-  await page.getByRole("option", { name: "تجربی" }).click();
   await page.getByRole("combobox", { name: "نام درس" }).click();
   await page.getByRole("option", { name: "زیست‌شناسی" }).click();
   for (const [label, value] of [

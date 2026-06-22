@@ -39,7 +39,6 @@ export const examSchema = z
         (value) => /^1[34]\d{2}\/(0[1-9]|1[0-2])\/(0[1-9]|[12]\d|3[01])$/.test(value),
         "تاریخ معتبر با قالب ۱۴۰۰/۰۱/۰۱ وارد کنید.",
       ),
-    major: z.string().trim().min(1, "رشته را انتخاب کنید."),
     subjects: z.array(subjectExamSchema).min(1, "حداقل یک درس اضافه کنید."),
     dynamic_fields: z.record(z.string(), z.unknown()),
   })

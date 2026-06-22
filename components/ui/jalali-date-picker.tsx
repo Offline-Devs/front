@@ -219,7 +219,9 @@ export function JalaliDatePicker({
             </div>
 
             <div>
-              <p className="mb-3 text-sm font-bold text-[var(--brand-strong)]">روز تولد</p>
+              {purpose === "birth" && (
+                <p className="mb-3 text-sm font-bold text-[var(--brand-strong)]">روز تولد</p>
+              )}
               <div className="grid grid-cols-7 gap-1.5" role="group" aria-label="روز ماه">
                 {Array.from({ length: dayCount }, (_, index) => index + 1).map((item) => (
                   <button
