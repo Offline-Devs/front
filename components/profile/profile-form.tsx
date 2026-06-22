@@ -11,6 +11,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { FormField } from "@/components/ui/form-field";
 import { Input } from "@/components/ui/input";
+import { JalaliDatePicker } from "@/components/ui/jalali-date-picker";
 import {
   Select,
   SelectContent,
@@ -82,6 +83,7 @@ export function ProfileForm({ profile, dynamicFields = [], onboarding = false }:
   const dynamicValues = useWatch({ control: form.control, name: "dynamic_fields" });
   const profilePhoto = useWatch({ control: form.control, name: "profile_photo" });
   const selectedMajor = useWatch({ control: form.control, name: "major" });
+  const selectedBirthDate = useWatch({ control: form.control, name: "jalali_birth_date" });
 
   function submit(values: ProfileFormOutput) {
     const errors = validateDynamicFieldValues(resolvedDynamicFields, values.dynamic_fields);
@@ -110,16 +112,19 @@ export function ProfileForm({ profile, dynamicFields = [], onboarding = false }:
           </FormField>
           <FormField
             label="تاریخ تولد شمسی"
-            hint="نمونه: ۱۳۸۵/۰۷/۱۵"
+            hint="تاریخ را از تقویم انتخاب کنید."
             error={form.formState.errors.jalali_birth_date?.message}
             required
           >
-            <Input
-              {...form.register("jalali_birth_date")}
-              dir="ltr"
-              inputMode="numeric"
-              placeholder="۱۳۸۵/۰۷/۱۵"
-              className="text-left"
+            <JalaliDatePicker
+              value={selectedBirthDate}
+              onChange={(value) =>
+                form.setValue("jalali_birth_date", value, {
+                  shouldDirty: true,
+                  shouldTouch: true,
+                  shouldValidate: true,
+                })
+              }
             />
           </FormField>
           <FormField label="شهر" error={form.formState.errors.city?.message} required>

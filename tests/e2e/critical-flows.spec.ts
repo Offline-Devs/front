@@ -19,7 +19,13 @@ test("student onboarding, exam and mistake flow", async ({ page }) => {
   await expect(page).toHaveURL(/complete-profile/);
   await page.getByRole("textbox", { name: "نام", exact: true }).fill("سارا");
   await page.getByRole("textbox", { name: "نام خانوادگی", exact: true }).fill("احمدی");
-  await page.getByLabel("تاریخ تولد شمسی").fill("۱۳۸۶/۱۲/۲۹");
+  await page.getByLabel("تاریخ تولد شمسی").click();
+  await page.getByRole("combobox", { name: "سال تولد" }).click();
+  await page.getByRole("option", { name: "۱۳۸۶" }).click();
+  await page.getByRole("combobox", { name: "ماه تولد" }).click();
+  await page.getByRole("option", { name: "اسفند" }).click();
+  await page.getByRole("button", { name: "۲۹", exact: true }).click();
+  await page.getByRole("button", { name: "تأیید تاریخ" }).click();
   await page.getByLabel("شهر").fill("بابل");
   await page.getByLabel("مدرسه").fill("نمونه");
   await page.getByRole("combobox", { name: "رشته تحصیلی" }).click();

@@ -38,7 +38,9 @@ services:
       JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:-local-refresh-secret-change-before-deployment}
       JWT_ACCESS_TTL: 3600
       JWT_REFRESH_TTL: 1296000
-      OTP_PROVIDER: mock
+      OTP_PROVIDER: ${OTP_PROVIDER:-mock}
+      SMSIR_API_KEY: ${SMSIR_API_KEY:-}
+      SMSIR_TEMPLATE_ID: ${SMSIR_TEMPLATE_ID:-}
       GIN_MODE: release
       UPLOAD_PATH: /uploads
       SERVER_ADDR: :8080
@@ -79,7 +81,7 @@ services:
       DOCUMENT_UPLOAD_MAX_MB: 50
       MULTIPLE_UPLOAD_MAX_FILES: 10
       BFF_SESSION_COOKIE_NAME: noshirvani_session
-      BFF_SESSION_COOKIE_SECURE: "false"
+      BFF_SESSION_COOKIE_SECURE: ${BFF_SESSION_COOKIE_SECURE:-false}
       BFF_SESSION_COOKIE_SAME_SITE: lax
       BFF_SESSION_MAX_AGE_SECONDS: 1296000
       BFF_SESSION_SECRET: ${BFF_SESSION_SECRET:-local-bff-session-secret-change-before-deploy}
