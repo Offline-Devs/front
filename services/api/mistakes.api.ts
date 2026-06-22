@@ -1,3 +1,12 @@
-import { apiRequest } from "./client"; import type { Mistake, MistakeInput, MistakeUpdateInput } from "@/types/mistake"; import type { StatusResponse } from "@/types/api";
+import { apiRequest } from "./client";
+import type { Mistake, MistakeInput, MistakeUpdateInput } from "@/types/mistake";
+import type { StatusResponse } from "@/types/api";
 // Provides current-student mistake-notebook CRUD operations through authenticated same-origin BFF requests.
-export const mistakesApi = { list: () => apiRequest<Mistake[]>("/mistakes"), create: (input: MistakeInput) => apiRequest<Mistake>("/mistakes", { method: "POST", body: JSON.stringify(input) }), update: (id: string, input: MistakeUpdateInput) => apiRequest<Mistake>(`/mistakes/${id}`, { method: "PUT", body: JSON.stringify(input) }), remove: (id: string) => apiRequest<StatusResponse>(`/mistakes/${id}`, { method: "DELETE" }) };
+export const mistakesApi = {
+  list: () => apiRequest<Mistake[]>("/mistakes"),
+  create: (input: MistakeInput) =>
+    apiRequest<Mistake>("/mistakes", { method: "POST", body: JSON.stringify(input) }),
+  update: (id: string, input: MistakeUpdateInput) =>
+    apiRequest<Mistake>(`/mistakes/${id}`, { method: "PUT", body: JSON.stringify(input) }),
+  remove: (id: string) => apiRequest<StatusResponse>(`/mistakes/${id}`, { method: "DELETE" }),
+};

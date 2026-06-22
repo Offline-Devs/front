@@ -17,7 +17,9 @@ type FileUploaderProps = {
 
 export function FileUploader({ value, onChange, disabled }: FileUploaderProps) {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(value ? resolveUploadUrl(value) : null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(
+    value ? resolveUploadUrl(value) : null,
+  );
   const [validationError, setValidationError] = useState<string | null>(null);
   const upload = useMutation({
     mutationFn: (file: File) => uploadApi.one(file, "profile"),
@@ -36,8 +38,15 @@ export function FileUploader({ value, onChange, disabled }: FileUploaderProps) {
   function selectFile(file?: File) {
     setValidationError(null);
     if (!file) return;
-    const error = validateUploadFiles([file], { maxBytes: env.profileUploadMaxMb * 1024 * 1024, maxFiles: 1, mimeTypes: PROFILE_IMAGE_TYPES });
-    if (error) { setValidationError(error); return; }
+    const error = validateUploadFiles([file], {
+      maxBytes: env.profileUploadMaxMb * 1024 * 1024,
+      maxFiles: 1,
+      mimeTypes: PROFILE_IMAGE_TYPES,
+    });
+    if (error) {
+      setValidationError(error);
+      return;
+    }
     const localPreview = URL.createObjectURL(file);
     setPreviewUrl(localPreview);
     upload.mutate(file);
@@ -58,7 +67,11 @@ export function FileUploader({ value, onChange, disabled }: FileUploaderProps) {
           role="img"
           aria-label={previewUrl ? "پیش‌نمایش عکس پروفایل" : "عکس پروفایل انتخاب نشده"}
           className="grid size-24 shrink-0 place-items-center rounded-full border bg-muted bg-cover bg-center text-muted-foreground"
-          style={previewUrl ? { backgroundImage: `url(${JSON.stringify(previewUrl).slice(1, -1)})` } : undefined}
+          style={
+            previewUrl
+              ? { backgroundImage: `url(${JSON.stringify(previewUrl).slice(1, -1)})` }
+              : undefined
+          }
         >
           {!previewUrl && <Camera className="size-8" aria-hidden="true" />}
         </div>
@@ -74,7 +87,12 @@ export function FileUploader({ value, onChange, disabled }: FileUploaderProps) {
             انتخاب و آپلود عکس
           </Button>
           {previewUrl && (
-            <Button type="button" variant="ghost" disabled={disabled || upload.isPending} onClick={removeFile}>
+            <Button
+              type="button"
+              variant="ghost"
+              disabled={disabled || upload.isPending}
+              onClick={removeFile}
+            >
               <Trash2 className="size-4" aria-hidden="true" />
               حذف عکس
             </Button>

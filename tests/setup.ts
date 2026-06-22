@@ -11,7 +11,23 @@ afterAll(() => mockServer.close());
 
 if (!globalThis.crypto?.subtle) Object.defineProperty(globalThis, "crypto", { value: webcrypto });
 
-class ResizeObserverMock { observe() {} unobserve() {} disconnect() {} }
+class ResizeObserverMock {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+}
 global.ResizeObserver = ResizeObserverMock;
 if (typeof MouseEvent !== "undefined") global.PointerEvent = MouseEvent as typeof PointerEvent;
-if (typeof window !== "undefined") window.matchMedia = window.matchMedia ?? (() => ({ matches: false, media: "", onchange: null, addListener: () => undefined, removeListener: () => undefined, addEventListener: () => undefined, removeEventListener: () => undefined, dispatchEvent: () => false }));
+if (typeof window !== "undefined")
+  window.matchMedia =
+    window.matchMedia ??
+    (() => ({
+      matches: false,
+      media: "",
+      onchange: null,
+      addListener: () => undefined,
+      removeListener: () => undefined,
+      addEventListener: () => undefined,
+      removeEventListener: () => undefined,
+      dispatchEvent: () => false,
+    }));

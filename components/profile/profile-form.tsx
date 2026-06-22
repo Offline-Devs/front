@@ -11,7 +11,13 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { FormField } from "@/components/ui/form-field";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { FileUploader } from "@/components/upload/file-uploader";
 import { toast } from "@/components/ui/toast";
 import {
@@ -56,7 +62,12 @@ export function ProfileForm({ profile, dynamicFields = [], onboarding = false }:
     queryFn: subjectsApi.majors,
     staleTime: 24 * 60 * 60 * 1000,
   });
-  const runtimeFields = useQuery({ queryKey: ["dynamic-fields", "student"], queryFn: () => dynamicFieldsApi.list("student"), retry: false, staleTime: 300_000 });
+  const runtimeFields = useQuery({
+    queryKey: ["dynamic-fields", "student"],
+    queryFn: () => dynamicFieldsApi.list("student"),
+    retry: false,
+    staleTime: 300_000,
+  });
   const resolvedDynamicFields = dynamicFields.length ? dynamicFields : (runtimeFields.data ?? []);
   const saveProfile = useMutation({
     mutationFn: studentApi.saveProfile,
@@ -83,8 +94,12 @@ export function ProfileForm({ profile, dynamicFields = [], onboarding = false }:
     <form className="grid gap-7" noValidate onSubmit={form.handleSubmit(submit)}>
       <section className="grid gap-4" aria-labelledby="identity-heading">
         <div>
-          <h2 id="identity-heading" className="font-bold">اطلاعات هویتی</h2>
-          <p className="mt-1 text-sm text-muted-foreground">اطلاعات را مطابق مشخصات واقعی خود وارد کنید.</p>
+          <h2 id="identity-heading" className="font-bold">
+            اطلاعات هویتی
+          </h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            اطلاعات را مطابق مشخصات واقعی خود وارد کنید.
+          </p>
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
           <FormField label="نام" error={form.formState.errors.first_name?.message} required>
@@ -93,8 +108,19 @@ export function ProfileForm({ profile, dynamicFields = [], onboarding = false }:
           <FormField label="نام خانوادگی" error={form.formState.errors.last_name?.message} required>
             <Input {...form.register("last_name")} autoComplete="family-name" />
           </FormField>
-          <FormField label="تاریخ تولد شمسی" hint="نمونه: ۱۳۸۵/۰۷/۱۵" error={form.formState.errors.jalali_birth_date?.message} required>
-            <Input {...form.register("jalali_birth_date")} dir="ltr" inputMode="numeric" placeholder="۱۳۸۵/۰۷/۱۵" className="text-left" />
+          <FormField
+            label="تاریخ تولد شمسی"
+            hint="نمونه: ۱۳۸۵/۰۷/۱۵"
+            error={form.formState.errors.jalali_birth_date?.message}
+            required
+          >
+            <Input
+              {...form.register("jalali_birth_date")}
+              dir="ltr"
+              inputMode="numeric"
+              placeholder="۱۳۸۵/۰۷/۱۵"
+              className="text-left"
+            />
           </FormField>
           <FormField label="شهر" error={form.formState.errors.city?.message} required>
             <Input {...form.register("city")} autoComplete="address-level2" />
@@ -104,8 +130,12 @@ export function ProfileForm({ profile, dynamicFields = [], onboarding = false }:
 
       <section className="grid gap-4 border-t pt-6" aria-labelledby="education-heading">
         <div>
-          <h2 id="education-heading" className="font-bold">اطلاعات تحصیلی</h2>
-          <p className="mt-1 text-sm text-muted-foreground">رشته در ساخت آزمون‌ها و گزارش‌ها استفاده می‌شود.</p>
+          <h2 id="education-heading" className="font-bold">
+            اطلاعات تحصیلی
+          </h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            رشته در ساخت آزمون‌ها و گزارش‌ها استفاده می‌شود.
+          </p>
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
           <FormField label="مدرسه" error={form.formState.errors.school?.message} required>
@@ -113,17 +143,30 @@ export function ProfileForm({ profile, dynamicFields = [], onboarding = false }:
           </FormField>
           {majors.data?.length ? (
             <FormField label="رشته تحصیلی" error={form.formState.errors.major?.message} required>
-              <Select value={selectedMajor} onValueChange={(value) => form.setValue("major", value, { shouldValidate: true })}>
-                <SelectTrigger aria-label="رشته تحصیلی"><SelectValue placeholder="انتخاب رشته" /></SelectTrigger>
+              <Select
+                value={selectedMajor}
+                onValueChange={(value) => form.setValue("major", value, { shouldValidate: true })}
+              >
+                <SelectTrigger aria-label="رشته تحصیلی">
+                  <SelectValue placeholder="انتخاب رشته" />
+                </SelectTrigger>
                 <SelectContent>
-                  {majors.data.map(({ major }) => <SelectItem key={major} value={major}>{major}</SelectItem>)}
+                  {majors.data.map(({ major }) => (
+                    <SelectItem key={major} value={major}>
+                      {major}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </FormField>
           ) : (
             <FormField
               label="رشته تحصیلی"
-              hint={majors.isError ? "فهرست رشته‌ها در دسترس نیست؛ نام رشته را وارد کنید." : "در حال دریافت رشته‌ها…"}
+              hint={
+                majors.isError
+                  ? "فهرست رشته‌ها در دسترس نیست؛ نام رشته را وارد کنید."
+                  : "در حال دریافت رشته‌ها…"
+              }
               error={form.formState.errors.major?.message}
               required
             >
@@ -135,8 +178,12 @@ export function ProfileForm({ profile, dynamicFields = [], onboarding = false }:
 
       <section className="grid gap-4 border-t pt-6" aria-labelledby="photo-heading">
         <div>
-          <h2 id="photo-heading" className="font-bold">عکس پروفایل</h2>
-          <p className="mt-1 text-sm text-muted-foreground">این بخش اختیاری است و بعداً قابل تغییر خواهد بود.</p>
+          <h2 id="photo-heading" className="font-bold">
+            عکس پروفایل
+          </h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            این بخش اختیاری است و بعداً قابل تغییر خواهد بود.
+          </p>
         </div>
         <FileUploader
           value={profilePhoto}
@@ -145,7 +192,20 @@ export function ProfileForm({ profile, dynamicFields = [], onboarding = false }:
         />
       </section>
 
-      <DynamicFieldsSection fields={resolvedDynamicFields} values={dynamicValues} errors={dynamicErrors} disabled={saveProfile.isPending} onChange={(name, value) => { form.setValue("dynamic_fields", { ...dynamicValues, [name]: value }, { shouldDirty: true }); setDynamicErrors((current) => ({ ...current, [name]: "" })); }} />
+      <DynamicFieldsSection
+        fields={resolvedDynamicFields}
+        values={dynamicValues}
+        errors={dynamicErrors}
+        disabled={saveProfile.isPending}
+        onChange={(name, value) => {
+          form.setValue(
+            "dynamic_fields",
+            { ...dynamicValues, [name]: value },
+            { shouldDirty: true },
+          );
+          setDynamicErrors((current) => ({ ...current, [name]: "" }));
+        }}
+      />
 
       {saveProfile.isError && (
         <Alert variant="destructive">
@@ -154,7 +214,11 @@ export function ProfileForm({ profile, dynamicFields = [], onboarding = false }:
       )}
 
       <div className="flex flex-col-reverse gap-3 border-t pt-6 sm:flex-row sm:items-center sm:justify-end">
-        {!onboarding && <Button type="button" variant="ghost" onClick={() => router.back()}>انصراف</Button>}
+        {!onboarding && (
+          <Button type="button" variant="ghost" onClick={() => router.back()}>
+            انصراف
+          </Button>
+        )}
         <Button type="submit" size="lg" loading={saveProfile.isPending}>
           {!saveProfile.isPending && <Save className="size-4" aria-hidden="true" />}
           {onboarding ? "ثبت و ورود به پنل" : "ذخیره تغییرات"}

@@ -8,11 +8,18 @@ describe("dynamic field form", () => {
   it("keeps focusable validation errors in the form", async () => {
     const user = userEvent.setup();
     const client = new QueryClient({ defaultOptions: { mutations: { retry: false } } });
-    render(<QueryClientProvider client={client}><DynamicFieldForm /></QueryClientProvider>);
+    render(
+      <QueryClientProvider client={client}>
+        <DynamicFieldForm />
+      </QueryClientProvider>,
+    );
     await user.type(screen.getByRole("textbox", { name: /نام فنی/ }), "Invalid Name");
     await user.type(screen.getByRole("textbox", { name: /عنوان نمایشی/ }), "پایه");
     await user.click(screen.getByRole("button", { name: "ایجاد فیلد" }));
     expect(await screen.findByRole("alert")).toHaveTextContent("نام فنی");
-    expect(screen.getByRole("textbox", { name: /نام فنی/ })).toHaveAttribute("aria-invalid", "true");
+    expect(screen.getByRole("textbox", { name: /نام فنی/ })).toHaveAttribute(
+      "aria-invalid",
+      "true",
+    );
   });
 });

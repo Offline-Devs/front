@@ -18,6 +18,8 @@ describe("profile schema", () => {
   });
 
   it("rejects day 31 after the first six Jalali months", () => {
-    expect(profileSchema.safeParse({ ...validProfile, jalali_birth_date: "1400/07/31" }).success).toBe(false);
+    expect(
+      profileSchema.safeParse({ ...validProfile, jalali_birth_date: "1400/07/31" }).success,
+    ).toBe(false);
   });
 });

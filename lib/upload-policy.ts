@@ -3,7 +3,10 @@ export const DOCUMENT_TYPES = [...PROFILE_IMAGE_TYPES, "application/pdf"] as con
 
 type UploadPolicy = { maxBytes: number; maxFiles: number; mimeTypes: readonly string[] };
 
-export function validateUploadFiles(files: Array<Pick<File, "size" | "type">>, policy: UploadPolicy): string | null {
+export function validateUploadFiles(
+  files: Array<Pick<File, "size" | "type">>,
+  policy: UploadPolicy,
+): string | null {
   if (!files.length) return "حداقل یک فایل الزامی است.";
   if (files.length > policy.maxFiles) return "تعداد فایل‌ها بیشتر از حد مجاز است.";
   for (const file of files) {
@@ -13,14 +16,24 @@ export function validateUploadFiles(files: Array<Pick<File, "size" | "type">>, p
   return null;
 }
 
-export async function validateFileSignatures(files: Array<Pick<File, "type" | "slice">>): Promise<string | null> {
+export async function validateFileSignatures(
+  files: Array<Pick<File, "type" | "slice">>,
+): Promise<string | null> {
   for (const file of files) {
     const bytes = new Uint8Array(await file.slice(0, 12).arrayBuffer());
-    const valid = file.type === "image/jpeg" ? bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff
-      : file.type === "image/png" ? [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a].every((value, index) => bytes[index] === value)
-        : file.type === "image/webp" ? String.fromCharCode(...bytes.slice(0, 4)) === "RIFF" && String.fromCharCode(...bytes.slice(8, 12)) === "WEBP"
-          : file.type === "application/pdf" ? String.fromCharCode(...bytes.slice(0, 5)) === "%PDF-"
-            : false;
+    const valid =
+      file.type === "image/jpeg"
+        ? bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff
+        : file.type === "image/png"
+          ? [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a].every(
+              (value, index) => bytes[index] === value,
+            )
+          : file.type === "image/webp"
+            ? String.fromCharCode(...bytes.slice(0, 4)) === "RIFF" &&
+              String.fromCharCode(...bytes.slice(8, 12)) === "WEBP"
+            : file.type === "application/pdf"
+              ? String.fromCharCode(...bytes.slice(0, 5)) === "%PDF-"
+              : false;
     if (!valid) return "محتوای فایل با نوع اعلام‌شده سازگار نیست.";
   }
   return null;

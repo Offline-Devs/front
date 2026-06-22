@@ -9,11 +9,7 @@ export const publicCacheTags = {
   majors: "public-majors",
 } as const;
 
-async function publicFetch<T>(
-  path: string,
-  revalidate: number,
-  tags: string[],
-): Promise<T> {
+async function publicFetch<T>(path: string, revalidate: number, tags: string[]): Promise<T> {
   const response = await fetch(`${serverEnv.apiBaseUrl}${path}`, {
     headers: { Accept: "application/json" },
     signal: AbortSignal.timeout(serverEnv.apiTimeoutMs),
@@ -37,11 +33,10 @@ export async function getPublicPosts() {
 
 export async function getPublicPost(slug: string) {
   try {
-    return await publicFetch<BlogPost>(
-      `/blog/${encodeURIComponent(slug)}`,
-      300,
-      [publicCacheTags.blog, `public-blog:${slug}`],
-    );
+    return await publicFetch<BlogPost>(`/blog/${encodeURIComponent(slug)}`, 300, [
+      publicCacheTags.blog,
+      `public-blog:${slug}`,
+    ]);
   } catch {
     return null;
   }
@@ -49,9 +44,7 @@ export async function getPublicPost(slug: string) {
 
 export async function getMajors() {
   try {
-    return await publicFetch<SubjectConfig[]>("/majors", 86_400, [
-      publicCacheTags.majors,
-    ]);
+    return await publicFetch<SubjectConfig[]>("/majors", 86_400, [publicCacheTags.majors]);
   } catch {
     return [];
   }

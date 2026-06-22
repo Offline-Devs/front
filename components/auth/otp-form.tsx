@@ -19,11 +19,7 @@ import {
   normalizeNumericInput,
   savePendingPhone,
 } from "@/lib/auth-flow";
-import {
-  otpSchema,
-  type OtpFormOutput,
-  type OtpFormValues,
-} from "@/schemas/auth.schema";
+import { otpSchema, type OtpFormOutput, type OtpFormValues } from "@/schemas/auth.schema";
 import { ApiError } from "@/services/api/client";
 import { authApi } from "@/services/api/auth.api";
 import { queryKeys } from "@/services/api/query-keys";
@@ -60,7 +56,9 @@ export function OtpForm() {
       form.setValue("phone", pendingPhone);
       inputRefs.current[0]?.focus();
     });
-    return () => { active = false; };
+    return () => {
+      active = false;
+    };
   }, [form, router]);
 
   useEffect(() => {
@@ -171,14 +169,20 @@ export function OtpForm() {
       onSubmit={form.handleSubmit((values) => verifyOtp.mutate(values))}
     >
       <p className="text-sm leading-6 text-muted-foreground">
-        کد ۶ رقمی ارسال‌شده به <bdi dir="ltr" className="font-bold text-foreground">{phone}</bdi> را وارد کنید.
+        کد ۶ رقمی ارسال‌شده به{" "}
+        <bdi dir="ltr" className="font-bold text-foreground">
+          {phone}
+        </bdi>{" "}
+        را وارد کنید.
       </p>
 
       <div dir="ltr" className="flex justify-center gap-2" onPaste={handlePaste}>
         {digits.map((digit, index) => (
           <Input
             key={index}
-            ref={(element: HTMLInputElement | null) => { inputRefs.current[index] = element; }}
+            ref={(element: HTMLInputElement | null) => {
+              inputRefs.current[index] = element;
+            }}
             value={digit}
             onChange={(event) => handleDigitChange(index, event.target.value)}
             onKeyDown={(event) => handleKeyDown(index, event)}
@@ -200,7 +204,10 @@ export function OtpForm() {
         <Alert variant="warning">
           <AlertTitle>محیط آزمایشی</AlertTitle>
           <AlertDescription>
-            کد بازگشتی سرویس mock: <bdi dir="ltr" className="font-bold">{developmentOtp}</bdi>
+            کد بازگشتی سرویس mock:{" "}
+            <bdi dir="ltr" className="font-bold">
+              {developmentOtp}
+            </bdi>
           </AlertDescription>
         </Alert>
       )}
@@ -241,7 +248,9 @@ export function OtpForm() {
       </div>
 
       {resendOtp.isError && (
-        <p className="text-xs text-destructive" role="alert">{resendOtp.error.message}</p>
+        <p className="text-xs text-destructive" role="alert">
+          {resendOtp.error.message}
+        </p>
       )}
     </form>
   );

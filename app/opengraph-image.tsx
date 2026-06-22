@@ -8,9 +8,7 @@ export const alt = env.appDescription;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-const vazirmatn = readFile(
-  path.join(process.cwd(), "public", "fonts", "vazirmatn-bold.ttf"),
-);
+const vazirmatn = readFile(path.join(process.cwd(), "public", "fonts", "vazirmatn-bold.ttf"));
 
 export default async function OpenGraphImage() {
   return new ImageResponse(
@@ -29,15 +27,9 @@ export default async function OpenGraphImage() {
         fontFamily: "Vazirmatn",
       }}
     >
-      <div style={{ fontSize: 28, color: "#1f7a61", marginBottom: 24 }}>
-        سامانه آزمون و مشاوره
-      </div>
-      <div style={{ fontSize: 64, fontWeight: 700, lineHeight: 1.4 }}>
-        {env.appName}
-      </div>
-      <div style={{ fontSize: 30, marginTop: 24, color: "#55736b" }}>
-        {env.appDescription}
-      </div>
+      <div style={{ fontSize: 28, color: "#1f7a61", marginBottom: 24 }}>سامانه آزمون و مشاوره</div>
+      <div style={{ fontSize: 64, fontWeight: 700, lineHeight: 1.4 }}>{env.appName}</div>
+      <div style={{ fontSize: 30, marginTop: 24, color: "#55736b" }}>{env.appDescription}</div>
     </div>,
     {
       ...size,

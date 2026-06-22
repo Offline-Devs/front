@@ -9,7 +9,10 @@ const publicEnvSchema = z.object({
   appDescription: z.string().trim().min(1),
   appVersion: z.string().trim().min(1),
   siteUrl: z.string().url(),
-  apiBasePath: z.string().startsWith("/").refine((value) => !value.endsWith("/"), "مسیر API نباید slash انتهایی داشته باشد"),
+  apiBasePath: z
+    .string()
+    .startsWith("/")
+    .refine((value) => !value.endsWith("/"), "مسیر API نباید slash انتهایی داشته باشد"),
   locale: z.string().trim().min(2),
   timeZone: z.string().trim().min(1),
   supportEmail: z.string().email(),
@@ -33,7 +36,9 @@ const publicEnvSchema = z.object({
 export const env = publicEnvSchema.parse({
   appName: process.env.NEXT_PUBLIC_APP_NAME ?? "آکادمی نوشیروانی",
   appShortName: process.env.NEXT_PUBLIC_APP_SHORT_NAME ?? "نوشیروانی",
-  appDescription: process.env.NEXT_PUBLIC_APP_DESCRIPTION ?? "سامانه مدیریت آزمون و مشاوره تحصیلی آکادمی نوشیروانی",
+  appDescription:
+    process.env.NEXT_PUBLIC_APP_DESCRIPTION ??
+    "سامانه مدیریت آزمون و مشاوره تحصیلی آکادمی نوشیروانی",
   appVersion: process.env.NEXT_PUBLIC_APP_VERSION ?? "0.1.0",
   siteUrl: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
   apiBasePath: process.env.NEXT_PUBLIC_API_BASE_PATH ?? "/api/v1",

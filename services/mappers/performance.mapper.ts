@@ -3,5 +3,7 @@ import { parseStringArray } from "@/lib/safe-json";
 import type { PerformanceHistory } from "@/types/performance";
 
 type PerformanceView = PerformanceHistory & { attachments: string[] };
-export function mapPerformance(value: PerformanceHistory): PerformanceView { return { ...value, attachments: parseStringArray(value.files).map(resolveUploadUrl) }; }
+export function mapPerformance(value: PerformanceHistory): PerformanceView {
+  return { ...value, attachments: parseStringArray(value.files).map(resolveUploadUrl) };
+}
 export const mapPerformanceList = (values: PerformanceHistory[]) => values.map(mapPerformance);

@@ -1,3 +1,16 @@
-import type { Metadata } from "next"; import { MistakeForm } from "@/components/mistakes/mistake-form";
+import type { Metadata } from "next";
+import { MistakeForm } from "@/components/mistakes/mistake-form";
 export const metadata: Metadata = { title: "ثبت اشتباه جدید" };
-export default function NewMistakePage() { return <div className="grid gap-6"><div><h1 className="text-2xl font-black">ثبت اشتباه جدید</h1><p className="mt-2 text-sm text-muted-foreground">علت اشتباه و نکته صحیح را برای مرورهای بعدی ثبت کنید.</p></div><MistakeForm /></div>; }
+export default function NewMistakePage() {
+  return (
+    <div className="grid gap-6">
+      <div>
+        <h1 className="text-2xl font-black">ثبت اشتباه جدید</h1>
+        <p className="mt-2 text-sm text-muted-foreground">
+          علت اشتباه و نکته صحیح را برای مرورهای بعدی ثبت کنید.
+        </p>
+      </div>
+      <MistakeForm />
+    </div>
+  );
+}

@@ -1,4 +1,26 @@
-import { apiRequest } from "./client"; import type { PerformanceHistory, PerformanceInput, PerformanceUpdateInput } from "@/types/performance"; import type { StatusResponse } from "@/types/api";
+import { apiRequest } from "./client";
+import type {
+  PerformanceHistory,
+  PerformanceInput,
+  PerformanceUpdateInput,
+} from "@/types/performance";
+import type { StatusResponse } from "@/types/api";
 import { mapPerformance, mapPerformanceList } from "@/services/mappers/performance.mapper";
 // Students have read-only access to performance reports. Create, update, and delete operations remain in administrator-scoped backend routes.
-export const performanceApi = { mine: () => apiRequest<PerformanceHistory[]>("/students/performance").then(mapPerformanceList), forStudent: (id: string) => apiRequest<PerformanceHistory[]>(`/admin/students/${id}/performance`).then(mapPerformanceList), create: (id: string, input: PerformanceInput) => apiRequest<PerformanceHistory>(`/admin/students/${id}/performance`, { method: "POST", body: JSON.stringify(input) }).then(mapPerformance), update: (id: string, input: PerformanceUpdateInput) => apiRequest<StatusResponse>(`/admin/performance/${id}`, { method: "PUT", body: JSON.stringify(input) }), remove: (id: string) => apiRequest<StatusResponse>(`/admin/performance/${id}`, { method: "DELETE" }) };
+export const performanceApi = {
+  mine: () => apiRequest<PerformanceHistory[]>("/students/performance").then(mapPerformanceList),
+  forStudent: (id: string) =>
+    apiRequest<PerformanceHistory[]>(`/admin/students/${id}/performance`).then(mapPerformanceList),
+  create: (id: string, input: PerformanceInput) =>
+    apiRequest<PerformanceHistory>(`/admin/students/${id}/performance`, {
+      method: "POST",
+      body: JSON.stringify(input),
+    }).then(mapPerformance),
+  update: (id: string, input: PerformanceUpdateInput) =>
+    apiRequest<StatusResponse>(`/admin/performance/${id}`, {
+      method: "PUT",
+      body: JSON.stringify(input),
+    }),
+  remove: (id: string) =>
+    apiRequest<StatusResponse>(`/admin/performance/${id}`, { method: "DELETE" }),
+};

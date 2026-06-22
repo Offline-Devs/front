@@ -13,7 +13,11 @@ const serverEnvSchema = z.object({
   BFF_SESSION_COOKIE_DOMAIN: z.string().trim().default(""),
   BFF_SESSION_COOKIE_SECURE: z.enum(["auto", "true", "false"]).default("auto"),
   BFF_SESSION_COOKIE_SAME_SITE: z.enum(["lax", "strict", "none"]).default("lax"),
-  BFF_SESSION_MAX_AGE_SECONDS: z.coerce.number().int().positive().default(15 * 24 * 60 * 60),
+  BFF_SESSION_MAX_AGE_SECONDS: z.coerce
+    .number()
+    .int()
+    .positive()
+    .default(15 * 24 * 60 * 60),
   BFF_SESSION_SECRET: z.string().default(""),
 });
 
@@ -52,7 +56,10 @@ export const serverEnv = {
   session: {
     cookieName: parsed.BFF_SESSION_COOKIE_NAME,
     cookieDomain: parsed.BFF_SESSION_COOKIE_DOMAIN || undefined,
-    cookieSecure: parsed.BFF_SESSION_COOKIE_SECURE === "auto" ? true : parsed.BFF_SESSION_COOKIE_SECURE === "true",
+    cookieSecure:
+      parsed.BFF_SESSION_COOKIE_SECURE === "auto"
+        ? true
+        : parsed.BFF_SESSION_COOKIE_SECURE === "true",
     cookieSameSite: parsed.BFF_SESSION_COOKIE_SAME_SITE,
     maxAgeSeconds: parsed.BFF_SESSION_MAX_AGE_SECONDS,
     secret: sessionSecret,

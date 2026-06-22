@@ -3,7 +3,13 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { FormField } from "@/components/ui/form-field";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { parseStringArray } from "@/lib/safe-json";
 import type { DynamicFieldDefinition } from "@/types/dynamic-field";
 
@@ -34,7 +40,11 @@ export function DynamicFieldRenderer({
           disabled={disabled}
           aria-invalid={Boolean(error) || undefined}
         />
-        {error && <p className="text-xs text-destructive" role="alert">{error}</p>}
+        {error && (
+          <p className="text-xs text-destructive" role="alert">
+            {error}
+          </p>
+        )}
       </div>
     );
   }
@@ -43,10 +53,20 @@ export function DynamicFieldRenderer({
     const options = parseStringArray(field.options);
     return (
       <FormField label={field.label} error={error} required={field.is_required}>
-        <Select value={typeof value === "string" ? value : ""} onValueChange={onChange} disabled={disabled}>
-          <SelectTrigger aria-label={field.label}><SelectValue placeholder="انتخاب کنید" /></SelectTrigger>
+        <Select
+          value={typeof value === "string" ? value : ""}
+          onValueChange={onChange}
+          disabled={disabled}
+        >
+          <SelectTrigger aria-label={field.label}>
+            <SelectValue placeholder="انتخاب کنید" />
+          </SelectTrigger>
           <SelectContent>
-            {options.map((option) => <SelectItem key={option} value={option}>{option}</SelectItem>)}
+            {options.map((option) => (
+              <SelectItem key={option} value={option}>
+                {option}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
       </FormField>
@@ -59,11 +79,15 @@ export function DynamicFieldRenderer({
         type={field.field_type === "number" ? "number" : "text"}
         inputMode={field.field_type === "number" ? "decimal" : undefined}
         value={typeof value === "string" || typeof value === "number" ? value : ""}
-        onChange={(event) => onChange(
-          field.field_type === "number"
-            ? (event.target.value === "" ? "" : event.target.valueAsNumber)
-            : event.target.value,
-        )}
+        onChange={(event) =>
+          onChange(
+            field.field_type === "number"
+              ? event.target.value === ""
+                ? ""
+                : event.target.valueAsNumber
+              : event.target.value,
+          )
+        }
         disabled={disabled}
         dir={field.field_type === "date" ? "ltr" : undefined}
         placeholder={field.field_type === "date" ? "۱۴۰۰/۰۱/۰۱" : undefined}

@@ -10,11 +10,7 @@ import { Button } from "@/components/ui/button";
 import { FormField } from "@/components/ui/form-field";
 import { Input } from "@/components/ui/input";
 import { savePendingPhone } from "@/lib/auth-flow";
-import {
-  phoneSchema,
-  type PhoneFormOutput,
-  type PhoneFormValues,
-} from "@/schemas/auth.schema";
+import { phoneSchema, type PhoneFormOutput, type PhoneFormValues } from "@/schemas/auth.schema";
 import { authApi } from "@/services/api/auth.api";
 
 export function PhoneForm() {

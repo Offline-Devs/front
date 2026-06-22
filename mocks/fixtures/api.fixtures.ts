@@ -69,7 +69,7 @@ export const performanceFixture = {
   jalali_date: "1405/03/31",
   notes: "تمرکز روی مرور اشتباهات هفته قبل.",
   study_plan: "روزانه دو ساعت زیست و یک ساعت شیمی.",
-  files: "[\"/uploads/document/plan.pdf\"]",
+  files: '["/uploads/document/plan.pdf"]',
   created_at: createdAt,
   updated_at: updatedAt,
 } satisfies PerformanceHistory;
@@ -91,7 +91,7 @@ export const dynamicFieldFixture = {
   name: "grade",
   label: "پایه تحصیلی",
   field_type: "select",
-  options: "[\"دهم\",\"یازدهم\",\"دوازدهم\"]",
+  options: '["دهم","یازدهم","دوازدهم"]',
   is_required: true,
   is_active: true,
   created_at: createdAt,

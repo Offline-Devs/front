@@ -15,8 +15,14 @@ vi.mock("next/navigation", () => ({
 }));
 
 function renderForm() {
-  const client = new QueryClient({ defaultOptions: { queries: { retry: false }, mutations: { retry: false } } });
-  return render(<QueryClientProvider client={client}><OtpForm /></QueryClientProvider>);
+  const client = new QueryClient({
+    defaultOptions: { queries: { retry: false }, mutations: { retry: false } },
+  });
+  return render(
+    <QueryClientProvider client={client}>
+      <OtpForm />
+    </QueryClientProvider>,
+  );
 }
 
 describe("OTP form", () => {
@@ -46,10 +52,12 @@ describe("OTP form", () => {
     });
     expect(inputs.map((input) => (input as HTMLInputElement).value).join("")).toBe("123456");
     await userEvent.click(screen.getByRole("button", { name: "تأیید و ورود" }));
-    await waitFor(() => expect(authApi.verifyOtp).toHaveBeenCalledWith({
-      phone: "+989121234567",
-      code: "123456",
-    }));
+    await waitFor(() =>
+      expect(authApi.verifyOtp).toHaveBeenCalledWith({
+        phone: "+989121234567",
+        code: "123456",
+      }),
+    );
     expect(replace).toHaveBeenCalledWith("/admin");
   });
 });

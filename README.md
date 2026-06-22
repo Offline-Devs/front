@@ -1,6 +1,7 @@
 # Noshirvani Academy Frontend
 
-Production-only Persian RTL web application for exam tracking, mistake analysis, academic performance reporting, and student administration.
+Production-only Persian RTL web application for exam tracking, mistake analysis, academic
+performance reporting, and student administration.
 
 ## Runtime stack
 
@@ -21,7 +22,9 @@ docker compose up --build -d
 docker compose ps
 ```
 
-Open `http://localhost`. The Compose project starts PostgreSQL, Redis, the Go backend, the Next.js frontend, and the Nginx gateway. Stop it with `docker compose down`; add `-v` only when persisted database, Redis, and upload data should be deleted.
+Open `http://localhost`. The Compose project starts PostgreSQL, Redis, the Go backend, the Next.js
+frontend, and the Nginx gateway. Stop it with `docker compose down`; add `-v` only when persisted
+database, Redis, and upload data should be deleted.
 
 ## Quality gate
 
@@ -30,7 +33,8 @@ npm ci
 npm run quality
 ```
 
-The quality command runs strict type checking, ESLint, 63+ automated tests, a production build, performance budgets, and desktop/mobile E2E scenarios.
+The quality command runs strict type checking, ESLint, 63+ automated tests, a production build,
+performance budgets, and desktop/mobile E2E scenarios.
 
 ## Documentation
 
@@ -40,4 +44,6 @@ The quality command runs strict type checking, ESLint, 63+ automated tests, a pr
 - [Operations and Docker](docs/OPERATIONS.md)
 - [Security and quality](docs/SECURITY_AND_QUALITY.md)
 
-The application mode is permanently production. There is no application environment switch or development runtime script. Configuration variables customize deployment values, not runtime behavior.
+The application mode is permanently production. There is no application environment switch or
+development runtime script. Configuration variables customize deployment values, not runtime
+behavior.
