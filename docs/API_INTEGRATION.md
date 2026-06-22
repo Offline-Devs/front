@@ -1,67 +1,76 @@
-# API Integration
+<div dir="rtl" align="right">
 
-## Network boundary
+# ارتباط با API
 
-Browser requests target `/api/v1` on the frontend origin. The catch-all BFF route maps that path to
-the private backend base URL configured by `API_BASE_URL`. In Docker, the value is
-`http://backend:8080`; the backend is not published to the browser.
+## مرز شبکه
 
-## Public backend resources
+مرورگر تمام درخواست‌های عملیاتی را به مسیر `/api/v1` روی origin فرانت‌اند ارسال می‌کند. route فراگیر
+BFF این مسیر را به آدرس خصوصی بک‌اند در `API_BASE_URL` نگاشت می‌کند. مقدار این متغیر در Docker برابر
+`http://backend:8080` است و سرویس بک‌اند مستقیماً در اختیار مرورگر قرار نمی‌گیرد.
 
-- `GET /blog` and `GET /blog/:slug` provide published article content.
-- `GET /majors` and `GET /subjects?major=...` provide academic reference data.
-- `POST /auth/request-otp`, `POST /auth/verify-otp`, and `POST /auth/refresh` support
-  authentication.
+## منابع عمومی بک‌اند
 
-Public server-component reads use `services/server/public-content.ts`. Interactive browser
-operations use the same-origin BFF.
+- `GET /blog` و `GET /blog/:slug` محتوای مقالات منتشرشده را ارائه می‌کنند.
+- `GET /majors` و `GET /subjects?major=...` اطلاعات مرجع رشته‌ها و درس‌ها را برمی‌گردانند.
+- `POST /auth/request-otp`، `POST /auth/verify-otp` و `POST /auth/refresh` عملیات احراز هویت را
+  انجام می‌دهند.
 
-## Student resources
+خواندن داده‌های عمومی در Server Componentها از `services/server/public-content.ts` انجام می‌شود.
+عملیات تعاملی مرورگر همیشه از BFF هم‌مبدأ عبور می‌کنند.
 
-- `/students/profile`: create, read, and update the current profile.
-- `/students/dashboard`: approval and recent-activity summary.
-- `/exams` and `/exams/:id`: current-student exam CRUD.
-- `/mistakes` and `/mistakes/:id`: current-student mistake CRUD.
-- `/statistics`: current-student aggregates with optional Jalali date range.
-- `/performance`: current-student read-only advisor history.
-- `/upload` and `/upload/multiple`: authenticated profile or document uploads.
+## منابع دانش‌آموز
 
-## Administrator resources
+- `/students/profile`: ایجاد، خواندن و ویرایش پروفایل دانش‌آموز جاری
+- `/students/dashboard`: وضعیت تأیید و خلاصه فعالیت‌های اخیر
+- `/exams` و `/exams/:id`: عملیات CRUD آزمون‌های دانش‌آموز جاری
+- `/mistakes` و `/mistakes/:id`: عملیات CRUD دفترچه اشتباهات
+- `/students/statistics`: آمار دانش‌آموز با فیلتر اختیاری بازه تاریخ جلالی
+- `/students/performance`: تاریخچه گزارش‌های مشاور به‌صورت فقط خواندنی
+- `/upload` و `/upload/multiple`: آپلود احرازشده تصویر پروفایل یا اسناد
 
-- `/admin/students/with-stats`: paginated student list used by the UI.
-- `/admin/students/:id`: profile inspection and mutation.
-- `/admin/students/:id/approve`: approval state changes.
-- Administrator student subresources expose exams, mistakes, statistics, and performance.
-- `/admin/blog`: article CRUD and publication lifecycle.
-- `/admin/dynamic-fields`: dynamic definition CRUD.
+## منابع مدیر
 
-## Request pipeline
+- `/admin/students/with-stats`: فهرست صفحه‌بندی‌شده دانش‌آموزان همراه آمار
+- `/admin/students/:id`: مشاهده و ویرایش پروفایل دانش‌آموز
+- `/admin/students/:id/approve`: تغییر وضعیت تأیید دانش‌آموز
+- زیرمنابع دانش‌آموز برای آزمون‌ها، اشتباهات، آمار و گزارش‌های عملکرد
+- `/admin/blog`: چرخه کامل ایجاد، ویرایش، انتشار و حذف مقاله
+- `/admin/dynamic-fields`: مدیریت تعریف فیلدهای پویا
 
-1. A feature module calls `apiRequest` with an API-relative path.
-2. `apiRequest` prefixes `NEXT_PUBLIC_API_BASE_PATH`, adds JSON content type unless the body is
-   FormData, and sends same-origin credentials.
-3. The BFF validates mutation origin and strips unsafe forwarding headers.
-4. The BFF decrypts the session cookie and adds the bearer token server-side.
-5. The backend response is reduced to approved response headers and returned to the browser.
-6. A 401 triggers one token-refresh attempt; terminal failure clears the session.
+## خط لوله درخواست
 
-## Error handling
+۱. ماژول feature تابع `apiRequest` را با مسیر نسبی API فراخوانی می‌کند.
 
-Non-success responses become `ApiError` instances with status, stable code, retryability, and a
-controlled Persian message. Feature components render consistent retry, empty, and permission
-states. Backend error text is never injected into HTML.
+۲. `apiRequest` پیشوند `NEXT_PUBLIC_API_BASE_PATH` را اضافه می‌کند، برای payloadهای JSON هدر مناسب
+می‌سازد و credential هم‌مبدأ را ارسال می‌کند. برای `FormData` تعیین Content-Type به مرورگر واگذار
+می‌شود.
 
-## Cache invalidation
+۳. BFF در mutationها origin درخواست را اعتبارسنجی و هدرهای ناامن را حذف می‌کند.
 
-- Profile mutations invalidate profile and dashboard dependencies.
-- Exam mutations invalidate exam lists/details, dashboard summary, and statistics.
-- Mistake mutations invalidate mistake lists and dependent statistics.
-- Administrator student mutations invalidate the affected record and list.
-- Article mutations invalidate administrator queries and trigger public cache-tag revalidation.
+۴. BFF کوکی نشست را رمزگشایی و Bearer token را فقط در سمت سرور به درخواست بک‌اند اضافه می‌کند.
 
-## Contract maintenance
+۵. پاسخ بک‌اند با فهرست مجاز هدرها به مرورگر بازگردانده می‌شود.
 
-Backend JSON models are represented in `types/`. Mutation schemas live in `schemas/`. Storage
-inconsistencies such as JSON strings are isolated in `services/mappers/`. When a backend response
-changes, update the type, mapper, MSW handler, fixture, and integration test together before
-modifying UI components.
+۶. پاسخ 401 فقط یک بار باعث refresh توکن می‌شود. شکست نهایی refresh نشست را پاک می‌کند.
+
+## مدیریت خطا
+
+پاسخ‌های ناموفق به نمونه `ApiError` تبدیل می‌شوند. این کلاس status، کد پایدار، قابلیت retry و پیام
+کنترل‌شده فارسی را نگهداری می‌کند. کامپوننت‌ها وضعیت‌های خطا، retry، empty و permission را به‌صورت
+یکپارچه نمایش می‌دهند. متن خام خطای بک‌اند هیچ‌گاه مستقیماً وارد HTML نمی‌شود.
+
+## ابطال کش
+
+- mutation پروفایل، queryهای پروفایل و داشبورد را invalidate می‌کند.
+- mutation آزمون، فهرست و جزئیات آزمون، خلاصه داشبورد و آمار را invalidate می‌کند.
+- mutation اشتباه، فهرست اشتباهات و آمار وابسته را invalidate می‌کند.
+- عملیات مدیر روی دانش‌آموز فقط رکورد و فهرست مرتبط را invalidate می‌کند.
+- mutation مقاله queryهای مدیر را invalidate و revalidation کش عمومی را اجرا می‌کند.
+
+## نگهداری قراردادها
+
+مدل‌های JSON بک‌اند در `types/`، schemaهای mutation در `schemas/` و تبدیل تفاوت‌های ذخیره‌سازی در
+`services/mappers/` قرار دارند. هنگام تغییر پاسخ بک‌اند باید type، mapper، handler مربوط به MSW،
+fixture و تست integration هم‌زمان به‌روزرسانی شوند و سپس کامپوننت UI تغییر کند.
+
+</div>

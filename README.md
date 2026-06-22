@@ -1,49 +1,60 @@
-# Noshirvani Academy Frontend
+<div dir="rtl" align="right">
 
-Production-only Persian RTL web application for exam tracking, mistake analysis, academic
-performance reporting, and student administration.
+# فرانت‌اند آکادمی نوشیروانی
 
-## Runtime stack
+وب‌اپلیکیشن فارسی و راست‌چین آکادمی نوشیروانی برای مدیریت آزمون‌ها، تحلیل اشتباهات، گزارش‌های عملکرد
+تحصیلی و مدیریت دانش‌آموزان. این برنامه فقط با تنظیمات محیط production اجرا می‌شود.
 
-- Next.js 16 App Router, React 19, and TypeScript in strict mode
-- Tailwind CSS 4 with locally hosted Vazirmatn variable fonts
-- TanStack Query for remote server state and Zustand for token-free authentication UI state
-- React Hook Form and Zod for typed forms and validation
-- Radix UI primitives, Lucide icons, Recharts, and Sonner notifications
-- HttpOnly encrypted BFF session cookies; browser code never receives access or refresh tokens
-- Vitest, Testing Library, MSW, Playwright, and axe-core
+## فناوری‌های اصلی
 
-## Start the complete system
+- Next.js 16 با App Router، React 19 و TypeScript در حالت strict
+- Tailwind CSS 4 به همراه فونت متغیر وزیرمتن با میزبانی آفلاین
+- TanStack Query برای داده‌های سرور و Zustand برای وضعیت احراز هویت بدون نگهداری توکن
+- React Hook Form و Zod برای فرم‌های type-safe و اعتبارسنجی داده‌ها
+- کامپوننت‌های Radix UI، آیکن‌های Lucide، نمودارهای Recharts و اعلان‌های Sonner
+- نشست رمزنگاری‌شده BFF در کوکی HttpOnly؛ توکن دسترسی و refresh هیچ‌گاه وارد مرورگر نمی‌شوند
+- Vitest، Testing Library، MSW، Playwright و axe-core برای تست خودکار
 
-Docker is the supported runtime. From this directory:
+## اجرای کامل سامانه
+
+Docker روش استاندارد اجرای پروژه است. دستورهای زیر را از پوشه frontend اجرا کنید:
 
 ```bash
 docker compose up --build -d
 docker compose ps
 ```
 
-Open `http://localhost`. The Compose project starts PostgreSQL, Redis, the Go backend, the Next.js
-frontend, and the Nginx gateway. Stop it with `docker compose down`; add `-v` only when persisted
-database, Redis, and upload data should be deleted.
+سامانه از نشانی `http://localhost` در دسترس خواهد بود. Compose سرویس‌های PostgreSQL، Redis، بک‌اند
+Go، فرانت‌اند Next.js و gateway مبتنی بر Nginx را اجرا می‌کند.
 
-## Quality gate
+برای توقف سرویس‌ها:
+
+```bash
+docker compose down
+```
+
+گزینه `-v` را فقط زمانی اضافه کنید که حذف کامل داده‌های پایگاه داده، Redis و فایل‌های آپلودشده مدنظر
+باشد.
+
+## گیت کنترل کیفیت
 
 ```bash
 npm ci
 npm run quality
 ```
 
-The quality command runs strict type checking, ESLint, 63+ automated tests, a production build,
-performance budgets, and desktop/mobile E2E scenarios.
+این دستور کنترل فرمت، typecheck، ESLint، تست‌های خودکار، build محیط production، بودجه عملکرد و
+سناریوهای E2E دسکتاپ و موبایل را اجرا می‌کند.
 
-## Documentation
+## مستندات
 
-- [User flows](docs/USER_FLOWS.md)
-- [Technical architecture](docs/TECHNICAL_ARCHITECTURE.md)
-- [API integration](docs/API_INTEGRATION.md)
-- [Operations and Docker](docs/OPERATIONS.md)
-- [Security and quality](docs/SECURITY_AND_QUALITY.md)
+- [جریان‌های کامل کاربران](docs/USER_FLOWS.md)
+- [معماری فنی](docs/TECHNICAL_ARCHITECTURE.md)
+- [ارتباط با API](docs/API_INTEGRATION.md)
+- [عملیات و Docker](docs/OPERATIONS.md)
+- [امنیت و کنترل کیفیت](docs/SECURITY_AND_QUALITY.md)
 
-The application mode is permanently production. There is no application environment switch or
-development runtime script. Configuration variables customize deployment values, not runtime
-behavior.
+حالت اجرایی برنامه همواره production است. متغیرهای محیطی فقط مقادیر وابسته به استقرار را تنظیم
+می‌کنند و امکان تغییر رفتار برنامه به development یا test را ندارند.
+
+</div>

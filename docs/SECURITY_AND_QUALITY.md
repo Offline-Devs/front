@@ -1,39 +1,58 @@
-# Security and Quality
+<div dir="rtl" align="right">
 
-## Security controls
+# امنیت و کنترل کیفیت
 
-- JWE-encrypted, HttpOnly, same-site sessions keep tokens out of JavaScript.
-- Same-origin checks protect mutating BFF routes.
-- CSP restricts script, style, image, font, connection, form, frame, and object sources.
-- Referrer policy, MIME sniffing prevention, frame denial, browser permission restrictions, and
-  opener isolation are applied globally.
-- Article sanitization and escaped JSON-LD prevent untrusted HTML execution.
-- Upload policy validates metadata and binary signatures before proxying files.
-- Telemetry uses a strict allow list and excludes PII, request data, credentials, and stack traces.
+## کنترل‌های امنیتی
 
-## Automated test layers
+- نشست رمزنگاری‌شده JWE داخل کوکی HttpOnly و SameSite مانع دسترسی JavaScript به توکن‌ها می‌شود.
+- بررسی same-origin از routeهای mutation در BFF محافظت می‌کند.
+- CSP منبع script، style، تصویر، فونت، اتصال شبکه، فرم، frame و object را محدود می‌کند.
+- Referrer Policy، جلوگیری از MIME sniffing، جلوگیری از نمایش داخل frame، محدودیت permissionهای
+  مرورگر و opener isolation به‌صورت سراسری اعمال می‌شوند.
+- پاک‌سازی HTML مقالات و escape کردن JSON-LD مانع اجرای محتوای غیرقابل‌اعتماد می‌شود.
+- policy آپلود، metadata و signature باینری فایل را قبل از ارسال به بک‌اند کنترل می‌کند.
+- telemetry فقط فیلدهای مجاز را می‌پذیرد و PII، اطلاعات درخواست، credential و stack trace را ثبت
+  نمی‌کند.
 
-- Unit tests cover schemas, formatters, Jalali conversion, mappers, cache helpers, session
-  encryption, upload policy, and error mapping.
-- Component tests cover forms, asynchronous tables, dialogs, and design primitives.
-- MSW integration tests verify feature API behavior at the browser transport boundary.
-- Playwright verifies student and administrator critical paths on desktop Chromium and a mobile
-  viewport.
-- axe-core checks critical WCAG A/AA violations; additional tests cover keyboard focus and reduced
-  motion.
+## لایه‌های تست خودکار
 
-## Required gate
+- تست‌های Unit برای schemaها، formatterها، تبدیل تاریخ جلالی، mapperها، helperهای کش، رمزنگاری نشست،
+  policy آپلود و نگاشت خطا
+- تست‌های Component برای فرم‌ها، جدول‌های asynchronous، dialogها و primitiveهای رابط کاربری
+- تست‌های Integration مبتنی بر MSW برای رفتار featureها در مرز transport مرورگر
+- تست‌های Playwright برای مسیرهای حیاتی دانش‌آموز و مدیر در دسکتاپ و viewport موبایل
+- تست‌های axe-core برای خطاهای مهم WCAG A/AA به همراه بررسی keyboard focus و reduced motion
 
-`npm run quality` must pass before merging or deploying. CI repeats the same command on Node.js 22
-and installs the pinned Playwright Chromium runtime.
+## گیت الزامی
 
-Performance budgets fail the build when initial gzip JavaScript, an individual public image, or
-total fonts exceed configured thresholds. Changes to a budget require a documented architectural
-reason; raising a threshold is not a substitute for investigating bundle growth.
+دستور `npm run quality` باید قبل از merge یا deploy موفق باشد. CI همین دستور را روی Node.js 22 و
+نسخه pinشده Chromium مربوط به Playwright تکرار می‌کند.
 
-## Dependency policy
+این گیت شامل مراحل زیر است:
 
-Runtime dependencies must have a production import. Test/build-only packages belong in
-devDependencies. Run `npx knip` during structural cleanup and manually review framework entry points
-before deletion because convention-based files and Playwright subprocesses may not appear in the
-static import graph.
+۱. بررسی فرمت تمام فایل‌ها با Prettier
+
+۲. typecheck در حالت strict
+
+۳. تحلیل ESLint
+
+۴. اجرای تست‌های Unit، Component و Integration
+
+۵. ساخت کامل production
+
+۶. بررسی بودجه عملکرد
+
+۷. اجرای E2E دسکتاپ و موبایل
+
+بودجه عملکرد در صورت عبور حجم JavaScript اولیه gzipشده، یک تصویر عمومی یا مجموع فونت‌ها از سقف
+تعیین‌شده build را متوقف می‌کند. افزایش سقف فقط باید با دلیل معماری مستند انجام شود و جایگزین بررسی
+رشد bundle نیست.
+
+## سیاست dependency
+
+هر dependency زمان اجرا باید import واقعی در کد production داشته باشد. ابزارهای تست و build در
+`devDependencies` قرار می‌گیرند. هنگام پاک‌سازی ساختاری باید `npx knip` اجرا شود و قبل از حذف، entry
+pointهای قراردادی framework به‌صورت دستی بازبینی شوند؛ زیرا فایل‌های convention-based یا
+subprocessهای Playwright ممکن است در گراف import ایستا دیده نشوند.
+
+</div>

@@ -1,165 +1,206 @@
-# User Flows
+<div dir="rtl" align="right">
 
-## Actors and authorization boundaries
+# جریان‌های کاربران
 
-The product has three navigation contexts:
+## نقش‌ها و مرزهای دسترسی
 
-1. A visitor can read public marketing pages and published articles, then begin authentication.
-2. A student can complete a profile, manage exams and mistakes, review statistics, and read advisor
-   reports.
-3. An administrator can approve students, inspect their complete academic record, create advisor
-   reports, publish articles, and manage dynamic fields.
+سامانه سه فضای ناوبری مستقل دارد:
 
-Authorization is enforced by the backend and repeated at the frontend server boundary. Client-side
-route hiding is only a usability feature and is never treated as an access-control mechanism.
+۱. بازدیدکننده صفحات عمومی و مقالات منتشرشده را مشاهده و فرآیند ورود را آغاز می‌کند.
 
-## Visitor flow
+۲. دانش‌آموز پروفایل را تکمیل می‌کند، آزمون و اشتباه ثبت می‌کند، آمار را می‌بیند و گزارش‌های مشاور
+را می‌خواند.
 
-### Public discovery
+۳. مدیر دانش‌آموز را تأیید می‌کند، پرونده تحصیلی را می‌بیند، گزارش مشاور می‌نویسد و مقاله و فیلدهای
+پویا را مدیریت می‌کند.
 
-1. The visitor enters `/`, `/services`, `/about`, `/contact`, or `/blog`.
-2. Static marketing content renders immediately. Blog and academic reference data use server caching
-   with timed revalidation.
-3. Published article HTML is sanitized against an allow list before rendering.
-4. SEO metadata, canonical URLs, sitemap, robots rules, Open Graph output, and JSON-LD are generated
-   by the App Router.
-5. The primary call to action sends the visitor to `/login`.
+دسترسی ابتدا در بک‌اند و سپس در مرز server-side فرانت‌اند کنترل می‌شود. مخفی‌کردن route در رابط
+کاربری فقط برای تجربه کاربری است و کنترل امنیتی محسوب نمی‌شود.
 
-### Failure behavior
+## جریان بازدیدکننده
 
-- If the backend is temporarily unavailable, static public content still renders and optional
-  backend sections use safe empty fallbacks.
-- Unknown routes and missing articles use the shared 404 boundary.
-- Feature flags can remove blog or contact routes without exposing incomplete pages.
+### مشاهده محتوای عمومی
 
-## Authentication flow
+۱. بازدیدکننده وارد `/`، `/services`، `/about`، `/contact` یا `/blog` می‌شود.
 
-### Requesting an OTP
+۲. محتوای ثابت بلافاصله render می‌شود. داده‌های مقاله و اطلاعات مرجع تحصیلی از cache سمت سرور با
+revalidation زمان‌بندی‌شده استفاده می‌کنند.
 
-1. The user opens `/login` and submits an Iranian mobile number.
-2. The form normalizes and validates the phone number with Zod.
-3. The browser posts to the same-origin `/api/auth/request-otp` BFF route.
-4. The BFF forwards the request to the Go backend without exposing backend topology or tokens.
-5. On success, the phone number is carried to `/verify-otp`; rate-limit failures display a
-   controlled retry message.
+۳. HTML مقاله پیش از render با allow list امن پاک‌سازی می‌شود.
 
-### Verifying an OTP
+۴. metadata فارسی، canonical URL، sitemap، robots، Open Graph و JSON-LD توسط App Router تولید
+می‌شوند.
 
-1. The user enters the six-digit OTP. The UI supports automatic focus movement and pasted codes.
-2. `/api/auth/verify-otp` exchanges the code with the backend.
-3. The BFF receives access and refresh tokens, encrypts them with JWE, and stores the result in an
-   HttpOnly same-site cookie.
-4. Only the non-sensitive user object is returned to browser state.
-5. Routing depends on the backend role:
-   - Administrators continue to `/admin`.
-   - Existing students continue to `/dashboard`.
-   - New students continue to `/complete-profile`.
+۵. CTA اصلی بازدیدکننده را به `/login` هدایت می‌کند.
 
-### Session lifecycle
+### رفتار هنگام خطا
 
-- Protected server layouts read and decrypt the session before rendering.
-- The BFF refreshes an access token shortly before expiry and deduplicates concurrent refresh
-  requests for the same session.
-- A terminal 401 clears both the encrypted cookie and visible authentication state.
-- Logout deletes the cookie, clears query data and authentication state, broadcasts the change to
-  other tabs, and redirects to login.
+- در صورت قطع موقت بک‌اند، محتوای ثابت عمومی همچنان render می‌شود و بخش‌های اختیاری از fallback خالی
+  امن استفاده می‌کنند.
+- route ناشناخته یا مقاله حذف‌شده boundary مشترک 404 را نمایش می‌دهد.
+- feature flag می‌تواند route مقاله یا تماس را بدون نمایش صفحه ناقص غیرفعال کند.
 
-## Student onboarding flow
+## جریان احراز هویت
 
-1. A newly authenticated student enters `/complete-profile`.
-2. The form loads majors, subjects, and student dynamic-field definitions.
-3. The student provides identity and academic information, a normalized Jalali birth date, and
-   optional profile image.
-4. Image selection is checked for count, exact MIME type, file size, and content signature at
-   multiple boundaries.
-5. Dynamic-field values are validated from backend definitions and submitted with the typed profile
-   payload.
-6. Successful creation leads to `/dashboard`; approval status remains visible until an administrator
-   approves the account.
+### درخواست OTP
 
-## Student operational flows
+۱. کاربر در `/login` شماره موبایل ایرانی را وارد می‌کند.
 
-### Dashboard
+۲. فرم شماره را normalize و با Zod اعتبارسنجی می‌کند.
 
-The dashboard combines profile approval state, summary metrics, recent exams, and recent advisor
-plans. Queries use short stale times and targeted invalidation after related mutations.
+۳. مرورگر درخواست را به route هم‌مبدأ `/api/auth/request-otp` می‌فرستد.
 
-### Exam management
+۴. BFF درخواست را بدون افشای آدرس داخلی بک‌اند یا token به سرویس Go منتقل می‌کند.
 
-1. `/exams` lists the current student's exams.
-2. `/exams/new` creates an exam with a title, Jalali date, major, and one or more subject score
-   rows.
-3. Validation enforces non-negative counts and verifies that answered, correct, wrong, and blank
-   totals are internally consistent.
-4. `/exams/[id]` shows the normalized result; `/exams/[id]/edit` submits the complete subject
-   collection because backend PUT semantics replace it.
-5. Delete operations require explicit confirmation and invalidate only dependent exam, dashboard,
-   and statistics queries.
+۵. پس از موفقیت، شماره موبایل به `/verify-otp` منتقل می‌شود. خطای rate limit پیام کنترل‌شده و امکان
+تلاش مجدد را نمایش می‌دهد.
 
-### Mistake notebook
+### تأیید OTP
 
-1. `/mistakes` lists and searches the student's recorded mistakes.
-2. `/mistakes/new` may link a mistake to an owned exam and one of that exam's subjects, but both
-   links are optional.
-3. The student records a question number, category, notes, and any enabled dynamic fields.
-4. Editing occurs inline; deletion requires confirmation.
+۱. کاربر کد شش‌رقمی را وارد می‌کند. UI از جابه‌جایی خودکار focus و paste کامل کد پشتیبانی می‌کند.
 
-### Statistics
+۲. route `/api/auth/verify-otp` کد را با بک‌اند مبادله می‌کند.
 
-1. `/statistics` accepts optional `from` and `to` Jalali dates in URL search parameters.
-2. The backend returns aggregate metrics, score trends, subject performance, and mistake reasons.
-3. Recharts modules load only on this route.
-4. Every chart has a semantically equivalent table for keyboard and screen-reader users.
+۳. BFF توکن‌های access و refresh را دریافت، نشست را با JWE رمزنگاری و آن را داخل کوکی HttpOnly ذخیره
+می‌کند.
 
-### Advisor performance reports
+۴. فقط اطلاعات غیرحساس کاربر به state مرورگر برگردانده می‌شود.
 
-1. `/performance` is read-only for students.
-2. Reports appear as a chronological timeline containing the study plan, advisor notes, and
-   attachments.
-3. Attachment URLs are resolved through the same-origin gateway.
+۵. مقصد بر اساس role و وضعیت پروفایل مشخص می‌شود:
 
-### Profile maintenance
+- مدیر به `/admin` می‌رود.
+- دانش‌آموز دارای پروفایل به `/dashboard` می‌رود.
+- دانش‌آموز جدید به `/complete-profile` می‌رود.
 
-Students can update profile data and replace or remove the profile image. Mutations refresh only
-profile-dependent data and preserve the rest of the browser cache.
+### چرخه عمر نشست
 
-## Administrator flows
+- layout محافظت‌شده پیش از render نشست را می‌خواند و رمزگشایی می‌کند.
+- BFF کمی پیش از انقضای access token آن را refresh می‌کند.
+- درخواست‌های هم‌زمان یک نشست فقط یک درخواست refresh مشترک ایجاد می‌کنند.
+- پاسخ نهایی 401 کوکی و وضعیت قابل‌نمایش احراز هویت را پاک می‌کند.
+- logout کوکی، query cache و auth state را پاک، تغییر را به tabهای دیگر اعلام و کاربر را به login
+  هدایت می‌کند.
 
-### Student approval and review
+## جریان onboarding دانش‌آموز
 
-1. `/admin/students` stores approval and page filters in the URL.
-2. The paginated table shows profile identity, academic context, exam count, mistake count, and
-   approval state.
-3. `/admin/students/[id]` loads profile, exams, mistakes, statistics, and advisor reports in
-   separate query scopes.
-4. Administrators can approve or revoke approval, edit profile data, or delete the student after
-   confirmation.
+۱. دانش‌آموز جدید وارد `/complete-profile` می‌شود.
 
-### Advisor reports
+۲. فرم رشته‌ها، درس‌ها و تعریف فیلدهای پویای پروفایل را دریافت می‌کند.
 
-1. The administrator creates a report from `/admin/students/[id]/performance/new`.
-2. Notes, study plan, Jalali date, and allowed attachments are validated.
-3. Files upload first; returned URLs are serialized into the backend report contract.
-4. Existing reports can be edited or deleted from the student record.
+۳. دانش‌آموز اطلاعات هویتی و تحصیلی، تاریخ تولد جلالی و تصویر اختیاری را ثبت می‌کند.
 
-### Article management
+۴. تصویر از نظر تعداد، MIME دقیق، حجم و signature محتوا در چند مرز بررسی می‌شود.
 
-1. `/admin/blog` separates draft and published content.
-2. The editor supports controlled Persian or Latin slugs and sanitized HTML preview.
-3. Create and update operations may save a draft or publish immediately.
-4. Publish, update, and delete operations trigger authenticated public-cache revalidation.
+۵. مقادیر فیلد پویا بر اساس تعریف بک‌اند اعتبارسنجی و همراه payload type-safe ارسال می‌شوند.
 
-### Dynamic fields
+۶. ایجاد موفق پروفایل کاربر را به `/dashboard` منتقل می‌کند. وضعیت انتظار تأیید تا اقدام مدیر
+قابل‌مشاهده است.
 
-1. `/admin/dynamic-fields` manages definitions for student, exam, and mistake entities.
-2. Supported types are text, number, select, checkbox, and date.
-3. Select options must be valid JSON and all definitions use stable technical names.
-4. A shared renderer and validator consume the definitions in operational forms.
+## جریان‌های عملیاتی دانش‌آموز
 
-## Global failure and recovery flow
+### داشبورد
 
-- Query failures render retryable API states with controlled Persian messages.
-- Route errors report a redacted event and show a retry action.
-- Offline state appears globally without deleting cached data.
-- Destructive actions require confirmation.
-- Authentication failures return to login; authorization failures return `/forbidden`.
+داشبورد وضعیت تأیید پروفایل، metricهای خلاصه، آزمون‌های اخیر و برنامه‌های اخیر مشاور را ترکیب
+می‌کند. queryها stale time کوتاه دارند و mutationها فقط dependency مرتبط را invalidate می‌کنند.
+
+### مدیریت آزمون
+
+۱. `/exams` آزمون‌های دانش‌آموز جاری را فهرست می‌کند.
+
+۲. `/exams/new` عنوان، تاریخ جلالی، رشته و یک یا چند ردیف نتیجه درس را ثبت می‌کند.
+
+۳. اعتبارسنجی از مقدار منفی جلوگیری می‌کند و برابری answered با correct به‌علاوه wrong و برابری
+total با answered به‌علاوه blank را بررسی می‌کند.
+
+۴. `/exams/[id]` نتیجه normalizeشده را نمایش می‌دهد و `/exams/[id]/edit` تمام درس‌های باقی‌مانده را
+ارسال می‌کند، زیرا PUT بک‌اند کل collection درس‌ها را جایگزین می‌کند.
+
+۵. حذف به تأیید صریح نیاز دارد و فقط queryهای آزمون، داشبورد و آمار مرتبط را invalidate می‌کند.
+
+### دفترچه اشتباهات
+
+۱. `/mistakes` اشتباهات ثبت‌شده را نمایش می‌دهد و جست‌وجوی محلی ارائه می‌کند.
+
+۲. `/mistakes/new` می‌تواند اشتباه را به آزمون متعلق به کاربر و یکی از درس‌های همان آزمون متصل کند.
+هر دو اتصال اختیاری هستند.
+
+۳. دانش‌آموز شماره سؤال، دسته‌بندی، یادداشت و مقادیر فیلدهای پویای فعال را ثبت می‌کند.
+
+۴. ویرایش به‌صورت inline انجام می‌شود و حذف به dialog تأیید نیاز دارد.
+
+### آمار
+
+۱. `/statistics` تاریخ‌های اختیاری `from` و `to` را با قالب جلالی در URL search params نگه می‌دارد.
+
+۲. بک‌اند metricهای خلاصه، روند نمره، عملکرد درس‌ها و دلایل اشتباه را برمی‌گرداند.
+
+۳. ماژول‌های Recharts فقط در همین route بارگیری می‌شوند.
+
+۴. هر نمودار جدول معنایی معادل برای keyboard و screen reader دارد.
+
+### گزارش عملکرد مشاور
+
+۱. `/performance` برای دانش‌آموز فقط خواندنی است.
+
+۲. گزارش‌ها به ترتیب زمانی و شامل برنامه مطالعه، یادداشت مشاور و attachment نمایش داده می‌شوند.
+
+۳. URL فایل‌ها از gateway هم‌مبدأ resolve می‌شود.
+
+### نگهداری پروفایل
+
+دانش‌آموز می‌تواند اطلاعات پروفایل را ویرایش و تصویر را جایگزین یا حذف کند. mutation فقط داده‌های
+وابسته به پروفایل را refresh می‌کند و سایر cache مرورگر حفظ می‌شوند.
+
+## جریان‌های مدیر
+
+### تأیید و بررسی دانش‌آموز
+
+۱. `/admin/students` وضعیت تأیید و صفحه جاری را داخل URL نگه می‌دارد.
+
+۲. جدول صفحه‌بندی‌شده هویت، اطلاعات تحصیلی، تعداد آزمون، تعداد اشتباه و وضعیت تأیید را نمایش می‌دهد.
+
+۳. `/admin/students/[id]` پروفایل، آزمون‌ها، اشتباهات، آمار و گزارش‌های مشاور را با query scopeهای
+مستقل دریافت می‌کند.
+
+۴. مدیر می‌تواند دانش‌آموز را تأیید یا تأیید را لغو کند، اطلاعات پروفایل را ویرایش کند یا پس از
+confirmation حساب را حذف کند.
+
+### گزارش‌های مشاور
+
+۱. مدیر از `/admin/students/[id]/performance/new` گزارش جدید ایجاد می‌کند.
+
+۲. تاریخ جلالی، برنامه مطالعه، یادداشت و فایل‌های مجاز اعتبارسنجی می‌شوند.
+
+۳. ابتدا فایل‌ها آپلود می‌شوند و سپس URLهای برگشتی داخل قرارداد گزارش بک‌اند قرار می‌گیرند.
+
+۴. گزارش موجود از پرونده دانش‌آموز قابل‌ویرایش یا حذف است.
+
+### مدیریت مقاله
+
+۱. `/admin/blog` محتوای draft و published را تفکیک می‌کند.
+
+۲. editor از slug فارسی و لاتین کنترل‌شده و preview امن HTML پشتیبانی می‌کند.
+
+۳. مقاله می‌تواند به‌صورت draft ذخیره یا بلافاصله منتشر شود.
+
+۴. انتشار، ویرایش و حذف باعث revalidation هدفمند کش عمومی مقاله می‌شوند.
+
+### فیلدهای پویا
+
+۱. `/admin/dynamic-fields` تعریف فیلدهای مربوط به پروفایل، آزمون و اشتباه را مدیریت می‌کند.
+
+۲. نوع‌های پشتیبانی‌شده شامل text، number، select، checkbox و date هستند.
+
+۳. گزینه‌های select باید JSON معتبر باشند و هر تعریف نام فنی پایدار داشته باشد.
+
+۴. renderer و validator مشترک این تعریف‌ها را در فرم‌های عملیاتی مصرف می‌کنند.
+
+## جریان عمومی خطا و بازیابی
+
+- خطای query با پیام کنترل‌شده فارسی و امکان retry نمایش داده می‌شود.
+- خطای route یک رویداد پاک‌سازی‌شده ثبت و action تلاش مجدد ارائه می‌کند.
+- وضعیت offline بدون حذف داده cacheشده به‌صورت سراسری نمایش داده می‌شود.
+- عملیات مخرب همیشه confirmation می‌خواهند.
+- شکست احراز هویت کاربر را به login و شکست authorization او را به `/forbidden` هدایت می‌کند.
+
+</div>

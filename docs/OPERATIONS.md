@@ -1,21 +1,32 @@
-# Operations and Docker
+<div dir="rtl" align="right">
 
-## Services
+# عملیات و Docker
 
-The frontend Compose file is the canonical local and integration topology:
+## سرویس‌ها
 
-| Service    | Purpose                             | Published port |
-| ---------- | ----------------------------------- | -------------- |
-| `postgres` | Durable backend database            | none           |
-| `redis`    | Backend transient/rate-limit state  | none           |
-| `backend`  | Go HTTP API                         | none           |
-| `web`      | Next.js standalone frontend and BFF | none           |
-| `gateway`  | Public Nginx reverse proxy          | `80`           |
+فایل Compose موجود در frontend توپولوژی استاندارد اجرای محلی و integration سامانه است.
 
-Only the gateway is publicly exposed. Service health checks enforce PostgreSQL -> Redis -> backend
--> frontend -> gateway startup readiness.
+<table dir="rtl" align="right">
+  <thead>
+    <tr>
+      <th align="right">سرویس</th>
+      <th align="right">مسئولیت</th>
+      <th align="right">پورت منتشرشده</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td><code>postgres</code></td><td>پایگاه داده دائمی بک‌اند</td><td>ندارد</td></tr>
+    <tr><td><code>redis</code></td><td>وضعیت موقت و rate limit بک‌اند</td><td>ندارد</td></tr>
+    <tr><td><code>backend</code></td><td>API مبتنی بر Go</td><td>ندارد</td></tr>
+    <tr><td><code>web</code></td><td>فرانت‌اند standalone و BFF مبتنی بر Next.js</td><td>ندارد</td></tr>
+    <tr><td><code>gateway</code></td><td>reverse proxy عمومی مبتنی بر Nginx</td><td><code>80</code></td></tr>
+  </tbody>
+</table>
 
-## Commands
+فقط gateway در شبکه میزبان منتشر می‌شود. health checkها ترتیب آماده‌شدن PostgreSQL و Redis، سپس
+backend، frontend و gateway را کنترل می‌کنند.
+
+## دستورهای اجرایی
 
 ```bash
 docker compose build
@@ -25,42 +36,53 @@ docker compose logs -f web backend
 docker compose down
 ```
 
-Use `docker compose down -v` only for an intentional destructive reset of database, Redis, and
-uploaded files.
+دستور `docker compose down -v` فقط برای reset مخرب و آگاهانه پایگاه داده، Redis و فایل‌های آپلودشده
+استفاده می‌شود.
 
-## Production configuration
+## تنظیمات production
 
-Copy `.env.example` only as a reference; never commit real values. Required deployment secrets
-include a random BFF session secret of at least 32 characters and strong independent backend JWT
-access/refresh secrets. Use HTTPS and leave `BFF_SESSION_COOKIE_SECURE=auto` or `true` outside local
-HTTP verification.
+فایل `.env.example` فقط مرجع متغیرها است و مقادیر واقعی secret نباید commit شوند. استقرار به یک
+`BFF_SESSION_SECRET` تصادفی با حداقل ۳۲ نویسه و دو secret مستقل و قوی برای access و refresh توکن
+بک‌اند نیاز دارد.
 
-Public `NEXT_PUBLIC_*` values are compiled into browser assets and are not secrets. Rebuild the web
-image after changing them. Server-only values are read when the container starts.
+در محیط واقعی باید HTTPS فعال باشد و `BFF_SESSION_COOKIE_SECURE` روی `auto` یا `true` باقی بماند.
+مقدار `false` فقط برای بررسی محلی روی HTTP قابل‌قبول است.
 
-The application mode is fixed to production. `NODE_ENV=production` is set in the runtime image, and
-there is no APP_ENV or NEXT_PUBLIC_APP_ENV switch.
+متغیرهای عمومی `NEXT_PUBLIC_*` هنگام build داخل assetهای مرورگر قرار می‌گیرند و secret نیستند. بعد
+از تغییر این مقادیر باید image سرویس web دوباره ساخته شود. متغیرهای server-only هنگام شروع container
+خوانده می‌شوند.
 
-## Persistence and backup
+حالت برنامه به production محدود است. مقدار `NODE_ENV=production` داخل image اجرایی تنظیم شده و متغیر
+`APP_ENV` یا `NEXT_PUBLIC_APP_ENV` وجود ندارد.
 
-- `postgres_data` contains application records and requires database-aware backups.
-- `redis_data` contains Redis append-only state but is not a replacement for PostgreSQL backup.
-- `uploads` contains user files and must be backed up consistently with database attachment
-  references.
+## ماندگاری و پشتیبان‌گیری
 
-## Deployment health verification
+- volume به نام `postgres_data` شامل رکوردهای اصلی سامانه است و به backup سازگار با PostgreSQL نیاز
+  دارد.
+- volume به نام `redis_data` وضعیت AOF سرویس Redis را نگهداری می‌کند، اما جایگزین backup پایگاه داده
+  نیست.
+- volume به نام `uploads` شامل فایل‌های کاربران است و باید هماهنگ با referenceهای فایل در پایگاه
+  داده backup گرفته شود.
 
-1. Confirm all Compose services are healthy.
-2. Request `http://localhost/` and verify an HTTP 200 response with CSP and MIME-protection headers.
-3. Request a public BFF resource such as `http://localhost/api/v1/majors` and confirm a backend JSON
-   response.
-4. Execute OTP request/verification in mock mode and verify the browser receives an HttpOnly session
-   cookie without token fields in JSON.
-5. Review `docker compose logs` and confirm no token, cookie, request body, phone, or email appears.
+## بررسی سلامت استقرار
 
-## Scaling notes
+۱. healthy بودن تمام سرویس‌های Compose را بررسی کنید.
 
-The standalone web container is stateless except for its encrypted cookie secret and can be
-replicated behind a load balancer. Backend uploads currently use a shared filesystem volume;
-multiple backend replicas require shared object storage or a shared filesystem. PostgreSQL and Redis
-should use managed or highly available deployments for production traffic.
+۲. از `http://localhost/` درخواست بگیرید و پاسخ 200 همراه CSP و هدر جلوگیری از MIME sniffing را
+تأیید کنید.
+
+۳. منبع عمومی مانند `http://localhost/api/v1/majors` را فراخوانی و دریافت JSON بک‌اند را بررسی کنید.
+
+۴. در حالت mock جریان درخواست و تأیید OTP را اجرا و HttpOnly بودن کوکی نشست و نبود توکن در JSON
+مرورگر را تأیید کنید.
+
+۵. logهای Compose را بررسی کنید تا token، cookie، request body، شماره موبایل یا ایمیل ثبت نشده باشد.
+
+## نکات مقیاس‌پذیری
+
+container مستقل web به‌جز secret رمزنگاری کوکی state مشترکی ندارد و پشت load balancer قابل تکثیر
+است. آپلودهای بک‌اند فعلاً روی volume فایل‌سیستم قرار دارند؛ اجرای چند replica بک‌اند به object
+storage یا فایل‌سیستم مشترک نیاز دارد. برای ترافیک production باید از PostgreSQL و Redis مدیریت‌شده
+یا highly available استفاده شود.
+
+</div>

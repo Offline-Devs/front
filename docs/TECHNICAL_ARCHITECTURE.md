@@ -1,126 +1,172 @@
-# Technical Architecture
+<div dir="rtl" align="right">
 
-## System context
+# معماری فنی
 
-The browser communicates only with the Next.js origin. Next.js serves UI routes and a
-Backend-for-Frontend layer, which calls the Go API over the private Docker network. PostgreSQL
-stores durable entities, Redis supports backend rate limiting and transient state, and a named
-volume stores uploads.
+## نمای کلی سامانه
+
+مرورگر فقط با origin مربوط به Next.js ارتباط دارد. Next.js علاوه بر ارائه routeهای رابط کاربری، نقش
+Backend-for-Frontend یا BFF را دارد و از طریق شبکه خصوصی Docker به API نوشته‌شده با Go متصل می‌شود.
+PostgreSQL داده‌های دائمی را نگهداری می‌کند، Redis برای rate limit و وضعیت موقت بک‌اند استفاده
+می‌شود و فایل‌های آپلودی داخل volume مستقل قرار می‌گیرند.
 
 ```text
-Browser -> Nginx gateway -> Next.js App Router/BFF -> Go API -> PostgreSQL
-                                      |              -> Redis
-                                      |              -> upload volume
-                                      -> encrypted HttpOnly session cookie
+مرورگر ← Nginx Gateway ← Next.js App Router / BFF ← Go API ← PostgreSQL
+                                     │                 ├── Redis
+                                     │                 └── Upload Volume
+                                     └── Encrypted HttpOnly Session Cookie
 ```
 
-## Framework and language choices
+## فناوری‌ها و دلایل استفاده
 
-- Next.js 16 App Router provides server components, nested layouts, route handlers, metadata,
-  caching, and standalone production output.
-- React 19 renders interactive client islands while pages and layouts remain server components by
-  default.
-- TypeScript strict mode checks application, test, configuration, and route-handler code.
-- Tailwind CSS 4 generates utility styles. Reusable Radix-based primitives provide accessible
-  interaction behavior.
-- Vazirmatn Arabic and Latin subsets are self-hosted as WOFF2 with `font-display: swap` and
-  immutable caching.
+- **Next.js 16 App Router:** فراهم‌کردن Server Component، layoutهای تو‌در‌تو، route handler،
+  metadata، caching و خروجی standalone برای production
+- **React 19:** پیاده‌سازی بخش‌های تعاملی به‌صورت client island و نگه‌داشتن page و layoutها به‌عنوان
+  Server Component در حالت پیش‌فرض
+- **TypeScript strict:** بررسی ایستای کد برنامه، تست‌ها، تنظیمات و route handlerها
+- **Tailwind CSS 4:** تولید utility classها و حفظ design tokenهای مشترک
+- **Radix UI:** فراهم‌کردن رفتار دسترس‌پذیر برای dialog، select، tabs و checkbox
+- **وزیرمتن:** فونت آفلاین با subset فارسی و لاتین، فرمت WOFF2، ویژگی `font-display: swap` و کش
+  immutable
 
-## Source layout
+## ساختار سورس
 
-| Directory                    | Responsibility                                                                   |
-| ---------------------------- | -------------------------------------------------------------------------------- |
-| `app/`                       | Routes, layouts, metadata, loading/error boundaries, and BFF route handlers      |
-| `components/`                | Feature components, shared layout, providers, and reusable UI primitives         |
-| `config/`                    | Parsed public and server-only deployment configuration                           |
-| `lib/`                       | Pure helpers plus server-only session, authorization, and backend transport code |
-| `schemas/`                   | Zod validation and input normalization contracts                                 |
-| `services/api/`              | Browser API modules, query keys, errors, and targeted invalidation               |
-| `services/server/`           | Cached server-side public content reads                                          |
-| `services/mappers/`          | Backend storage shape to frontend domain view conversion                         |
-| `stores/`                    | Minimal token-free browser authentication state                                  |
-| `types/`                     | Backend-aligned domain and API TypeScript contracts                              |
-| `tests/` and colocated tests | MSW integration and Playwright E2E coverage                                      |
+<table dir="rtl" align="right">
+  <thead>
+    <tr>
+      <th align="right">مسیر</th>
+      <th align="right">مسئولیت</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td><code>app/</code></td><td>routeها، layoutها، metadata، boundaryهای loading/error و route handlerهای BFF</td></tr>
+    <tr><td><code>components/</code></td><td>کامپوننت‌های feature، layout مشترک، providerها و primitiveهای UI</td></tr>
+    <tr><td><code>config/</code></td><td>parse و اعتبارسنجی تنظیمات عمومی و server-only استقرار</td></tr>
+    <tr><td><code>lib/</code></td><td>helperهای مستقل و کد server-only نشست، authorization و انتقال درخواست به بک‌اند</td></tr>
+    <tr><td><code>schemas/</code></td><td>قراردادهای اعتبارسنجی و normalize کردن ورودی با Zod</td></tr>
+    <tr><td><code>services/api/</code></td><td>ماژول‌های API مرورگر، query key، خطاها و invalidation هدفمند</td></tr>
+    <tr><td><code>services/server/</code></td><td>خواندن cacheشده محتوای عمومی در سمت سرور</td></tr>
+    <tr><td><code>services/mappers/</code></td><td>تبدیل مدل ذخیره‌سازی بک‌اند به view model موردنیاز فرانت‌اند</td></tr>
+    <tr><td><code>stores/</code></td><td>حداقل وضعیت احراز هویت مرورگر بدون token یا داده تکراری API</td></tr>
+    <tr><td><code>types/</code></td><td>قراردادهای TypeScript منطبق با مدل‌های domain و API بک‌اند</td></tr>
+    <tr><td><code>tests/</code></td><td>تست‌های Integration مبتنی بر MSW و تست‌های E2E مبتنی بر Playwright</td></tr>
+  </tbody>
+</table>
 
-## Rendering model
+## مدل rendering
 
-Public pages favor static generation and timed revalidation. Blog lists and details use cache tags
-so administrator mutations can invalidate only public article data. Authenticated pages are
-dynamically rendered because server layouts must inspect the request cookie and role before
-returning content.
+صفحات عمومی تا حد ممکن با Static Generation و revalidation زمان‌بندی‌شده تولید می‌شوند. فهرست و
+جزئیات مقالات از cache tag استفاده می‌کنند تا mutationهای مدیر فقط داده عمومی مقاله را invalidate
+کنند. صفحات احرازشده dynamic هستند، زیرا layout سمت سرور باید پیش از render کوکی نشست و role کاربر
+را بررسی کند.
 
-Client components are limited to forms, interactive tables, dialogs, browser providers, and charts.
-Recharts is dynamically imported on the statistics route. Global providers are isolated in one
-client boundary so the remaining route tree stays server-rendered.
+Client Componentها به فرم‌ها، جدول‌های تعاملی، dialogها، providerهای مرورگر و نمودارها محدود
+شده‌اند. کتابخانه Recharts فقط در route آمار با dynamic import بارگیری می‌شود. تمام providerهای
+سراسری در یک client boundary قرار دارند تا سایر routeها به‌صورت Server Component باقی بمانند.
 
-## Authentication and BFF design
+## معماری احراز هویت و BFF
 
-The browser posts OTP operations to same-origin route handlers under `/api/auth`. Verification
-responses contain backend access and refresh tokens, but route handlers encrypt the complete session
-using JWE before creating an HttpOnly cookie. Browser stores contain only user identity and
-authentication status.
+مرورگر عملیات OTP را به routeهای هم‌مبدأ زیر `/api/auth` ارسال می‌کند. پاسخ تأیید OTP شامل access و
+refresh token بک‌اند است، اما route handler این نشست را پیش از ساخت کوکی HttpOnly با JWE رمزنگاری
+می‌کند. فقط مدل غیرحساس کاربر در state مرورگر قرار می‌گیرد.
 
-Protected server layouts call server-only guards. The BFF proxy under `/api/v1/[...path]` forwards
-approved request headers, drops browser cookies and authorization headers, injects the server-held
-access token, and retries once after refresh. Refresh requests are single-flight per refresh token.
+layoutهای محافظت‌شده guardهای server-only را اجرا می‌کنند. proxy فراگیر `/api/v1/[...path]` مراحل
+زیر را انجام می‌دهد:
 
-Mutating BFF routes validate the request origin. Proxy responses copy only an explicit header allow
-list. API routes return `no-store` headers to avoid caching personalized responses.
+۱. بررسی origin عمومی با درنظرگرفتن reverse proxy
 
-## Data and cache architecture
+۲. حذف cookie، authorization، host و هدرهای hop-by-hop ورودی
 
-TanStack Query is the only browser server-state cache. Query-key factories define entity namespaces.
-Mutations invalidate explicit dependencies rather than clearing the entire cache. Default stale
-time, garbage-collection time, retry count, and focus behavior are parsed from public deployment
-configuration.
+۳. رمزگشایی نشست در سرور و اضافه‌کردن access token به درخواست بک‌اند
 
-Zustand stores only visible authentication state. It never stores backend records or credentials.
-Cross-tab logout uses a browser channel so all tabs converge on unauthenticated state.
+۴. refresh پیش‌دستانه توکن نزدیک به انقضا
 
-Server-side public content uses Next.js fetch caching:
+۵. اشتراک یک درخواست refresh بین درخواست‌های هم‌زمان یک نشست
 
-- marketing pages are statically rendered;
-- articles use five-minute revalidation plus article tags;
-- majors and subjects use long revalidation windows;
-- authenticated backend reads always use `no-store`.
+۶. تکرار فقط یک‌باره درخواست بعد از refresh موفق
 
-## Forms and validation
+۷. بازگرداندن فقط هدرهای مجاز پاسخ به مرورگر
 
-React Hook Form controls form lifecycle without rerendering the full page on every input. Zod
-schemas provide input types, normalized output types, Persian validation messages, numeric
-consistency rules, Jalali formatting, and JSON option checks.
+پاسخ routeهای API دارای `no-store` است تا اطلاعات شخصی داخل cache عمومی ذخیره نشود.
 
-Dynamic fields use one definition contract, renderer, and validator across student profiles, exams,
-and mistakes. Backend definitions remain authoritative; the frontend adds usability validation but
-does not replace server validation.
+## معماری داده و کش
 
-## Content and upload security
+TanStack Query تنها محل نگهداری server state در مرورگر است. query-key factoryها namespace پایدار
+entityها را تولید می‌کنند. mutationها به‌جای پاک‌کردن کل cache فقط list، detail و summary وابسته را
+invalidate می‌کنند.
 
-Article HTML is sanitized with a strict tag, attribute, and URL-scheme allow list. External links
-receive safe `rel` values. JSON-LD escapes HTML delimiters before entering a script element.
+تنظیمات عمومی stale time، garbage collection، تعداد retry و refetch هنگام focus از environment معتبر
+خوانده می‌شوند. Zustand فقط وضعیت قابل‌نمایش احراز هویت را نگه می‌دارد و هیچ رکورد بک‌اند یا
+credential در آن ذخیره نمی‌شود. logout بین tabها با BroadcastChannel و fallback مبتنی بر storage
+همگام می‌شود.
 
-Profile and document uploads are validated in the form and again in the BFF. The BFF checks
-multipart encoding, upload kind, file count, total payload size, per-file size, exact MIME allow
-lists, and JPEG/PNG/WebP/PDF magic signatures before forwarding bytes to the backend.
+سیاست کش سمت سرور:
 
-## Observability
+- صفحات marketing به‌صورت static تولید می‌شوند.
+- مقالات revalidation پنج‌دقیقه‌ای و cache tag اختصاصی دارند.
+- majors و subjects به‌دلیل تغییر کم از revalidation طولانی استفاده می‌کنند.
+- تمام درخواست‌های احرازشده بک‌اند با `no-store` اجرا می‌شوند.
 
-The client reports LCP, CLS, and INP through `navigator.sendBeacon`. React route boundaries report
-only error name, route path without query parameters, and an opaque digest. `/api/telemetry` accepts
-at most 2 KB of same-origin JSON, applies an allow list, and writes structured container output
-without headers, stack traces, tokens, or user identity.
+## فرم‌ها و اعتبارسنجی
 
-## Performance controls
+React Hook Form چرخه فرم را بدون render مجدد کل صفحه در هر ورودی مدیریت می‌کند. schemaهای Zod موارد
+زیر را ارائه می‌کنند:
 
-The production build enables compression, AVIF/WebP image formats, strict React behavior, standalone
-output, and immutable font caching. A post-build script enforces initial gzip JavaScript, individual
-image, and total font budgets. Current targets are LCP below 2.5 seconds, CLS below 0.1, and INP
-below 200 milliseconds on a mid-range mobile device.
+- type مستقل ورودی و خروجی normalizeشده
+- پیام اعتبارسنجی فارسی
+- کنترل سازگاری عددهای آزمون
+- normalize کردن اعداد فارسی و عربی
+- بررسی قالب تاریخ جلالی
+- اعتبارسنجی JSON گزینه‌های فیلد پویا
 
-## Production-only mode
+تعریف، renderer و validator فیلدهای پویا بین پروفایل، آزمون و اشتباه مشترک است. تعریف‌های بک‌اند
+منبع اصلی حقیقت باقی می‌مانند و اعتبارسنجی فرانت‌اند فقط تجربه کاربری را بهبود می‌دهد.
 
-Application behavior has no environment selector. Server configuration exports production behavior
-unconditionally, runtime secrets are mandatory, automatic session cookies are secure, and
-developer-only runtime packages are absent. Local Docker verification can explicitly disable the
-Secure cookie attribute because the local gateway uses HTTP; this is a transport setting, not a
-development application mode.
+## امنیت محتوا و آپلود
+
+HTML مقاله با allow list محدود برای tag، attribute و scheme آدرس پاک‌سازی می‌شود. لینک‌های خارجی
+مقدار امن `rel` دریافت می‌کنند. JSON-LD پیش از ورود به script element نویسه‌های HTML را escape
+می‌کند.
+
+فایل‌های پروفایل و اسناد ابتدا در فرم و سپس در BFF بررسی می‌شوند. کنترل BFF شامل موارد زیر است:
+
+- multipart بودن payload
+- معتبر بودن نوع عملیات upload
+- تعداد فایل‌ها
+- حجم کل payload و حجم هر فایل
+- MIME type دقیق بر اساس allow list
+- magic signature واقعی JPEG، PNG، WebP یا PDF
+
+این کنترل‌ها جایگزین validation بک‌اند نیستند و یک لایه دفاعی مستقل ایجاد می‌کنند.
+
+## مشاهده‌پذیری
+
+مرورگر metricهای LCP، CLS و INP را با `navigator.sendBeacon` ارسال می‌کند. error boundaryهای React
+فقط نام خطا، مسیر بدون query parameter و digest غیرقابل‌تفسیر را گزارش می‌کنند.
+
+route مربوط به `/api/telemetry` فقط JSON هم‌مبدأ با حداکثر حجم ۲ کیلوبایت را می‌پذیرد، فیلدها را با
+allow list محدود می‌کند و خروجی ساختاریافته container را بدون header، stack trace، token یا مشخصات
+کاربر می‌نویسد.
+
+## کنترل عملکرد
+
+build محیط production شامل compression، فرمت‌های AVIF و WebP، React strict mode، خروجی standalone و
+کش immutable فونت است. script پس از build بودجه‌های زیر را کنترل می‌کند:
+
+- مجموع JavaScript اولیه به‌صورت gzip
+- حجم هر تصویر عمومی
+- مجموع حجم فونت‌ها
+
+هدف‌های runtime عبارت‌اند از LCP کمتر از ۲٫۵ ثانیه، CLS کمتر از ۰٫۱ و INP کمتر از ۲۰۰ میلی‌ثانیه روی
+موبایل میان‌رده.
+
+## حالت ثابت production
+
+برنامه environment selector ندارد. تنظیمات سمت سرور همیشه رفتار production را ارائه می‌کنند، secret
+نشست در runtime اجباری است، حالت خودکار کوکی از Secure استفاده می‌کند و packageهای مخصوص runtime
+توسعه حذف شده‌اند.
+
+در بررسی محلی Docker می‌توان ویژگی Secure کوکی را به‌صورت صریح غیرفعال کرد، زیرا gateway محلی روی
+HTTP اجرا می‌شود. این متغیر فقط ویژگی transport را تنظیم می‌کند و mode برنامه را از production تغییر
+نمی‌دهد.
+
+</div>
