@@ -10,32 +10,37 @@ BFF این مسیر را به آدرس خصوصی بک‌اند در `API_BASE_U
 
 ## منابع عمومی بک‌اند
 
-- `GET /blog` و `GET /blog/:slug` محتوای مقالات منتشرشده را ارائه می‌کنند.
-- `GET /majors` و `GET /subjects?major=...` اطلاعات مرجع رشته‌ها و درس‌ها را برمی‌گردانند.
-- `POST /auth/request-otp`، `POST /auth/verify-otp` و `POST /auth/refresh` عملیات احراز هویت را
-  انجام می‌دهند.
+<ul dir="rtl" align="right">
+  <li dir="rtl" align="right"><code>GET /blog</code> و <code>GET /blog/:slug</code> محتوای مقالات منتشرشده را ارائه می‌کنند.</li>
+  <li dir="rtl" align="right"><code>GET /majors</code> و <code>GET /subjects?major=...</code> اطلاعات مرجع رشته‌ها و درس‌ها را برمی‌گردانند.</li>
+  <li dir="rtl" align="right"><code>POST /auth/request-otp</code>، <code>POST /auth/verify-otp</code> و <code>POST /auth/refresh</code> عملیات احراز هویت را انجام می‌دهند.</li>
+</ul>
 
 خواندن داده‌های عمومی در Server Componentها از `services/server/public-content.ts` انجام می‌شود.
 عملیات تعاملی مرورگر همیشه از BFF هم‌مبدأ عبور می‌کنند.
 
 ## منابع دانش‌آموز
 
-- `/students/profile`: ایجاد، خواندن و ویرایش پروفایل دانش‌آموز جاری
-- `/students/dashboard`: وضعیت تأیید و خلاصه فعالیت‌های اخیر
-- `/exams` و `/exams/:id`: عملیات CRUD آزمون‌های دانش‌آموز جاری
-- `/mistakes` و `/mistakes/:id`: عملیات CRUD دفترچه اشتباهات
-- `/students/statistics`: آمار دانش‌آموز با فیلتر اختیاری بازه تاریخ جلالی
-- `/students/performance`: تاریخچه گزارش‌های مشاور به‌صورت فقط خواندنی
-- `/upload` و `/upload/multiple`: آپلود احرازشده تصویر پروفایل یا اسناد
+<ul dir="rtl" align="right">
+  <li dir="rtl" align="right"><code>/students/profile</code>: ایجاد، خواندن و ویرایش پروفایل دانش‌آموز جاری</li>
+  <li dir="rtl" align="right"><code>/students/dashboard</code>: وضعیت تأیید و خلاصه فعالیت‌های اخیر</li>
+  <li dir="rtl" align="right"><code>/exams</code> و <code>/exams/:id</code>: عملیات CRUD آزمون‌های دانش‌آموز جاری</li>
+  <li dir="rtl" align="right"><code>/mistakes</code> و <code>/mistakes/:id</code>: عملیات CRUD دفترچه اشتباهات</li>
+  <li dir="rtl" align="right"><code>/students/statistics</code>: آمار دانش‌آموز با فیلتر اختیاری بازه تاریخ جلالی</li>
+  <li dir="rtl" align="right"><code>/students/performance</code>: تاریخچه گزارش‌های مشاور به‌صورت فقط خواندنی</li>
+  <li dir="rtl" align="right"><code>/upload</code> و <code>/upload/multiple</code>: آپلود احرازشده تصویر پروفایل یا اسناد</li>
+</ul>
 
 ## منابع مدیر
 
-- `/admin/students/with-stats`: فهرست صفحه‌بندی‌شده دانش‌آموزان همراه آمار
-- `/admin/students/:id`: مشاهده و ویرایش پروفایل دانش‌آموز
-- `/admin/students/:id/approve`: تغییر وضعیت تأیید دانش‌آموز
-- زیرمنابع دانش‌آموز برای آزمون‌ها، اشتباهات، آمار و گزارش‌های عملکرد
-- `/admin/blog`: چرخه کامل ایجاد، ویرایش، انتشار و حذف مقاله
-- `/admin/dynamic-fields`: مدیریت تعریف فیلدهای پویا
+<ul dir="rtl" align="right">
+  <li dir="rtl" align="right"><code>/admin/students/with-stats</code>: فهرست صفحه‌بندی‌شده دانش‌آموزان همراه آمار</li>
+  <li dir="rtl" align="right"><code>/admin/students/:id</code>: مشاهده و ویرایش پروفایل دانش‌آموز</li>
+  <li dir="rtl" align="right"><code>/admin/students/:id/approve</code>: تغییر وضعیت تأیید دانش‌آموز</li>
+  <li dir="rtl" align="right">زیرمنابع دانش‌آموز برای آزمون‌ها، اشتباهات، آمار و گزارش‌های عملکرد</li>
+  <li dir="rtl" align="right"><code>/admin/blog</code>: چرخه کامل ایجاد، ویرایش، انتشار و حذف مقاله</li>
+  <li dir="rtl" align="right"><code>/admin/dynamic-fields</code>: مدیریت تعریف فیلدهای پویا</li>
+</ul>
 
 ## خط لوله درخواست
 
@@ -61,11 +66,13 @@ BFF این مسیر را به آدرس خصوصی بک‌اند در `API_BASE_U
 
 ## ابطال کش
 
-- mutation پروفایل، queryهای پروفایل و داشبورد را invalidate می‌کند.
-- mutation آزمون، فهرست و جزئیات آزمون، خلاصه داشبورد و آمار را invalidate می‌کند.
-- mutation اشتباه، فهرست اشتباهات و آمار وابسته را invalidate می‌کند.
-- عملیات مدیر روی دانش‌آموز فقط رکورد و فهرست مرتبط را invalidate می‌کند.
-- mutation مقاله queryهای مدیر را invalidate و revalidation کش عمومی را اجرا می‌کند.
+<ul dir="rtl" align="right">
+  <li dir="rtl" align="right">mutation پروفایل، queryهای پروفایل و داشبورد را invalidate می‌کند.</li>
+  <li dir="rtl" align="right">mutation آزمون، فهرست و جزئیات آزمون، خلاصه داشبورد و آمار را invalidate می‌کند.</li>
+  <li dir="rtl" align="right">mutation اشتباه، فهرست اشتباهات و آمار وابسته را invalidate می‌کند.</li>
+  <li dir="rtl" align="right">عملیات مدیر روی دانش‌آموز فقط رکورد و فهرست مرتبط را invalidate می‌کند.</li>
+  <li dir="rtl" align="right">mutation مقاله queryهای مدیر را invalidate و revalidation کش عمومی را اجرا می‌کند.</li>
+</ul>
 
 ## نگهداری قراردادها
 

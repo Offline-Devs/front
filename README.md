@@ -7,13 +7,15 @@
 
 ## فناوری‌های اصلی
 
-- Next.js 16 با App Router، React 19 و TypeScript در حالت strict
-- Tailwind CSS 4 به همراه فونت متغیر وزیرمتن با میزبانی آفلاین
-- TanStack Query برای داده‌های سرور و Zustand برای وضعیت احراز هویت بدون نگهداری توکن
-- React Hook Form و Zod برای فرم‌های type-safe و اعتبارسنجی داده‌ها
-- کامپوننت‌های Radix UI، آیکن‌های Lucide، نمودارهای Recharts و اعلان‌های Sonner
-- نشست رمزنگاری‌شده BFF در کوکی HttpOnly؛ توکن دسترسی و refresh هیچ‌گاه وارد مرورگر نمی‌شوند
-- Vitest، Testing Library، MSW، Playwright و axe-core برای تست خودکار
+<ul dir="rtl" align="right">
+  <li dir="rtl" align="right">Next.js 16 با App Router، React 19 و TypeScript در حالت strict</li>
+  <li dir="rtl" align="right">Tailwind CSS 4 به همراه فونت متغیر وزیرمتن با میزبانی آفلاین</li>
+  <li dir="rtl" align="right">TanStack Query برای داده‌های سرور و Zustand برای وضعیت احراز هویت بدون نگهداری توکن</li>
+  <li dir="rtl" align="right">React Hook Form و Zod برای فرم‌های type-safe و اعتبارسنجی داده‌ها</li>
+  <li dir="rtl" align="right">کامپوننت‌های Radix UI، آیکن‌های Lucide، نمودارهای Recharts و اعلان‌های Sonner</li>
+  <li dir="rtl" align="right">نشست رمزنگاری‌شده BFF در کوکی HttpOnly؛ توکن دسترسی و refresh هیچ‌گاه وارد مرورگر نمی‌شوند</li>
+  <li dir="rtl" align="right">Vitest، Testing Library، MSW، Playwright و axe-core برای تست خودکار</li>
+</ul>
 
 ## اجرای کامل سامانه
 
@@ -48,11 +50,13 @@ npm run quality
 
 ## مستندات
 
-- [جریان‌های کامل کاربران](docs/USER_FLOWS.md)
-- [معماری فنی](docs/TECHNICAL_ARCHITECTURE.md)
-- [ارتباط با API](docs/API_INTEGRATION.md)
-- [عملیات و Docker](docs/OPERATIONS.md)
-- [امنیت و کنترل کیفیت](docs/SECURITY_AND_QUALITY.md)
+<ul dir="rtl" align="right">
+  <li dir="rtl" align="right"><a href="docs/USER_FLOWS.md">جریان‌های کامل کاربران</a></li>
+  <li dir="rtl" align="right"><a href="docs/TECHNICAL_ARCHITECTURE.md">معماری فنی</a></li>
+  <li dir="rtl" align="right"><a href="docs/API_INTEGRATION.md">ارتباط با API</a></li>
+  <li dir="rtl" align="right"><a href="docs/OPERATIONS.md">عملیات و Docker</a></li>
+  <li dir="rtl" align="right"><a href="docs/SECURITY_AND_QUALITY.md">امنیت و کنترل کیفیت</a></li>
+</ul>
 
 حالت اجرایی برنامه همواره production است. متغیرهای محیطی فقط مقادیر وابسته به استقرار را تنظیم
 می‌کنند و امکان تغییر رفتار برنامه به development یا test را ندارند.

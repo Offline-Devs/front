@@ -57,12 +57,11 @@ docker compose down
 
 ## ماندگاری و پشتیبان‌گیری
 
-- volume به نام `postgres_data` شامل رکوردهای اصلی سامانه است و به backup سازگار با PostgreSQL نیاز
-  دارد.
-- volume به نام `redis_data` وضعیت AOF سرویس Redis را نگهداری می‌کند، اما جایگزین backup پایگاه داده
-  نیست.
-- volume به نام `uploads` شامل فایل‌های کاربران است و باید هماهنگ با referenceهای فایل در پایگاه
-  داده backup گرفته شود.
+<ul dir="rtl" align="right">
+  <li dir="rtl" align="right">volume به نام <code>postgres_data</code> شامل رکوردهای اصلی سامانه است و به backup سازگار با PostgreSQL نیاز دارد.</li>
+  <li dir="rtl" align="right">volume به نام <code>redis_data</code> وضعیت AOF سرویس Redis را نگهداری می‌کند، اما جایگزین backup پایگاه داده نیست.</li>
+  <li dir="rtl" align="right">volume به نام <code>uploads</code> شامل فایل‌های کاربران است و باید هماهنگ با referenceهای فایل در پایگاه داده backup گرفته شود.</li>
+</ul>
 
 ## بررسی سلامت استقرار
 

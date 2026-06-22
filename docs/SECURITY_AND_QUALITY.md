@@ -4,24 +4,25 @@
 
 ## کنترل‌های امنیتی
 
-- نشست رمزنگاری‌شده JWE داخل کوکی HttpOnly و SameSite مانع دسترسی JavaScript به توکن‌ها می‌شود.
-- بررسی same-origin از routeهای mutation در BFF محافظت می‌کند.
-- CSP منبع script، style، تصویر، فونت، اتصال شبکه، فرم، frame و object را محدود می‌کند.
-- Referrer Policy، جلوگیری از MIME sniffing، جلوگیری از نمایش داخل frame، محدودیت permissionهای
-  مرورگر و opener isolation به‌صورت سراسری اعمال می‌شوند.
-- پاک‌سازی HTML مقالات و escape کردن JSON-LD مانع اجرای محتوای غیرقابل‌اعتماد می‌شود.
-- policy آپلود، metadata و signature باینری فایل را قبل از ارسال به بک‌اند کنترل می‌کند.
-- telemetry فقط فیلدهای مجاز را می‌پذیرد و PII، اطلاعات درخواست، credential و stack trace را ثبت
-  نمی‌کند.
+<ul dir="rtl" align="right">
+  <li dir="rtl" align="right">نشست رمزنگاری‌شده JWE داخل کوکی HttpOnly و SameSite مانع دسترسی JavaScript به توکن‌ها می‌شود.</li>
+  <li dir="rtl" align="right">بررسی same-origin از routeهای mutation در BFF محافظت می‌کند.</li>
+  <li dir="rtl" align="right">CSP منبع script، style، تصویر، فونت، اتصال شبکه، فرم، frame و object را محدود می‌کند.</li>
+  <li dir="rtl" align="right">Referrer Policy، جلوگیری از MIME sniffing، جلوگیری از نمایش داخل frame، محدودیت permissionهای مرورگر و opener isolation به‌صورت سراسری اعمال می‌شوند.</li>
+  <li dir="rtl" align="right">پاک‌سازی HTML مقالات و escape کردن JSON-LD مانع اجرای محتوای غیرقابل‌اعتماد می‌شود.</li>
+  <li dir="rtl" align="right">policy آپلود، metadata و signature باینری فایل را قبل از ارسال به بک‌اند کنترل می‌کند.</li>
+  <li dir="rtl" align="right">telemetry فقط فیلدهای مجاز را می‌پذیرد و PII، اطلاعات درخواست، credential و stack trace را ثبت نمی‌کند.</li>
+</ul>
 
 ## لایه‌های تست خودکار
 
-- تست‌های Unit برای schemaها، formatterها، تبدیل تاریخ جلالی، mapperها، helperهای کش، رمزنگاری نشست،
-  policy آپلود و نگاشت خطا
-- تست‌های Component برای فرم‌ها، جدول‌های asynchronous، dialogها و primitiveهای رابط کاربری
-- تست‌های Integration مبتنی بر MSW برای رفتار featureها در مرز transport مرورگر
-- تست‌های Playwright برای مسیرهای حیاتی دانش‌آموز و مدیر در دسکتاپ و viewport موبایل
-- تست‌های axe-core برای خطاهای مهم WCAG A/AA به همراه بررسی keyboard focus و reduced motion
+<ul dir="rtl" align="right">
+  <li dir="rtl" align="right">تست‌های Unit برای schemaها، formatterها، تبدیل تاریخ جلالی، mapperها، helperهای کش، رمزنگاری نشست، policy آپلود و نگاشت خطا</li>
+  <li dir="rtl" align="right">تست‌های Component برای فرم‌ها، جدول‌های asynchronous، dialogها و primitiveهای رابط کاربری</li>
+  <li dir="rtl" align="right">تست‌های Integration مبتنی بر MSW برای رفتار featureها در مرز transport مرورگر</li>
+  <li dir="rtl" align="right">تست‌های Playwright برای مسیرهای حیاتی دانش‌آموز و مدیر در دسکتاپ و viewport موبایل</li>
+  <li dir="rtl" align="right">تست‌های axe-core برای خطاهای مهم WCAG A/AA به همراه بررسی keyboard focus و reduced motion</li>
+</ul>
 
 ## گیت الزامی
 
