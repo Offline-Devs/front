@@ -16,12 +16,14 @@ import { DashboardNavigation } from "./dashboard-navigation";
 import { useLogout } from "@/hooks/use-logout";
 import { MobileMenuIcon } from "@/components/ui/mobile-menu-icon";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { ProfileAvatar } from "./profile-avatar";
 
 export function DashboardHeader({ role }: { role: "student" | "admin" }) {
   const logout = useLogout();
   const [menuOpen, setMenuOpen] = useState(false);
   return (
     <header className="sticky top-0 z-40 flex h-20 items-center gap-3 border-b border-border/80 bg-card/95 px-4 backdrop-blur-xl sm:px-8">
+      <ProfileAvatar role={role} />
       <Drawer open={menuOpen} onOpenChange={setMenuOpen}>
         <DrawerTrigger asChild>
           <Button

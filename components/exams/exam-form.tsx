@@ -41,6 +41,7 @@ export function ExamForm({ exam }: { exam?: Exam }) {
     defaultValues: {
       title: exam?.title ?? "",
       jalali_date: exam?.jalali_date ?? "",
+      negative_mark: exam?.negative_mark ?? 0.33,
       dynamic_fields: exam?.dynamic_fields ?? {},
       subjects: exam?.subjects?.length
         ? exam.subjects.map(
@@ -111,7 +112,7 @@ export function ExamForm({ exam }: { exam?: Exam }) {
           </AlertDescription>
         </Alert>
       )}
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className="grid gap-4 sm:grid-cols-3">
         <FormField label="عنوان آزمون" error={form.formState.errors.title?.message} required>
           <Input {...form.register("title")} placeholder="مثلاً آزمون جامع خرداد" autoFocus />
         </FormField>
@@ -127,6 +128,22 @@ export function ExamForm({ exam }: { exam?: Exam }) {
                 shouldValidate: true,
               })
             }
+          />
+        </FormField>
+        <FormField
+          label="نمره منفی هر پاسخ غلط"
+          hint="عددی بین صفر تا یک؛ برای مثال ۰٫۳۳"
+          error={form.formState.errors.negative_mark?.message}
+          required
+        >
+          <Input
+            {...form.register("negative_mark", { valueAsNumber: true })}
+            type="number"
+            inputMode="decimal"
+            min="0"
+            max="1"
+            step="0.01"
+            dir="ltr"
           />
         </FormField>
       </div>

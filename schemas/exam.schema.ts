@@ -39,6 +39,10 @@ export const examSchema = z
         (value) => /^1[34]\d{2}\/(0[1-9]|1[0-2])\/(0[1-9]|[12]\d|3[01])$/.test(value),
         "تاریخ معتبر با قالب ۱۴۰۰/۰۱/۰۱ وارد کنید.",
       ),
+    negative_mark: z.coerce
+      .number({ error: "نمره منفی را وارد کنید." })
+      .min(0, "نمره منفی نمی‌تواند کمتر از صفر باشد.")
+      .max(1, "نمره منفی هر پاسخ نمی‌تواند بیشتر از یک باشد."),
     subjects: z.array(subjectExamSchema).min(1, "حداقل یک درس اضافه کنید."),
     dynamic_fields: z.record(z.string(), z.unknown()),
   })

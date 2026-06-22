@@ -29,6 +29,9 @@ export function ExamSummary({ id }: { id: string }) {
           <p className="mt-2 text-muted-foreground">
             {exam.data.jalali_date} · {exam.data.major}
           </p>
+          <p className="mt-1 text-sm text-muted-foreground">
+            نمره منفی هر پاسخ غلط: {formatNumber(exam.data.negative_mark)}
+          </p>
         </div>
         <Button asChild variant="outline">
           <Link href={`/exams/${id}/edit`}>

@@ -1,7 +1,7 @@
 "use client";
 
 import * as SelectPrimitive from "@radix-ui/react-select";
-import { Check, ChevronDown, ChevronUp } from "lucide-react";
+import { Check, ChevronDown } from "lucide-react";
 import type { ComponentProps } from "react";
 import { cn } from "@/lib/cn";
 
@@ -43,19 +43,15 @@ export function SelectContent({
         dir="rtl"
         position={position}
         className={cn(
-          "z-50 max-h-72 min-w-[8rem] overflow-hidden rounded-md border border-primary/10 bg-popover text-popover-foreground shadow-[var(--shadow-md)] data-[state=open]:animate-in",
+          "z-50 min-w-[8rem] overflow-hidden rounded-md border border-primary/10 bg-popover text-popover-foreground shadow-[var(--shadow-md)] data-[state=open]:animate-in",
           position === "popper" && "w-[var(--radix-select-trigger-width)]",
           className,
         )}
         {...props}
       >
-        <SelectPrimitive.ScrollUpButton className="flex h-7 items-center justify-center">
-          <ChevronUp className="size-4" />
-        </SelectPrimitive.ScrollUpButton>
-        <SelectPrimitive.Viewport className="p-1">{children}</SelectPrimitive.Viewport>
-        <SelectPrimitive.ScrollDownButton className="flex h-7 items-center justify-center">
-          <ChevronDown className="size-4" />
-        </SelectPrimitive.ScrollDownButton>
+        <SelectPrimitive.Viewport className="max-h-[min(18rem,var(--radix-select-content-available-height))] scroll-py-1 overflow-y-auto overscroll-contain p-1 [scrollbar-gutter:stable] [scrollbar-width:thin]">
+          {children}
+        </SelectPrimitive.Viewport>
       </SelectPrimitive.Content>
     </SelectPrimitive.Portal>
   );

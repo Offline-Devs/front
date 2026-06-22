@@ -59,6 +59,9 @@ export function ExamList() {
                 <p className="mt-2 text-sm text-muted-foreground">
                   {exam.jalali_date} · {exam.major}
                 </p>
+                <p className="mt-1 text-xs text-muted-foreground">
+                  نمره منفی هر غلط: {formatNumber(exam.negative_mark)}
+                </p>
               </div>
               <span className="rounded-full bg-accent px-2.5 py-1 text-xs font-bold text-primary">
                 {formatNumber(exam.total_subjects)} درس

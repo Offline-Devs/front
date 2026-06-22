@@ -32,6 +32,7 @@ test("student onboarding, exam and mistake flow", async ({ page }) => {
   await page.getByRole("option", { name: "تجربی" }).click();
   await page.getByRole("button", { name: "ثبت و ورود به پنل" }).click();
   await expect(page).toHaveURL(/dashboard/);
+  await expect(page.getByRole("link", { name: "سارا احمدی" })).toBeVisible();
   await page.goto("/exams/new");
   await expect(
     page.getByRole("navigation", { name: "مسیر صفحه" }).getByText("ثبت آزمون جدید"),
@@ -44,6 +45,7 @@ test("student onboarding, exam and mistake flow", async ({ page }) => {
   await page.getByRole("option", { name: "خرداد" }).click();
   await page.getByRole("button", { name: "۳۱", exact: true }).click();
   await page.getByRole("button", { name: "تأیید تاریخ" }).click();
+  await page.getByLabel("نمره منفی هر پاسخ غلط").fill("0.25");
   await page.getByRole("combobox", { name: "نام درس" }).click();
   await page.getByRole("option", { name: "زیست‌شناسی" }).click();
   for (const [label, value] of [
@@ -53,7 +55,7 @@ test("student onboarding, exam and mistake flow", async ({ page }) => {
     ["غلط", "2"],
     ["نزده", "0"],
   ])
-    await page.getByLabel(label).fill(value);
+    await (label === "غلط" ? page.getByLabel(/^غلط/) : page.getByLabel(label)).fill(value);
   await page.getByRole("button", { name: "ثبت آزمون" }).click();
   await expect(page).toHaveURL(/exams\/4444/);
   await expect(

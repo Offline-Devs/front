@@ -19,6 +19,7 @@ export type Exam = {
   exam_date: string;
   jalali_date: string;
   major: string;
+  negative_mark: number;
   total_subjects: number;
   dynamic_fields: DynamicValues;
   created_at: string;
@@ -31,6 +32,7 @@ export type ExamInput = {
   exam_date?: string;
   jalali_date: string;
   major: string;
+  negative_mark: number;
   total_subjects: number;
   dynamic_fields: DynamicValues;
   subjects: SubjectExamInput[];

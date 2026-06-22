@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { dynamicFieldFixture, performanceFixture } from "@/mocks/fixtures";
+import { dynamicFieldFixture, examFixture, performanceFixture } from "@/mocks/fixtures";
 import { mapDynamicField } from "./dynamic-field.mapper";
+import { mapExam } from "./exam.mapper";
 import { mapPerformance } from "./performance.mapper";
 
 describe("response mappers", () => {
@@ -13,5 +14,8 @@ describe("response mappers", () => {
       [],
     );
     expect(mapPerformance({ ...performanceFixture, files: "{}" }).attachments).toEqual([]);
+  });
+  it("applies the exam negative mark to subject percentages", () => {
+    expect(mapExam(examFixture).subjects?.[0].percentage).toBeCloseTo(70.05);
   });
 });

@@ -9,6 +9,18 @@ function safeDate(value: string) {
   }
 }
 export function mapExam(value: Exam): Exam {
-  return { ...value, jalali_date: safeDate(value.jalali_date), subjects: value.subjects ?? [] };
+  const negativeMark = Number.isFinite(value.negative_mark) ? value.negative_mark : 0;
+  return {
+    ...value,
+    negative_mark: negativeMark,
+    jalali_date: safeDate(value.jalali_date),
+    subjects: (value.subjects ?? []).map((subject) => ({
+      ...subject,
+      percentage:
+        subject.total_questions > 0
+          ? ((subject.correct - subject.wrong * negativeMark) / subject.total_questions) * 100
+          : 0,
+    })),
+  };
 }
 export const mapExamList = (values: Exam[]) => values.map(mapExam);

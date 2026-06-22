@@ -55,6 +55,7 @@ export const examFixture = {
   exam_date: "2026-06-21T00:00:00Z",
   jalali_date: "1405/03/31",
   major: "تجربی",
+  negative_mark: 0.33,
   total_subjects: 1,
   dynamic_fields: {},
   created_at: createdAt,
