@@ -2,13 +2,13 @@
 import { useQuery } from "@tanstack/react-query";
 import dynamic from "next/dynamic";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { ApiErrorState } from "@/components/shared/api-error-state";
 import { EmptyState } from "@/components/shared/empty-state";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { FormField } from "@/components/ui/form-field";
-import { Input } from "@/components/ui/input";
+import { JalaliDatePicker } from "@/components/ui/jalali-date-picker";
 import {
   normalizeStatisticsDate,
   totalCategorizedMistakes,
@@ -38,8 +38,14 @@ export function StatisticsDashboard() {
   const pathname = usePathname();
   const fromParam = searchParams.get("from") ?? "";
   const toParam = searchParams.get("to") ?? "";
-  const fromRef = useRef<HTMLInputElement>(null);
-  const toRef = useRef<HTMLInputElement>(null);
+  const dateSource = `${fromParam}:${toParam}`;
+  const [dateDraft, setDateDraft] = useState({
+    source: dateSource,
+    from: fromParam,
+    to: toParam,
+  });
+  const fromDate = dateDraft.source === dateSource ? dateDraft.from : fromParam;
+  const toDate = dateDraft.source === dateSource ? dateDraft.to : toParam;
   const [filterError, setFilterError] = useState("");
   const filters = {
     ...(fromParam ? { from: fromParam } : {}),
@@ -51,8 +57,8 @@ export function StatisticsDashboard() {
     staleTime: 60_000,
   });
   function applyFilters() {
-    const normalizedFrom = normalizeStatisticsDate(fromRef.current?.value ?? "");
-    const normalizedTo = normalizeStatisticsDate(toRef.current?.value ?? "");
+    const normalizedFrom = normalizeStatisticsDate(fromDate);
+    const normalizedTo = normalizeStatisticsDate(toDate);
     const error = validateStatisticsRange(normalizedFrom, normalizedTo);
     if (error) {
       setFilterError(error);
@@ -66,6 +72,7 @@ export function StatisticsDashboard() {
   }
   function clearFilters() {
     setFilterError("");
+    setDateDraft({ source: dateSource, from: "", to: "" });
     router.push(pathname);
   }
   return (
@@ -73,30 +80,24 @@ export function StatisticsDashboard() {
       <Card>
         <CardContent className="grid gap-4 pt-5 sm:grid-cols-[1fr_1fr_auto]">
           <FormField label="از تاریخ" error={filterError || undefined}>
-            <Input
-              key={fromParam}
-              ref={fromRef}
-              defaultValue={fromParam}
-              dir="ltr"
-              inputMode="numeric"
-              placeholder="۱۴۰۵/۰۱/۰۱"
-              className="text-left"
+            <JalaliDatePicker
+              value={fromDate}
+              onChange={(value) => setDateDraft({ source: dateSource, from: value, to: toDate })}
+              title="انتخاب تاریخ شروع"
+              placeholder="انتخاب تاریخ شروع"
             />
           </FormField>
           <FormField label="تا تاریخ">
-            <Input
-              key={toParam}
-              ref={toRef}
-              defaultValue={toParam}
-              dir="ltr"
-              inputMode="numeric"
-              placeholder="۱۴۰۵/۱۲/۲۹"
-              className="text-left"
+            <JalaliDatePicker
+              value={toDate}
+              onChange={(value) => setDateDraft({ source: dateSource, from: fromDate, to: value })}
+              title="انتخاب تاریخ پایان"
+              placeholder="انتخاب تاریخ پایان"
             />
           </FormField>
           <div className="flex items-end gap-2">
             <Button onClick={applyFilters}>اعمال بازه</Button>
-            {(fromParam || toParam) && (
+            {(fromDate || toDate || fromParam || toParam) && (
               <Button variant="ghost" onClick={clearFilters}>
                 پاک‌کردن
               </Button>

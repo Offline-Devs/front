@@ -3,6 +3,7 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { FormField } from "@/components/ui/form-field";
 import { Input } from "@/components/ui/input";
+import { JalaliDatePicker } from "@/components/ui/jalali-date-picker";
 import {
   Select,
   SelectContent,
@@ -73,6 +74,20 @@ export function DynamicFieldRenderer({
     );
   }
 
+  if (field.field_type === "date") {
+    return (
+      <FormField label={field.label} error={error} required={field.is_required}>
+        <JalaliDatePicker
+          value={typeof value === "string" ? value : ""}
+          onChange={onChange}
+          disabled={disabled}
+          title={`انتخاب ${field.label}`}
+          placeholder="انتخاب تاریخ"
+        />
+      </FormField>
+    );
+  }
+
   return (
     <FormField label={field.label} error={error} required={field.is_required}>
       <Input
@@ -89,8 +104,6 @@ export function DynamicFieldRenderer({
           )
         }
         disabled={disabled}
-        dir={field.field_type === "date" ? "ltr" : undefined}
-        placeholder={field.field_type === "date" ? "۱۴۰۰/۰۱/۰۱" : undefined}
       />
     </FormField>
   );

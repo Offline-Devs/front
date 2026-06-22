@@ -11,6 +11,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { FormField } from "@/components/ui/form-field";
 import { Input } from "@/components/ui/input";
+import { JalaliDatePicker } from "@/components/ui/jalali-date-picker";
 import {
   Select,
   SelectContent,
@@ -66,6 +67,7 @@ export function ExamForm({ exam }: { exam?: Exam }) {
   const major = useWatch({ control: form.control, name: "major" });
   const watchedSubjects = useWatch({ control: form.control, name: "subjects" });
   const dynamicValues = useWatch({ control: form.control, name: "dynamic_fields" });
+  const examDate = useWatch({ control: form.control, name: "jalali_date" });
   const majors = useQuery({
     queryKey: queryKeys.majors,
     queryFn: subjectsApi.majors,
@@ -115,12 +117,17 @@ export function ExamForm({ exam }: { exam?: Exam }) {
           <Input {...form.register("title")} placeholder="مثلاً آزمون جامع خرداد" autoFocus />
         </FormField>
         <FormField label="تاریخ شمسی" error={form.formState.errors.jalali_date?.message} required>
-          <Input
-            {...form.register("jalali_date")}
-            dir="ltr"
-            inputMode="numeric"
-            placeholder="۱۴۰۵/۰۳/۳۱"
-            className="text-left"
+          <JalaliDatePicker
+            value={examDate}
+            title="انتخاب تاریخ آزمون"
+            placeholder="انتخاب تاریخ آزمون"
+            onChange={(value) =>
+              form.setValue("jalali_date", value, {
+                shouldDirty: true,
+                shouldTouch: true,
+                shouldValidate: true,
+              })
+            }
           />
         </FormField>
         <FormField label="رشته" error={form.formState.errors.major?.message} required>

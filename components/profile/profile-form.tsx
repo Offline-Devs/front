@@ -118,6 +118,9 @@ export function ProfileForm({ profile, dynamicFields = [], onboarding = false }:
           >
             <JalaliDatePicker
               value={selectedBirthDate}
+              purpose="birth"
+              title="انتخاب تاریخ تولد"
+              placeholder="انتخاب تاریخ تولد"
               onChange={(value) =>
                 form.setValue("jalali_birth_date", value, {
                   shouldDirty: true,

@@ -4,11 +4,12 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { FileUp, Save, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { FormField } from "@/components/ui/form-field";
 import { Input } from "@/components/ui/input";
+import { JalaliDatePicker } from "@/components/ui/jalali-date-picker";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/components/ui/toast";
 import { env } from "@/config/env";
@@ -48,6 +49,7 @@ export function PerformanceForm({
       files: existingFiles,
     },
   });
+  const reportDate = useWatch({ control: form.control, name: "jalali_date" });
   const save = useMutation({
     mutationFn: async (values: PerformanceFormOutput) => {
       const uploaded = selectedFiles.length
@@ -113,13 +115,18 @@ export function PerformanceForm({
       onSubmit={form.handleSubmit((values) => save.mutate(values))}
     >
       <FormField label="تاریخ گزارش" error={form.formState.errors.jalali_date?.message} required>
-        <Input
-          {...form.register("jalali_date")}
+        <JalaliDatePicker
+          value={reportDate}
           disabled={Boolean(record)}
-          dir="ltr"
-          inputMode="numeric"
-          placeholder="۱۴۰۵/۰۳/۳۱"
-          className="text-left"
+          title="انتخاب تاریخ گزارش"
+          placeholder="انتخاب تاریخ گزارش"
+          onChange={(value) =>
+            form.setValue("jalali_date", value, {
+              shouldDirty: true,
+              shouldTouch: true,
+              shouldValidate: true,
+            })
+          }
         />
       </FormField>
       <FormField label="برنامه مطالعاتی" error={form.formState.errors.study_plan?.message}>

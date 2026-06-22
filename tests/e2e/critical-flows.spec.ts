@@ -34,7 +34,13 @@ test("student onboarding, exam and mistake flow", async ({ page }) => {
   await expect(page).toHaveURL(/dashboard/);
   await page.goto("/exams/new");
   await page.getByLabel("عنوان آزمون").fill("آزمون جامع");
-  await page.getByLabel("تاریخ شمسی").fill("۱۴۰۵/۰۳/۳۱");
+  await page.getByLabel("تاریخ شمسی").click();
+  await page.getByRole("combobox", { name: "سال", exact: true }).click();
+  await page.getByRole("option", { name: "۱۴۰۵" }).click();
+  await page.getByRole("combobox", { name: "ماه", exact: true }).click();
+  await page.getByRole("option", { name: "خرداد" }).click();
+  await page.getByRole("button", { name: "۳۱", exact: true }).click();
+  await page.getByRole("button", { name: "تأیید تاریخ" }).click();
   await page.getByRole("combobox").first().click();
   await page.getByRole("option", { name: "تجربی" }).click();
   await page.getByRole("combobox", { name: "نام درس" }).click();

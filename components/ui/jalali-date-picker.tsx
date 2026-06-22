@@ -101,6 +101,9 @@ type JalaliDatePickerProps = AriaAttributes & {
   onChange: (value: string) => void;
   disabled?: boolean;
   className?: string;
+  purpose?: "birth" | "general";
+  title?: string;
+  placeholder?: string;
 };
 
 export function JalaliDatePicker({
@@ -109,17 +112,22 @@ export function JalaliDatePicker({
   onChange,
   disabled,
   className,
+  purpose = "general",
+  title = "انتخاب تاریخ",
+  placeholder = "انتخاب تاریخ",
   ...ariaProps
 }: JalaliDatePickerProps) {
   const currentYear = getCurrentJalaliYear();
+  const maximumYear = purpose === "birth" ? currentYear : currentYear + 5;
+  const fallbackYear = purpose === "birth" ? currentYear - 18 : currentYear;
   const selected = parseValue(value);
   const [open, setOpen] = useState(false);
-  const [year, setYear] = useState(selected?.year ?? currentYear - 18);
+  const [year, setYear] = useState(selected?.year ?? fallbackYear);
   const [month, setMonth] = useState(selected?.month ?? 1);
   const [day, setDay] = useState(selected?.day ?? 1);
   const years = useMemo(
-    () => Array.from({ length: currentYear - 1299 }, (_, index) => currentYear - index),
-    [currentYear],
+    () => Array.from({ length: maximumYear - 1299 }, (_, index) => maximumYear - index),
+    [maximumYear],
   );
   const dayCount = daysInJalaliMonth(year, month);
 
@@ -136,7 +144,7 @@ export function JalaliDatePicker({
   function handleOpenChange(nextOpen: boolean) {
     if (nextOpen) {
       const current = parseValue(value);
-      setYear(current?.year ?? currentYear - 18);
+      setYear(current?.year ?? fallbackYear);
       setMonth(current?.month ?? 1);
       setDay(current?.day ?? 1);
     }
@@ -163,9 +171,7 @@ export function JalaliDatePicker({
         {...ariaProps}
       >
         <span>
-          {selected
-            ? value.replace(/\d/g, (digit) => "۰۱۲۳۴۵۶۷۸۹"[Number(digit)])
-            : "انتخاب تاریخ تولد"}
+          {selected ? value.replace(/\d/g, (digit) => "۰۱۲۳۴۵۶۷۸۹"[Number(digit)]) : placeholder}
         </span>
         <CalendarDays className="size-5 text-primary" aria-hidden="true" />
       </button>
@@ -176,7 +182,7 @@ export function JalaliDatePicker({
             <ModalHeader>
               <ModalTitle className="flex items-center gap-2 text-[var(--brand-strong)]">
                 <CalendarDays className="size-5 text-primary" aria-hidden="true" />
-                انتخاب تاریخ تولد
+                {title}
               </ModalTitle>
               <ModalDescription>
                 ابتدا سال و ماه را انتخاب کنید، سپس روی روز بزنید.
@@ -187,7 +193,7 @@ export function JalaliDatePicker({
           <div className="grid gap-5 p-5">
             <div className="grid grid-cols-2 gap-3">
               <Select value={String(year)} onValueChange={(item) => changeYear(Number(item))}>
-                <SelectTrigger aria-label="سال تولد">
+                <SelectTrigger aria-label={purpose === "birth" ? "سال تولد" : "سال"}>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -199,7 +205,7 @@ export function JalaliDatePicker({
                 </SelectContent>
               </Select>
               <Select value={String(month)} onValueChange={(item) => changeMonth(Number(item))}>
-                <SelectTrigger aria-label="ماه تولد">
+                <SelectTrigger aria-label={purpose === "birth" ? "ماه تولد" : "ماه"}>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
