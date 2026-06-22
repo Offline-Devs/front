@@ -22,18 +22,18 @@
 
 <table dir="rtl" width="100%">
   <thead dir="rtl" align="right">
-    <tr>
-      <th align="right">سرویس</th>
-      <th align="right">مسئولیت</th>
-      <th align="right">پورت منتشرشده</th>
+    <tr dir="rtl" align="right">
+      <th dir="rtl" align="right"><div dir="rtl" align="right">سرویس</div></th>
+      <th dir="rtl" align="right"><div dir="rtl" align="right">مسئولیت</div></th>
+      <th dir="rtl" align="right"><div dir="rtl" align="right">پورت منتشرشده</div></th>
     </tr>
   </thead>
   <tbody dir="rtl" align="right">
-    <tr><td><code>postgres</code></td><td>پایگاه داده دائمی بک‌اند</td><td>ندارد</td></tr>
-    <tr><td><code>redis</code></td><td>وضعیت موقت و rate limit بک‌اند</td><td>ندارد</td></tr>
-    <tr><td><code>backend</code></td><td>API مبتنی بر Go</td><td>ندارد</td></tr>
-    <tr><td><code>web</code></td><td>فرانت‌اند standalone و BFF مبتنی بر Next.js</td><td>ندارد</td></tr>
-    <tr><td><code>gateway</code></td><td>reverse proxy عمومی مبتنی بر Nginx</td><td><code>80</code></td></tr>
+    <tr dir="rtl" align="right"><td><code>postgres</code></td><td>پایگاه داده دائمی بک‌اند</td><td>ندارد</td></tr>
+    <tr dir="rtl" align="right"><td><code>redis</code></td><td>وضعیت موقت و rate limit بک‌اند</td><td>ندارد</td></tr>
+    <tr dir="rtl" align="right"><td><code>backend</code></td><td>API مبتنی بر Go</td><td>ندارد</td></tr>
+    <tr dir="rtl" align="right"><td><code>web</code></td><td>فرانت‌اند standalone و BFF مبتنی بر Next.js</td><td>ندارد</td></tr>
+    <tr dir="rtl" align="right"><td><code>gateway</code></td><td>reverse proxy عمومی مبتنی بر Nginx</td><td><code>80</code></td></tr>
   </tbody>
 </table>
 
