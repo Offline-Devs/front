@@ -33,6 +33,9 @@ test("student onboarding, exam and mistake flow", async ({ page }) => {
   await page.getByRole("button", { name: "ثبت و ورود به پنل" }).click();
   await expect(page).toHaveURL(/dashboard/);
   await page.goto("/exams/new");
+  await expect(
+    page.getByRole("navigation", { name: "مسیر صفحه" }).getByText("ثبت آزمون جدید"),
+  ).toBeVisible();
   await page.getByLabel("عنوان آزمون").fill("آزمون جامع");
   await page.getByLabel("تاریخ شمسی").click();
   await page.getByRole("combobox", { name: "سال", exact: true }).click();
@@ -55,6 +58,9 @@ test("student onboarding, exam and mistake flow", async ({ page }) => {
     await page.getByLabel(label).fill(value);
   await page.getByRole("button", { name: "ثبت آزمون" }).click();
   await expect(page).toHaveURL(/exams\/4444/);
+  await expect(
+    page.getByRole("navigation", { name: "مسیر صفحه" }).getByText("جزئیات آزمون"),
+  ).toBeVisible();
   await page.goto("/mistakes/new");
   await page.getByLabel("شماره سؤال").fill("3");
   await page.getByLabel("دسته‌بندی اشتباه").fill("بی‌دقتی");
@@ -69,6 +75,9 @@ test("admin approval and article flow", async ({ page }) => {
   await expect(page).toHaveURL(/admin/);
   await page.goto("/admin/students?approved=false&page=1");
   await page.getByRole("link", { name: "پرونده" }).click();
+  await expect(
+    page.getByRole("navigation", { name: "مسیر صفحه" }).getByText("پرونده دانش‌آموز"),
+  ).toBeVisible();
   await page.getByRole("button", { name: "تأیید دانش‌آموز" }).click();
   await expect(page.getByText("تأییدشده")).toBeVisible();
   await page.goto("/admin/blog/new");

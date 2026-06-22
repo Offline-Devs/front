@@ -1,5 +1,6 @@
 import { DashboardSidebar } from "./dashboard-sidebar";
 import { DashboardHeader } from "./dashboard-header";
+import { PageBreadcrumbs } from "./page-breadcrumbs";
 
 export function DashboardShell({
   children,
@@ -10,7 +11,10 @@ export function DashboardShell({
       <DashboardSidebar role={role} />
       <div className="min-w-0">
         <DashboardHeader role={role} />
-        <main className="dashboard-content">{children}</main>
+        <main className="dashboard-content">
+          <PageBreadcrumbs className="mb-6 rounded-lg border border-primary/10 bg-white px-4 py-3 shadow-[var(--shadow-sm)]" />
+          {children}
+        </main>
       </div>
     </div>
   );

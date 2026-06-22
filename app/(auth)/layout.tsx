@@ -2,6 +2,7 @@ import { GraduationCap } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { env } from "@/config/env";
+import { PageBreadcrumbs } from "@/components/layout/page-breadcrumbs";
 
 export default function AuthLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
@@ -17,6 +18,7 @@ export default function AuthLayout({ children }: Readonly<{ children: React.Reac
             </span>
             {env.appShortName}
           </Link>
+          <PageBreadcrumbs className="mb-8 border-b border-primary/10 pb-4" />
           <div className="my-auto">{children}</div>
           <p className="mt-10 text-xs text-muted-foreground">ورود امن با کد یک‌بارمصرف</p>
         </div>

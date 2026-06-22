@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
+import { PageBreadcrumbs } from "@/components/layout/page-breadcrumbs";
+import { Button } from "@/components/ui/button";
 import { reportTelemetry } from "@/lib/observability";
 
 export default function ErrorBoundary({
@@ -19,11 +21,14 @@ export default function ErrorBoundary({
     });
   }, [error]);
   return (
-    <main className="p-8 text-center">
-      <p>خطایی رخ داد.</p>
-      <button className="mt-4" onClick={reset}>
-        تلاش دوباره
-      </button>
+    <main className="page-container py-6">
+      <PageBreadcrumbs currentLabel="خطای صفحه" className="mb-12 border-b pb-4" />
+      <div className="grid min-h-[50vh] place-items-center text-center">
+        <div className="grid justify-items-center gap-4">
+          <h1 className="text-2xl font-black">خطایی رخ داد</h1>
+          <Button onClick={reset}>تلاش دوباره</Button>
+        </div>
+      </div>
     </main>
   );
 }
