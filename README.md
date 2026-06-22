@@ -1,6 +1,24 @@
 <div dir="rtl" align="right">
 
-# فرانت‌اند آکادمی نوشیروانی
+<p dir="rtl" align="right">
+  <strong>راهنمای پروژه:</strong>
+  <a href="docs/USER_FLOWS.md">جریان کاربران</a> ·
+  <a href="docs/TECHNICAL_ARCHITECTURE.md">معماری فنی</a> ·
+  <a href="docs/API_INTEGRATION.md">ارتباط API</a> ·
+  <a href="docs/OPERATIONS.md">عملیات</a> ·
+  <a href="docs/SECURITY_AND_QUALITY.md">امنیت و کیفیت</a>
+</p>
+
+---
+
+# 🎓 فرانت‌اند آکادمی نوشیروانی
+
+<p dir="rtl" align="right">
+  <strong>سامانه یکپارچه ثبت آزمون، تحلیل اشتباهات، مشاهده پیشرفت و مشاوره تحصیلی</strong><br />
+  فارسی، راست‌چین، امن و آماده اجرای production
+</p>
+
+---
 
 وب‌اپلیکیشن فارسی و راست‌چین آکادمی نوشیروانی برای مدیریت آزمون‌ها، تحلیل اشتباهات، گزارش‌های عملکرد
 تحصیلی و مدیریت دانش‌آموزان. این برنامه فقط با تنظیمات محیط production اجرا می‌شود.
@@ -60,5 +78,9 @@ npm run quality
 
 حالت اجرایی برنامه همواره production است. متغیرهای محیطی فقط مقادیر وابسته به استقرار را تنظیم
 می‌کنند و امکان تغییر رفتار برنامه به development یا test را ندارند.
+
+---
+
+<p dir="rtl" align="right"><strong>وضعیت مستندات:</strong> هماهنگ با پیاده‌سازی فعلی frontend و backend</p>
 
 </div>

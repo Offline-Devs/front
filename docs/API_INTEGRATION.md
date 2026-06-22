@@ -1,6 +1,20 @@
 <div dir="rtl" align="right">
 
-# ارتباط با API
+<p dir="rtl" align="right">
+  <a href="../README.md">خانه مستندات</a> ·
+  <a href="USER_FLOWS.md">جریان کاربران</a> ·
+  <a href="TECHNICAL_ARCHITECTURE.md">معماری فنی</a> ·
+  <a href="OPERATIONS.md">عملیات</a> ·
+  <a href="SECURITY_AND_QUALITY.md">امنیت و کیفیت</a>
+</p>
+
+---
+
+# 🔌 ارتباط با API
+
+<p dir="rtl" align="right"><strong>مرجع مسیرهای شبکه، BFF، مدیریت خطا و ابطال کش</strong></p>
+
+---
 
 ## مرز شبکه
 
@@ -79,5 +93,9 @@ BFF این مسیر را به آدرس خصوصی بک‌اند در `API_BASE_U
 مدل‌های JSON بک‌اند در `types/`، schemaهای mutation در `schemas/` و تبدیل تفاوت‌های ذخیره‌سازی در
 `services/mappers/` قرار دارند. هنگام تغییر پاسخ بک‌اند باید type، mapper، handler مربوط به MSW،
 fixture و تست integration هم‌زمان به‌روزرسانی شوند و سپس کامپوننت UI تغییر کند.
+
+---
+
+<p dir="rtl" align="right"><strong>اسناد مرتبط:</strong> <a href="TECHNICAL_ARCHITECTURE.md">معماری فنی</a> · <a href="OPERATIONS.md">عملیات و Docker</a></p>
 
 </div>

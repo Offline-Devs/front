@@ -1,6 +1,20 @@
 <div dir="rtl" align="right">
 
-# امنیت و کنترل کیفیت
+<p dir="rtl" align="right">
+  <a href="../README.md">خانه مستندات</a> ·
+  <a href="USER_FLOWS.md">جریان کاربران</a> ·
+  <a href="TECHNICAL_ARCHITECTURE.md">معماری فنی</a> ·
+  <a href="API_INTEGRATION.md">ارتباط API</a> ·
+  <a href="OPERATIONS.md">عملیات</a>
+</p>
+
+---
+
+# 🛡️ امنیت و کنترل کیفیت
+
+<p dir="rtl" align="right"><strong>کنترل‌های دفاعی، لایه‌های تست و گیت الزامی انتشار</strong></p>
+
+---
 
 ## کنترل‌های امنیتی
 
@@ -55,5 +69,9 @@
 `devDependencies` قرار می‌گیرند. هنگام پاک‌سازی ساختاری باید `npx knip` اجرا شود و قبل از حذف، entry
 pointهای قراردادی framework به‌صورت دستی بازبینی شوند؛ زیرا فایل‌های convention-based یا
 subprocessهای Playwright ممکن است در گراف import ایستا دیده نشوند.
+
+---
+
+<p dir="rtl" align="right"><strong>اصل انتشار:</strong> هیچ تغییر ناموفق در format، typecheck، lint، test، build، performance budget یا E2E نباید deploy شود.</p>
 
 </div>

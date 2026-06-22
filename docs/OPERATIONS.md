@@ -1,20 +1,34 @@
 <div dir="rtl" align="right">
 
-# عملیات و Docker
+<p dir="rtl" align="right">
+  <a href="../README.md">خانه مستندات</a> ·
+  <a href="USER_FLOWS.md">جریان کاربران</a> ·
+  <a href="TECHNICAL_ARCHITECTURE.md">معماری فنی</a> ·
+  <a href="API_INTEGRATION.md">ارتباط API</a> ·
+  <a href="SECURITY_AND_QUALITY.md">امنیت و کیفیت</a>
+</p>
+
+---
+
+# 🐳 عملیات و Docker
+
+<p dir="rtl" align="right"><strong>راهنمای build، اجرا، health check، نگهداری داده و استقرار</strong></p>
+
+---
 
 ## سرویس‌ها
 
 فایل Compose موجود در frontend توپولوژی استاندارد اجرای محلی و integration سامانه است.
 
-<table dir="rtl" align="right">
-  <thead>
+<table dir="rtl" width="100%">
+  <thead dir="rtl" align="right">
     <tr>
       <th align="right">سرویس</th>
       <th align="right">مسئولیت</th>
       <th align="right">پورت منتشرشده</th>
     </tr>
   </thead>
-  <tbody>
+  <tbody dir="rtl" align="right">
     <tr><td><code>postgres</code></td><td>پایگاه داده دائمی بک‌اند</td><td>ندارد</td></tr>
     <tr><td><code>redis</code></td><td>وضعیت موقت و rate limit بک‌اند</td><td>ندارد</td></tr>
     <tr><td><code>backend</code></td><td>API مبتنی بر Go</td><td>ندارد</td></tr>
@@ -22,6 +36,8 @@
     <tr><td><code>gateway</code></td><td>reverse proxy عمومی مبتنی بر Nginx</td><td><code>80</code></td></tr>
   </tbody>
 </table>
+
+<br />
 
 فقط gateway در شبکه میزبان منتشر می‌شود. health checkها ترتیب آماده‌شدن PostgreSQL و Redis، سپس
 backend، frontend و gateway را کنترل می‌کنند.
@@ -83,5 +99,9 @@ container مستقل web به‌جز secret رمزنگاری کوکی state مش
 است. آپلودهای بک‌اند فعلاً روی volume فایل‌سیستم قرار دارند؛ اجرای چند replica بک‌اند به object
 storage یا فایل‌سیستم مشترک نیاز دارد. برای ترافیک production باید از PostgreSQL و Redis مدیریت‌شده
 یا highly available استفاده شود.
+
+---
+
+<p dir="rtl" align="right"><strong>یادآوری:</strong> پیش از deploy، اجرای <code>npm run quality</code> و بررسی health تمام سرویس‌ها الزامی است.</p>
 
 </div>
