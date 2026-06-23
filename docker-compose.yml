@@ -31,6 +31,8 @@ services:
   backend:
     build:
       context: ../backend/backend
+    env_file:
+      - ../backend/.env
     environment:
       DATABASE_URL: postgres://postgres:postgres@postgres:5432/noshirvani?sslmode=disable
       REDIS_ADDR: redis:6379
@@ -47,9 +49,10 @@ services:
       UPLOAD_PATH: /uploads
       SERVER_ADDR: :8080
       CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost,http://127.0.0.1}
-      ADMIN_PHONES: ${ADMIN_PHONES:-09123456789}
+    entrypoint: ["/bin/sh", "/opt/normalize-admin-phones.sh"]
     volumes:
       - uploads:/uploads
+      - ./docker/normalize-admin-phones.sh:/opt/normalize-admin-phones.sh:ro
     depends_on:
       postgres:
         condition: service_healthy

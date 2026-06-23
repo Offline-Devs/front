@@ -7,6 +7,9 @@ describe("authentication flow helpers", () => {
     ["۹۱۲۱۲۳۴۵۶۷", "+989121234567"],
     ["00989121234567", "+989121234567"],
     ["+989121234567", "+989121234567"],
+    ["۹۱۲۱۲۳۴۵۶۷", "+989121234567"],
+    ["۰۹۱۲۱۲۳۴۵۶۷", "+989121234567"],
+    ["+۹۸۹۱۲۱۲۳۴۵۶۷", "+989121234567"],
   ])("normalizes Iranian phone %s", (input, expected) => {
     expect(normalizeIranianPhone(input)).toBe(expected);
   });
