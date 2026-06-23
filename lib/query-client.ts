@@ -15,7 +15,8 @@ export function createQueryClient() {
     }),
     queryCache: new QueryCache({
       onError: (error, query) => {
-        if (query.state.data === undefined) toast.error(errorMessage(error));
+        if (query.state.data === undefined && query.meta?.suppressErrorToast !== true)
+          toast.error(errorMessage(error));
       },
     }),
     defaultOptions: {

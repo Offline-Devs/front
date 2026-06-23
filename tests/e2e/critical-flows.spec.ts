@@ -14,6 +14,15 @@ test.beforeEach(async ({ request }) => {
   await request.get("http://127.0.0.1:18080/__reset");
 });
 
+test("logout reports success without an expired-session error", async ({ page }) => {
+  await login(page, "09000000000");
+  await expect(page).toHaveURL(/admin/);
+  await page.getByRole("button", { name: "خروج از حساب" }).click();
+  await expect(page).toHaveURL(/login/);
+  await expect(page.getByText("از حساب کاربری خارج شدید.")).toBeVisible();
+  await expect(page.getByText("نشست شما منقضی شده است.")).toHaveCount(0);
+});
+
 test("student onboarding, exam and mistake flow", async ({ page }) => {
   await login(page, "09121234567");
   await expect(page).toHaveURL(/complete-profile/);

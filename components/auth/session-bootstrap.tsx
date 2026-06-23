@@ -14,6 +14,7 @@ export function SessionBootstrap() {
   const session = useQuery({
     queryKey: queryKeys.session,
     queryFn: authApi.session,
+    meta: { suppressErrorToast: true },
     retry: false,
     staleTime: 30_000,
   });

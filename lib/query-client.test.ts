@@ -29,4 +29,19 @@ describe("global query notifications", () => {
     await expect(mutation.execute(undefined)).rejects.toThrow("عملیات ناموفق بود.");
     expect(toast.error).toHaveBeenCalledWith("عملیات ناموفق بود.");
   });
+
+  it("does not announce expected query errors", async () => {
+    const client = createQueryClient();
+    await expect(
+      client.fetchQuery({
+        queryKey: ["session"],
+        queryFn: async () => {
+          throw new Error("نشست شما منقضی شده است.");
+        },
+        meta: { suppressErrorToast: true },
+        retry: false,
+      }),
+    ).rejects.toThrow("نشست شما منقضی شده است.");
+    expect(toast.error).not.toHaveBeenCalled();
+  });
 });
