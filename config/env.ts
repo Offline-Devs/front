@@ -34,18 +34,17 @@ const publicEnvSchema = z.object({
 
 // Each public variable is accessed explicitly because Next.js performs compile-time replacement only for statically referenced NEXT_PUBLIC keys. These values are configuration, never secrets.
 export const env = publicEnvSchema.parse({
-  appName: process.env.NEXT_PUBLIC_APP_NAME ?? "آکادمی نوشیروانی",
-  appShortName: process.env.NEXT_PUBLIC_APP_SHORT_NAME ?? "نوشیروانی",
+  appName: process.env.NEXT_PUBLIC_APP_NAME ?? "آینده سبز",
+  appShortName: process.env.NEXT_PUBLIC_APP_SHORT_NAME ?? "آینده سبز",
   appDescription:
-    process.env.NEXT_PUBLIC_APP_DESCRIPTION ??
-    "سامانه مدیریت آزمون و مشاوره تحصیلی آکادمی نوشیروانی",
+    process.env.NEXT_PUBLIC_APP_DESCRIPTION ?? "پلتفرم تحلیل عملکرد درسی دانش آموزان کنکوری",
   appVersion: process.env.NEXT_PUBLIC_APP_VERSION ?? "0.1.0",
   siteUrl: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
   apiBasePath: process.env.NEXT_PUBLIC_API_BASE_PATH ?? "/api/v1",
   locale: process.env.NEXT_PUBLIC_LOCALE ?? "fa-IR",
   timeZone: process.env.NEXT_PUBLIC_TIME_ZONE ?? "Asia/Tehran",
-  supportEmail: process.env.NEXT_PUBLIC_SUPPORT_EMAIL ?? "support@noshirvaniacademy.com",
-  supportPhone: process.env.NEXT_PUBLIC_SUPPORT_PHONE ?? "+981112345678",
+  supportEmail: process.env.NEXT_PUBLIC_SUPPORT_EMAIL ?? "support@example.com",
+  supportPhone: process.env.NEXT_PUBLIC_SUPPORT_PHONE ?? "+980000000000",
   instagramUrl: process.env.NEXT_PUBLIC_INSTAGRAM_URL ?? "",
   telegramUrl: process.env.NEXT_PUBLIC_TELEGRAM_URL ?? "",
   queryStaleTimeMs: process.env.NEXT_PUBLIC_QUERY_STALE_TIME_MS ?? "60000",

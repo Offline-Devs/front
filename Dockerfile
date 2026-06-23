@@ -14,16 +14,16 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 # Public values are compiled into the browser bundle. They configure presentation and behavior and must never contain secrets.
-ARG NEXT_PUBLIC_APP_NAME="آکادمی نوشیروانی"
-ARG NEXT_PUBLIC_APP_SHORT_NAME="نوشیروانی"
-ARG NEXT_PUBLIC_APP_DESCRIPTION="سامانه مدیریت آزمون و مشاوره تحصیلی آکادمی نوشیروانی"
+ARG NEXT_PUBLIC_APP_NAME="آینده سبز"
+ARG NEXT_PUBLIC_APP_SHORT_NAME="آینده سبز"
+ARG NEXT_PUBLIC_APP_DESCRIPTION="پلتفرم تحلیل عملکرد درسی دانش آموزان کنکوری"
 ARG NEXT_PUBLIC_APP_VERSION="0.1.0"
 ARG NEXT_PUBLIC_SITE_URL="http://localhost"
 ARG NEXT_PUBLIC_API_BASE_PATH="/api/v1"
 ARG NEXT_PUBLIC_LOCALE="fa-IR"
 ARG NEXT_PUBLIC_TIME_ZONE="Asia/Tehran"
-ARG NEXT_PUBLIC_SUPPORT_EMAIL="support@noshirvaniacademy.com"
-ARG NEXT_PUBLIC_SUPPORT_PHONE="+981112345678"
+ARG NEXT_PUBLIC_SUPPORT_EMAIL="support@example.com"
+ARG NEXT_PUBLIC_SUPPORT_PHONE="+980000000000"
 ARG NEXT_PUBLIC_INSTAGRAM_URL=""
 ARG NEXT_PUBLIC_TELEGRAM_URL=""
 ARG NEXT_PUBLIC_QUERY_STALE_TIME_MS="60000"
