@@ -29,7 +29,6 @@ export type Exam = {
 export type SubjectExamInput = Omit<SubjectExam, "id" | "exam_id" | "percentage">;
 export type ExamInput = {
   title: string;
-  exam_date?: string;
   jalali_date: string;
   major: string;
   negative_mark: number;

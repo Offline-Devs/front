@@ -12,6 +12,9 @@ export function copyResponse(response: Response, body: BodyInit | null) {
     "etag",
     "last-modified",
     "retry-after",
+    "x-ratelimit-limit",
+    "x-ratelimit-remaining",
+    "x-ratelimit-reset",
   ]) {
     const value = response.headers.get(name);
     if (value) headers.set(name, value);

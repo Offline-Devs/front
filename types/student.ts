@@ -38,7 +38,7 @@ export type StudentProfileInput = Pick<
   | "major"
   | "profile_photo"
   | "dynamic_fields"
-> & { birth_date?: string };
+>;
 export type StudentUpdateInput = Partial<
   Pick<Student, "first_name" | "last_name" | "city" | "school" | "major" | "is_approved">
 >;

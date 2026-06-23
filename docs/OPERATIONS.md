@@ -91,6 +91,10 @@ docker compose down
 ۴. در حالت mock جریان درخواست و تأیید OTP را اجرا و HttpOnly بودن کوکی نشست و نبود توکن در JSON
 مرورگر را تأیید کنید.
 
+برای Docker محلی از `BACKEND_ENVIRONMENT=development`، `OTP_PROVIDER=mock` و `EXPOSE_MOCK_OTP=true`
+استفاده می‌شود. در production باید مقادیر به‌ترتیب `production`، `smsir` و `false` باشند؛ بک‌اند
+ترکیب ناامن mock یا نمایش OTP را در production اجرا نمی‌کند.
+
 ۵. logهای Compose را بررسی کنید تا token، cookie، request body، شماره موبایل یا ایمیل ثبت نشده باشد.
 
 ## نکات مقیاس‌پذیری

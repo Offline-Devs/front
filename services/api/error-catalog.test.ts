@@ -15,4 +15,9 @@ describe("API error policy", () => {
       "کد واردشده اشتباه یا منقضی شده است.",
     );
   });
+  it("describes strict mistake-reference failures", () => {
+    expect(describeApiError(404, { error: "referenced exam or subject not found" }).message).toBe(
+      "آزمون یا درس انتخاب‌شده دیگر در دسترس نیست.",
+    );
+  });
 });

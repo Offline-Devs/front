@@ -11,7 +11,6 @@ export type PerformanceHistory = {
   updated_at: string;
 };
 export type PerformanceInput = {
-  date?: string;
   jalali_date: string;
   notes: string;
   study_plan: string;

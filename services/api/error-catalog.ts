@@ -41,6 +41,21 @@ const BACKEND_MESSAGES: Record<string, string> = {
   "invalid refresh token": "نشست شما منقضی شده است. دوباره وارد شوید.",
   "backend unavailable": "ارتباط با سرور برقرار نشد.",
   "backend request timed out": "پاسخ سرور بیش از حد طول کشید.",
+  "referenced exam or subject not found": "آزمون یا درس انتخاب‌شده دیگر در دسترس نیست.",
+  "exam not found": "آزمون موردنظر پیدا نشد.",
+  "student not found": "دانش‌آموز موردنظر پیدا نشد.",
+  "field not found": "فیلد سفارشی موردنظر پیدا نشد.",
+  "post not found": "مقاله موردنظر پیدا نشد.",
+  "performance record not found": "گزارش عملکرد موردنظر پیدا نشد.",
+  "invalid jalali_date format": "تاریخ شمسی آزمون معتبر نیست.",
+  "invalid jalali_birth_date format": "تاریخ تولد شمسی معتبر نیست.",
+  "exam_date and jalali_date are mutually exclusive":
+    "برای آزمون فقط یکی از تاریخ‌های شمسی یا میلادی قابل ارسال است.",
+  "date and jalali_date are mutually exclusive":
+    "برای گزارش فقط یکی از تاریخ‌های شمسی یا میلادی قابل ارسال است.",
+  "birth_date and jalali_birth_date are mutually exclusive":
+    "برای تولد فقط یکی از تاریخ‌های شمسی یا میلادی قابل ارسال است.",
+  "invalid upload type. allowed: document, profile": "نوع مقصد آپلود معتبر نیست.",
 };
 
 // Raw backend text is used only for error classification. Components receive controlled Persian messages and retry metadata rather than arbitrary server output.

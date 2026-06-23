@@ -115,7 +115,7 @@ export function OtpForm() {
     },
     onError: (error) => {
       if (error instanceof ApiError && error.status === 429) {
-        setRemainingSeconds(env.otpResendSeconds);
+        setRemainingSeconds(Math.max(1, error.retryAfterSeconds ?? env.otpResendSeconds));
       }
     },
   });

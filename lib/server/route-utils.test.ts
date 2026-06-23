@@ -1,6 +1,6 @@
 // @vitest-environment node
 import { describe, expect, it } from "vitest";
-import { isSameOriginMutation } from "./route-utils";
+import { copyResponse, isSameOriginMutation } from "./route-utils";
 
 describe("same-origin mutation validation", () => {
   it("uses the public reverse-proxy origin instead of the internal application port", () => {
@@ -21,5 +21,22 @@ describe("same-origin mutation validation", () => {
       },
     });
     expect(isSameOriginMutation(request)).toBe(false);
+  });
+
+  it("forwards rate-limit metadata without forwarding unrelated headers", () => {
+    const upstream = new Response(null, {
+      status: 429,
+      headers: {
+        "Retry-After": "17",
+        "X-RateLimit-Limit": "60",
+        "X-RateLimit-Remaining": "0",
+        "X-RateLimit-Reset": "1782144000",
+        "X-Internal-Secret": "hidden",
+      },
+    });
+    const response = copyResponse(upstream, null);
+    expect(response.headers.get("retry-after")).toBe("17");
+    expect(response.headers.get("x-ratelimit-remaining")).toBe("0");
+    expect(response.headers.get("x-internal-secret")).toBeNull();
   });
 });
