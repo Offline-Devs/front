@@ -50,6 +50,10 @@ test("dark theme persists and remains accessible", async ({ page }) => {
   await expect(
     page.locator("[data-sonner-toast]").filter({ hasText: "تم تیره فعال شد." }),
   ).toBeVisible();
+  const closeButton = page.locator("[data-sonner-toast] [data-close-button]").first();
+  await closeButton.hover();
+  await expect(closeButton).toHaveCSS("background-color", "rgb(19, 37, 31)");
+  await expect(closeButton).toHaveCSS("color", "rgb(115, 197, 167)");
   const darkResults = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze();
   expect(darkResults.violations).toEqual([]);
   await page.reload();

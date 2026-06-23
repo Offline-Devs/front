@@ -295,9 +295,16 @@
   color: var(--foreground);
 }
 :root[data-theme="dark"] [data-sonner-toaster] .app-toast-close {
-  border-color: #1d2c27;
-  background: #07110d;
-  color: #91a69e;
+  border-color: #1d2c27 !important;
+  background: #07110d !important;
+  color: #91a69e !important;
+}
+:root[data-theme="dark"] [data-sonner-toaster] [data-sonner-toast] .app-toast-close:hover,
+:root[data-theme="dark"] [data-sonner-toaster] [data-sonner-toast] .app-toast-close:focus-visible,
+:root[data-theme="dark"] [data-sonner-toaster] [data-sonner-toast] .app-toast-close:active {
+  border-color: #29483d !important;
+  background: #13251f !important;
+  color: #73c5a7 !important;
 }
 [data-sonner-toast][data-mounted="true"] {
   animation: toast-soft-enter 360ms cubic-bezier(0.22, 1, 0.36, 1);
