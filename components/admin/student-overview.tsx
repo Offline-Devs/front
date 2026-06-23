@@ -33,11 +33,11 @@ function ProfileEditor({ student }: { student: Student }) {
     major: student.major,
   });
   const update = useMutation({
+    meta: { successMessage: "اطلاعات دانش‌آموز ذخیره شد." },
     mutationFn: () => adminApi.updateStudent(student.id, values),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: queryKeys.adminStudent(student.id) });
       await queryClient.invalidateQueries({ queryKey: ["admin", "students"] });
-      toast.success("اطلاعات دانش‌آموز ذخیره شد.");
       setEditing(false);
     },
   });
@@ -70,6 +70,9 @@ function ProfileEditor({ student }: { student: Student }) {
   return (
     <form
       className="grid gap-4"
+      onInvalid={() =>
+        toast.error("لطفاً همه مشخصات ضروری را وارد کنید.", { id: "form-validation-error" })
+      }
       onSubmit={(event) => {
         event.preventDefault();
         update.mutate();
@@ -137,12 +140,12 @@ export function StudentOverview({ studentId }: { studentId: string }) {
     queryFn: () => performanceApi.forStudent(studentId),
   });
   const removePerformance = useMutation({
+    meta: { successMessage: "گزارش حذف شد." },
     mutationFn: performanceApi.remove,
     onSuccess: async () => {
       await queryClient.invalidateQueries({
         queryKey: ["admin", "students", studentId, "performance"],
       });
-      toast.success("گزارش حذف شد.");
     },
   });
   if (student.isLoading) return <div className="h-96 animate-pulse rounded-lg bg-muted" />;

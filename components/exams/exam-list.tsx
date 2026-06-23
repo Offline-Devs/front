@@ -17,6 +17,7 @@ export function ExamList() {
   const queryClient = useQueryClient();
   const exams = useQuery({ queryKey: queryKeys.exams, queryFn: examsApi.list });
   const remove = useMutation({
+    meta: { successMessage: "آزمون حذف شد." },
     mutationFn: examsApi.remove,
     onSuccess: async (_, id) => {
       queryClient.removeQueries({ queryKey: queryKeys.exam(id) });

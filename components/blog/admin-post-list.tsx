@@ -10,7 +10,6 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { toast } from "@/components/ui/toast";
 import { articleExcerpt } from "@/lib/content/sanitize";
 import { blogApi } from "@/services/api/blog.api";
 import { invalidation, invalidateDependencies } from "@/services/api/invalidation";
@@ -26,17 +25,17 @@ export function AdminPostList() {
     ]);
   }
   const publish = useMutation({
+    meta: { successMessage: "مقاله منتشر شد." },
     mutationFn: blogApi.publish,
     onSuccess: async () => {
       await refreshPublic();
-      toast.success("مقاله منتشر شد.");
     },
   });
   const remove = useMutation({
+    meta: { successMessage: "مقاله حذف شد." },
     mutationFn: blogApi.remove,
     onSuccess: async () => {
       await refreshPublic();
-      toast.success("مقاله حذف شد.");
     },
   });
   if (posts.isLoading) return <div className="h-80 animate-pulse rounded-lg bg-muted" />;

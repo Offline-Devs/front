@@ -22,6 +22,7 @@ export function MistakeList() {
   const [editing, setEditing] = useState<Mistake | null>(null);
   const mistakes = useQuery({ queryKey: queryKeys.mistakes, queryFn: mistakesApi.list });
   const remove = useMutation({
+    meta: { successMessage: "اشتباه حذف شد." },
     mutationFn: mistakesApi.remove,
     onSuccess: async () => invalidateDependencies(queryClient, invalidation.mistake),
   });

@@ -40,6 +40,7 @@ export function DynamicFieldsTable() {
     queryFn: () => adminApi.dynamicFields(entity === "all" ? undefined : entity),
   });
   const remove = useMutation({
+    meta: { successMessage: "فیلد سفارشی حذف شد." },
     mutationFn: adminApi.removeField,
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["admin", "dynamic-fields"] });

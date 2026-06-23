@@ -20,7 +20,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { FileUploader } from "@/components/upload/file-uploader";
-import { toast } from "@/components/ui/toast";
 import {
   profileSchema,
   type ProfileFormOutput,
@@ -34,6 +33,7 @@ import { dynamicFieldsApi } from "@/services/api/dynamic-fields.api";
 import type { DynamicFieldDefinition } from "@/types/dynamic-field";
 import type { Student } from "@/types/student";
 import { validateDynamicFieldValues } from "@/lib/dynamic-fields";
+import { notifyFormErrors, notifyValidationMessage } from "@/lib/form-notifications";
 
 type ProfileFormProps = {
   profile?: Student;
@@ -71,12 +71,14 @@ export function ProfileForm({ profile, dynamicFields = [], onboarding = false }:
   });
   const resolvedDynamicFields = dynamicFields.length ? dynamicFields : (runtimeFields.data ?? []);
   const saveProfile = useMutation({
+    meta: {
+      successMessage: onboarding ? "پروفایل تکمیل شد؛ خوش آمدید." : "تغییرات پروفایل ذخیره شد.",
+    },
     mutationFn: studentApi.saveProfile,
     onSuccess: async (savedProfile) => {
       queryClient.setQueryData(queryKeys.profile, savedProfile);
       await invalidateDependencies(queryClient, invalidation.profile);
       if (onboarding) router.replace("/dashboard");
-      else toast.success("تغییرات پروفایل ذخیره شد.");
       router.refresh();
     },
   });
@@ -88,12 +90,15 @@ export function ProfileForm({ profile, dynamicFields = [], onboarding = false }:
   function submit(values: ProfileFormOutput) {
     const errors = validateDynamicFieldValues(resolvedDynamicFields, values.dynamic_fields);
     setDynamicErrors(errors);
-    if (Object.keys(errors).length > 0) return;
+    if (Object.keys(errors).length > 0) {
+      notifyValidationMessage(Object.values(errors)[0]);
+      return;
+    }
     saveProfile.mutate(values);
   }
 
   return (
-    <form className="grid gap-7" noValidate onSubmit={form.handleSubmit(submit)}>
+    <form className="grid gap-7" noValidate onSubmit={form.handleSubmit(submit, notifyFormErrors)}>
       <section className="grid gap-4" aria-labelledby="identity-heading">
         <div>
           <h2 id="identity-heading" className="font-bold">

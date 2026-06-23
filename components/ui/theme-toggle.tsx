@@ -3,6 +3,7 @@
 import { MoonStar, Sun } from "lucide-react";
 import { useSyncExternalStore } from "react";
 import { Button } from "@/components/ui/button";
+import { toast } from "@/components/ui/toast";
 import { cn } from "@/lib/cn";
 
 type Theme = "light" | "dark";
@@ -43,7 +44,12 @@ export function ThemeToggle({ className }: { className?: string }) {
 
   function toggleTheme() {
     const nextTheme = currentTheme() === "dark" ? "light" : "dark";
-    const update = () => applyTheme(nextTheme);
+    const update = () => {
+      applyTheme(nextTheme);
+      toast.info(nextTheme === "dark" ? "تم تیره فعال شد." : "تم روشن فعال شد.", {
+        id: "theme-change",
+      });
+    };
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const documentWithTransition = document as Document & {
       startViewTransition?: (callback: () => void) => void;

@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { FormField } from "@/components/ui/form-field";
 import { JalaliDatePicker } from "@/components/ui/jalali-date-picker";
+import { toast } from "@/components/ui/toast";
 import {
   normalizeStatisticsDate,
   totalCategorizedMistakes,
@@ -62,6 +63,7 @@ export function StatisticsDashboard() {
     const error = validateStatisticsRange(normalizedFrom, normalizedTo);
     if (error) {
       setFilterError(error);
+      toast.error(error, { id: "statistics-filter-error" });
       return;
     }
     setFilterError("");
@@ -69,11 +71,13 @@ export function StatisticsDashboard() {
     if (normalizedFrom) params.set("from", normalizedFrom);
     if (normalizedTo) params.set("to", normalizedTo);
     router.push(`${pathname}${params.size ? `?${params}` : ""}`);
+    toast.success("بازه آماری اعمال شد.", { id: "statistics-filter" });
   }
   function clearFilters() {
     setFilterError("");
     setDateDraft({ source: dateSource, from: "", to: "" });
     router.push(pathname);
+    toast.info("فیلترهای آماری پاک شدند.", { id: "statistics-filter" });
   }
   return (
     <div className="grid gap-6">

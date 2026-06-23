@@ -30,6 +30,7 @@ import type { Mistake } from "@/types/mistake";
 import { DynamicFieldsSection } from "@/components/forms/dynamic-fields-section";
 import { dynamicFieldsApi } from "@/services/api/dynamic-fields.api";
 import { validateDynamicFieldValues } from "@/lib/dynamic-fields";
+import { notifyFormErrors, notifyValidationMessage } from "@/lib/form-notifications";
 
 export function MistakeForm({
   mistake,
@@ -66,6 +67,7 @@ export function MistakeForm({
     staleTime: 300_000,
   });
   const save = useMutation({
+    meta: { successMessage: mistake ? "تغییرات اشتباه ذخیره شد." : "اشتباه جدید ثبت شد." },
     mutationFn: (values: MistakeFormOutput) =>
       mistake ? mistakesApi.update(mistake.id, values) : mistakesApi.create(values),
     onSuccess: async () => {
@@ -80,10 +82,14 @@ export function MistakeForm({
   function submit(values: MistakeFormOutput) {
     const errors = validateDynamicFieldValues(dynamicFields.data ?? [], values.dynamic_fields);
     setDynamicErrors(errors);
-    if (!Object.keys(errors).length) save.mutate(values);
+    if (Object.keys(errors).length) {
+      notifyValidationMessage(Object.values(errors)[0]);
+      return;
+    }
+    save.mutate(values);
   }
   return (
-    <form className="grid gap-5" noValidate onSubmit={form.handleSubmit(submit)}>
+    <form className="grid gap-5" noValidate onSubmit={form.handleSubmit(submit, notifyFormErrors)}>
       <div className="grid gap-4 sm:grid-cols-2">
         <FormField
           label="آزمون مرتبط"

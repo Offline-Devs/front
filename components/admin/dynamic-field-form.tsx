@@ -16,7 +16,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { toast } from "@/components/ui/toast";
+import { notifyFormErrors } from "@/lib/form-notifications";
 import {
   dynamicFieldSchema,
   normalizeDynamicFieldOptions,
@@ -53,6 +53,7 @@ export function DynamicFieldForm({
   const type = useWatch({ control: form.control, name: "field_type" });
   const required = useWatch({ control: form.control, name: "is_required" });
   const save = useMutation<unknown, Error, DynamicFieldFormValues>({
+    meta: { successMessage: field ? "فیلد ویرایش شد." : "فیلد ایجاد شد." },
     mutationFn: (values) => {
       const input: DynamicFieldInput = {
         ...values,
@@ -63,7 +64,6 @@ export function DynamicFieldForm({
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["admin", "dynamic-fields"] });
-      toast.success(field ? "فیلد ویرایش شد." : "فیلد ایجاد شد.");
       form.reset();
       onSaved?.();
     },
@@ -72,7 +72,7 @@ export function DynamicFieldForm({
     <form
       className="grid gap-4"
       noValidate
-      onSubmit={form.handleSubmit((values) => save.mutate(values))}
+      onSubmit={form.handleSubmit((values) => save.mutate(values), notifyFormErrors)}
     >
       <div className="grid gap-4 sm:grid-cols-2">
         <FormField label="موجودیت" error={form.formState.errors.entity_type?.message} required>

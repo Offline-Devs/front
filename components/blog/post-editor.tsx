@@ -11,7 +11,7 @@ import { FormField } from "@/components/ui/form-field";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
-import { toast } from "@/components/ui/toast";
+import { notifyFormErrors } from "@/lib/form-notifications";
 import { sanitizeArticleHtml } from "@/lib/content/sanitize";
 import {
   blogSchema,
@@ -39,13 +39,13 @@ export function PostEditor({ authorId, post }: { authorId: string; post?: BlogPo
   const content = useWatch({ control: form.control, name: "content" });
   const published = useWatch({ control: form.control, name: "published" });
   const save = useMutation<unknown, Error, BlogFormOutput>({
+    meta: { successMessage: post ? "مقاله ویرایش شد." : "مقاله ایجاد شد." },
     mutationFn: (values) => (post ? blogApi.update(post.id, values) : blogApi.create(values)),
     onSuccess: async () => {
       await Promise.all([
         invalidateDependencies(queryClient, invalidation.blog),
         blogApi.revalidatePublicCache(),
       ]);
-      toast.success(post ? "مقاله ویرایش شد." : "مقاله ایجاد شد.");
       router.replace("/admin/blog");
       router.refresh();
     },
@@ -54,7 +54,7 @@ export function PostEditor({ authorId, post }: { authorId: string; post?: BlogPo
     <form
       className="grid gap-6"
       noValidate
-      onSubmit={form.handleSubmit((values) => save.mutate(values))}
+      onSubmit={form.handleSubmit((values) => save.mutate(values), notifyFormErrors)}
     >
       <div className="grid gap-4 sm:grid-cols-2">
         <FormField label="عنوان مقاله" error={form.formState.errors.title?.message} required>

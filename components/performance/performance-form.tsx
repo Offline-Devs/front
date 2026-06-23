@@ -14,6 +14,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/components/ui/toast";
 import { env } from "@/config/env";
 import { parseStringArray } from "@/lib/safe-json";
+import { notifyFormErrors } from "@/lib/form-notifications";
 import {
   performanceSchema,
   type PerformanceFormOutput,
@@ -51,6 +52,7 @@ export function PerformanceForm({
   });
   const reportDate = useWatch({ control: form.control, name: "jalali_date" });
   const save = useMutation({
+    meta: { successMessage: record ? "گزارش ویرایش شد." : "گزارش ثبت شد." },
     mutationFn: async (values: PerformanceFormOutput) => {
       const uploaded = selectedFiles.length
         ? await uploadApi.multiple(selectedFiles, "document")
@@ -74,7 +76,6 @@ export function PerformanceForm({
         queryKey: ["admin", "students", studentId, "performance"],
       });
       await queryClient.invalidateQueries({ queryKey: queryKeys.adminStudent(studentId) });
-      toast.success(record ? "گزارش ویرایش شد." : "گزارش ثبت شد.");
       onSaved?.();
       if (!record) {
         router.replace(`/admin/students/${studentId}`);
@@ -86,13 +87,15 @@ export function PerformanceForm({
     if (!files) return;
     const next = Array.from(files);
     if (existingFiles.length + selectedFiles.length + next.length > env.multipleUploadMaxFiles) {
-      setFileError(`حداکثر ${env.multipleUploadMaxFiles.toLocaleString("fa-IR")} فایل مجاز است.`);
+      const message = `حداکثر ${env.multipleUploadMaxFiles.toLocaleString("fa-IR")} فایل مجاز است.`;
+      setFileError(message);
+      toast.error(message, { id: "performance-file-validation" });
       return;
     }
     if (next.some((file) => file.size > env.documentUploadMaxMb * 1024 * 1024)) {
-      setFileError(
-        `حجم هر فایل حداکثر ${env.documentUploadMaxMb.toLocaleString("fa-IR")} مگابایت است.`,
-      );
+      const message = `حجم هر فایل حداکثر ${env.documentUploadMaxMb.toLocaleString("fa-IR")} مگابایت است.`;
+      setFileError(message);
+      toast.error(message, { id: "performance-file-validation" });
       return;
     }
     setFileError("");
@@ -112,7 +115,7 @@ export function PerformanceForm({
     <form
       className="grid gap-5"
       noValidate
-      onSubmit={form.handleSubmit((values) => save.mutate(values))}
+      onSubmit={form.handleSubmit((values) => save.mutate(values), notifyFormErrors)}
     >
       <FormField label="تاریخ گزارش" error={form.formState.errors.jalali_date?.message} required>
         <JalaliDatePicker

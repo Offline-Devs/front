@@ -4,6 +4,7 @@ import { useMutation } from "@tanstack/react-query";
 import { Camera, Trash2, UploadCloud } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { toast } from "@/components/ui/toast";
 import { env } from "@/config/env";
 import { resolveUploadUrl } from "@/lib/upload-url";
 import { uploadApi } from "@/services/api/upload.api";
@@ -22,6 +23,7 @@ export function FileUploader({ value, onChange, disabled }: FileUploaderProps) {
   );
   const [validationError, setValidationError] = useState<string | null>(null);
   const upload = useMutation({
+    meta: { successMessage: "تصویر پروفایل بارگذاری شد." },
     mutationFn: (file: File) => uploadApi.one(file, "profile"),
     onSuccess: (response) => {
       onChange(response.url);
@@ -45,6 +47,7 @@ export function FileUploader({ value, onChange, disabled }: FileUploaderProps) {
     });
     if (error) {
       setValidationError(error);
+      toast.error(error, { id: "profile-upload-validation" });
       return;
     }
     const localPreview = URL.createObjectURL(file);
@@ -58,6 +61,7 @@ export function FileUploader({ value, onChange, disabled }: FileUploaderProps) {
     setValidationError(null);
     onChange("");
     if (inputRef.current) inputRef.current.value = "";
+    toast.info("تصویر پروفایل حذف شد.");
   }
 
   return (

@@ -4,7 +4,6 @@ import { CheckCircle2, Trash2, XCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { ConfirmDialog } from "@/components/shared/confirm-dialog";
 import { Button } from "@/components/ui/button";
-import { toast } from "@/components/ui/toast";
 import { adminApi } from "@/services/api/admin.api";
 import { invalidateDependencies, invalidation } from "@/services/api/invalidation";
 import { queryKeys } from "@/services/api/query-keys";
@@ -18,20 +17,21 @@ export function ApprovalActions({ studentId, approved }: { studentId: string; ap
     router.refresh();
   }
   const approve = useMutation({
+    meta: { successMessage: "دانش‌آموز تأیید شد." },
     mutationFn: () => adminApi.approve(studentId),
     onSuccess: async () => {
-      toast.success("دانش‌آموز تأیید شد.");
       await refresh();
     },
   });
   const revoke = useMutation({
+    meta: { successMessage: "تأیید دانش‌آموز لغو شد." },
     mutationFn: () => adminApi.updateStudent(studentId, { is_approved: false }),
     onSuccess: async () => {
-      toast.success("تأیید دانش‌آموز لغو شد.");
       await refresh();
     },
   });
   const remove = useMutation({
+    meta: { successMessage: "دانش‌آموز حذف شد." },
     mutationFn: () => adminApi.removeStudent(studentId),
     onSuccess: async () => {
       queryClient.removeQueries({ queryKey: queryKeys.adminStudent(studentId) });

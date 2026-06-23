@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { FormField } from "@/components/ui/form-field";
 import { Input } from "@/components/ui/input";
 import { savePendingPhone } from "@/lib/auth-flow";
+import { notifyFormErrors } from "@/lib/form-notifications";
 import { phoneSchema, type PhoneFormOutput, type PhoneFormValues } from "@/schemas/auth.schema";
 import { authApi } from "@/services/api/auth.api";
 
@@ -20,6 +21,7 @@ export function PhoneForm() {
     defaultValues: { phone: "" },
   });
   const requestOtp = useMutation({
+    meta: { successMessage: "کد تأیید ارسال شد." },
     mutationFn: authApi.requestOtp,
     onSuccess: (response, input) => {
       savePendingPhone(input.phone, response.otp);
@@ -32,7 +34,7 @@ export function PhoneForm() {
       className="grid gap-5"
       aria-label="فرم شماره موبایل"
       noValidate
-      onSubmit={form.handleSubmit((values) => requestOtp.mutate(values))}
+      onSubmit={form.handleSubmit((values) => requestOtp.mutate(values), notifyFormErrors)}
     >
       <FormField
         label="شماره موبایل"

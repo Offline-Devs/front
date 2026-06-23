@@ -25,6 +25,21 @@ test("keyboard focus and reduced-motion preference are honored", async ({ page }
   expect(Number.parseFloat(duration)).toBeLessThanOrEqual(0.00001);
 });
 
+test("validation notifications appear at the top center", async ({ page }) => {
+  await page.goto("/login");
+  await page.getByRole("button", { name: "دریافت کد تأیید" }).click();
+  const notification = page
+    .locator("[data-sonner-toast]")
+    .filter({ hasText: "شماره موبایل را وارد کنید." });
+  await expect(notification).toBeVisible();
+  const box = await notification.boundingBox();
+  expect(box).not.toBeNull();
+  expect(box?.y).toBeLessThan(100);
+  expect(
+    Math.abs((box?.x ?? 0) + (box?.width ?? 0) / 2 - (await page.evaluate(() => innerWidth)) / 2),
+  ).toBeLessThan(4);
+});
+
 test("dark theme persists and remains accessible", async ({ page }) => {
   await page.emulateMedia({ colorScheme: "light" });
   await page.goto("/");
@@ -32,6 +47,11 @@ test("dark theme persists and remains accessible", async ({ page }) => {
   await page.reload();
   await page.getByRole("button", { name: "فعال‌کردن تم تیره" }).click();
   await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+  await expect(
+    page.locator("[data-sonner-toast]").filter({ hasText: "تم تیره فعال شد." }),
+  ).toBeVisible();
+  const darkResults = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze();
+  expect(darkResults.violations).toEqual([]);
   await page.reload();
   await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
   const results = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa"]).analyze();

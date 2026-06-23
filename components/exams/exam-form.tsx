@@ -22,6 +22,7 @@ import type { Exam, ExamInput } from "@/types/exam";
 import { DynamicFieldsSection } from "@/components/forms/dynamic-fields-section";
 import { dynamicFieldsApi } from "@/services/api/dynamic-fields.api";
 import { validateDynamicFieldValues } from "@/lib/dynamic-fields";
+import { notifyFormErrors, notifyValidationMessage } from "@/lib/form-notifications";
 
 const emptySubject = {
   subject_name: "",
@@ -81,6 +82,7 @@ export function ExamForm({ exam }: { exam?: Exam }) {
     staleTime: 300_000,
   });
   const save = useMutation({
+    meta: { successMessage: exam ? "تغییرات آزمون ذخیره شد." : "آزمون جدید ثبت شد." },
     mutationFn: (values: ExamFormOutput) => {
       if (!major) throw new Error("رشته تحصیلی در پروفایل شما مشخص نشده است.");
       const input: ExamInput = {
@@ -101,10 +103,14 @@ export function ExamForm({ exam }: { exam?: Exam }) {
   function submit(values: ExamFormOutput) {
     const errors = validateDynamicFieldValues(dynamicFields.data ?? [], values.dynamic_fields);
     setDynamicErrors(errors);
-    if (!Object.keys(errors).length) save.mutate(values);
+    if (Object.keys(errors).length) {
+      notifyValidationMessage(Object.values(errors)[0]);
+      return;
+    }
+    save.mutate(values);
   }
   return (
-    <form className="grid gap-6" noValidate onSubmit={form.handleSubmit(submit)}>
+    <form className="grid gap-6" noValidate onSubmit={form.handleSubmit(submit, notifyFormErrors)}>
       {exam && (
         <Alert variant="warning">
           <AlertDescription>

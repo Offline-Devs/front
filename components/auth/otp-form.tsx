@@ -19,6 +19,7 @@ import {
   normalizeNumericInput,
   savePendingPhone,
 } from "@/lib/auth-flow";
+import { notifyFormErrors } from "@/lib/form-notifications";
 import { otpSchema, type OtpFormOutput, type OtpFormValues } from "@/schemas/auth.schema";
 import { ApiError } from "@/services/api/client";
 import { authApi } from "@/services/api/auth.api";
@@ -71,6 +72,7 @@ export function OtpForm() {
   }, [remainingSeconds]);
 
   const verifyOtp = useMutation({
+    meta: { successMessage: "با موفقیت وارد حساب شدید." },
     mutationFn: async (values: OtpFormOutput) => {
       const session = await authApi.verifyOtp(values);
       if (session.user.role === "admin") {
@@ -104,6 +106,7 @@ export function OtpForm() {
   });
 
   const resendOtp = useMutation({
+    meta: { successMessage: "کد تأیید دوباره ارسال شد." },
     mutationFn: () => authApi.requestOtp({ phone: phone! }),
     onSuccess: (response) => {
       savePendingPhone(phone!, response.otp);
@@ -166,7 +169,7 @@ export function OtpForm() {
       className="grid gap-5"
       aria-label="فرم کد تأیید"
       noValidate
-      onSubmit={form.handleSubmit((values) => verifyOtp.mutate(values))}
+      onSubmit={form.handleSubmit((values) => verifyOtp.mutate(values), notifyFormErrors)}
     >
       <p className="text-sm leading-6 text-muted-foreground">
         کد ۶ رقمی ارسال‌شده به{" "}
