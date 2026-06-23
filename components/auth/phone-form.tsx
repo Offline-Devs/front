@@ -46,7 +46,7 @@ export function PhoneForm() {
           {...form.register("phone")}
           type="tel"
           dir="ltr"
-          inputMode="tel"
+          inputMode="numeric"
           autoComplete="tel-national"
           placeholder="0912 123 4567"
           className="text-left"

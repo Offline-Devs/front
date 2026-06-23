@@ -130,6 +130,7 @@ export function MistakeForm({
         >
           <Input
             type="number"
+            inputMode="numeric"
             min={1}
             {...form.register("question_number", { valueAsNumber: true })}
           />
