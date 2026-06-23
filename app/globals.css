@@ -294,6 +294,11 @@
   background: var(--card);
   color: var(--foreground);
 }
+:root[data-theme="dark"] [data-sonner-toaster] .app-toast-close {
+  border-color: #1d2c27;
+  background: #07110d;
+  color: #91a69e;
+}
 [data-sonner-toast][data-mounted="true"] {
   animation: toast-soft-enter 360ms cubic-bezier(0.22, 1, 0.36, 1);
 }

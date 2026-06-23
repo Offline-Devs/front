@@ -4,7 +4,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Plus, Save } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { useFieldArray, useForm, useWatch } from "react-hook-form";
 import { SubjectScoreRow } from "./subject-score-row";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -19,10 +18,7 @@ import { queryKeys } from "@/services/api/query-keys";
 import { studentApi } from "@/services/api/student.api";
 import { subjectsApi } from "@/services/api/subjects.api";
 import type { Exam, ExamInput } from "@/types/exam";
-import { DynamicFieldsSection } from "@/components/forms/dynamic-fields-section";
-import { dynamicFieldsApi } from "@/services/api/dynamic-fields.api";
-import { validateDynamicFieldValues } from "@/lib/dynamic-fields";
-import { notifyFormErrors, notifyValidationMessage } from "@/lib/form-notifications";
+import { notifyFormErrors } from "@/lib/form-notifications";
 
 const emptySubject = {
   subject_name: "",
@@ -36,7 +32,6 @@ const emptySubject = {
 export function ExamForm({ exam }: { exam?: Exam }) {
   const router = useRouter();
   const queryClient = useQueryClient();
-  const [dynamicErrors, setDynamicErrors] = useState<Record<string, string>>({});
   const form = useForm<ExamFormValues, unknown, ExamFormOutput>({
     resolver: zodResolver(examSchema),
     defaultValues: {
@@ -60,7 +55,6 @@ export function ExamForm({ exam }: { exam?: Exam }) {
   });
   const { fields, append, remove } = useFieldArray({ control: form.control, name: "subjects" });
   const watchedSubjects = useWatch({ control: form.control, name: "subjects" });
-  const dynamicValues = useWatch({ control: form.control, name: "dynamic_fields" });
   const examDate = useWatch({ control: form.control, name: "jalali_date" });
   const profile = useQuery({
     queryKey: queryKeys.profile,
@@ -74,12 +68,6 @@ export function ExamForm({ exam }: { exam?: Exam }) {
     queryFn: () => subjectsApi.byMajor(major),
     enabled: Boolean(major),
     staleTime: 86_400_000,
-  });
-  const dynamicFields = useQuery({
-    queryKey: ["dynamic-fields", "exam"],
-    queryFn: () => dynamicFieldsApi.list("exam"),
-    retry: false,
-    staleTime: 300_000,
   });
   const save = useMutation({
     meta: { successMessage: exam ? "تغییرات آزمون ذخیره شد." : "آزمون جدید ثبت شد." },
@@ -101,12 +89,6 @@ export function ExamForm({ exam }: { exam?: Exam }) {
   });
 
   function submit(values: ExamFormOutput) {
-    const errors = validateDynamicFieldValues(dynamicFields.data ?? [], values.dynamic_fields);
-    setDynamicErrors(errors);
-    if (Object.keys(errors).length) {
-      notifyValidationMessage(Object.values(errors)[0]);
-      return;
-    }
     save.mutate(values);
   }
   return (
@@ -187,16 +169,6 @@ export function ExamForm({ exam }: { exam?: Exam }) {
           </p>
         )}
       </section>
-      <DynamicFieldsSection
-        fields={dynamicFields.data ?? []}
-        values={dynamicValues}
-        errors={dynamicErrors}
-        disabled={save.isPending}
-        onChange={(name, value) => {
-          form.setValue("dynamic_fields", { ...dynamicValues, [name]: value });
-          setDynamicErrors((current) => ({ ...current, [name]: "" }));
-        }}
-      />
       {save.isError && (
         <Alert variant="destructive">
           <AlertDescription>{save.error.message}</AlertDescription>
