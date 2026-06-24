@@ -17,6 +17,7 @@ import { useLogout } from "@/hooks/use-logout";
 import { MobileMenuIcon } from "@/components/ui/mobile-menu-icon";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { ProfileAvatar } from "./profile-avatar";
+import { BrandLogo } from "@/components/ui/brand-logo";
 
 export function DashboardHeader({ role }: { role: "student" | "admin" }) {
   const logout = useLogout();
@@ -37,7 +38,10 @@ export function DashboardHeader({ role }: { role: "student" | "admin" }) {
         </DrawerTrigger>
         <DrawerContent side="right">
           <DrawerHeader className="mb-6">
-            <DrawerTitle>{env.appName}</DrawerTitle>
+            <div className="flex items-center gap-3">
+              <BrandLogo />
+              <DrawerTitle>{env.appName}</DrawerTitle>
+            </div>
             <DrawerDescription>
               {role === "admin" ? "دسترسی مدیریت" : "حساب دانش‌آموز"}
             </DrawerDescription>

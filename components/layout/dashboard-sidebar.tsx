@@ -1,6 +1,6 @@
-import { GraduationCap } from "lucide-react";
 import Link from "next/link";
 import { env } from "@/config/env";
+import { BrandLogo } from "@/components/ui/brand-logo";
 import { DashboardNavigation } from "./dashboard-navigation";
 
 export function DashboardSidebar({ role }: { role: "student" | "admin" }) {
@@ -10,9 +10,7 @@ export function DashboardSidebar({ role }: { role: "student" | "admin" }) {
         href={role === "admin" ? "/admin" : "/dashboard"}
         className="mb-8 flex min-h-12 items-center gap-3 rounded-md px-2 text-lg font-extrabold text-[var(--brand-strong)]"
       >
-        <span className="grid size-10 place-items-center rounded-md bg-primary text-primary-foreground">
-          <GraduationCap className="size-6" aria-hidden="true" />
-        </span>
+        <BrandLogo />
         <span>{env.appShortName}</span>
       </Link>
       <DashboardNavigation role={role} />

@@ -1,6 +1,5 @@
 "use client";
 
-import { GraduationCap } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -17,6 +16,7 @@ import { env } from "@/config/env";
 import { cn } from "@/lib/cn";
 import { MobileMenuIcon } from "@/components/ui/mobile-menu-icon";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { BrandLogo } from "@/components/ui/brand-logo";
 
 const publicLinks = [
   { href: "/", label: "خانه" },
@@ -44,7 +44,10 @@ export function PublicHeader() {
           </DrawerTrigger>
           <DrawerContent side="right">
             <DrawerHeader className="mb-5">
-              <DrawerTitle>{env.appName}</DrawerTitle>
+              <div className="flex items-center gap-3">
+                <BrandLogo />
+                <DrawerTitle>{env.appName}</DrawerTitle>
+              </div>
               <DrawerDescription>{env.appDescription}</DrawerDescription>
             </DrawerHeader>
             <nav aria-label="ناوبری موبایل" className="grid gap-1">
@@ -70,9 +73,7 @@ export function PublicHeader() {
           href="/"
           className="flex items-center gap-2.5 text-lg font-extrabold text-[var(--brand-strong)]"
         >
-          <span className="grid size-10 place-items-center rounded-md bg-primary text-primary-foreground shadow-sm">
-            <GraduationCap className="size-6" aria-hidden="true" />
-          </span>
+          <BrandLogo priority />
           <span>{env.appShortName}</span>
         </Link>
         <div className="hidden items-center gap-1 md:flex">

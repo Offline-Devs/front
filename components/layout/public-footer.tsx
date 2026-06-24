@@ -1,7 +1,8 @@
-import { GraduationCap, Mail, Phone } from "lucide-react";
+import { Mail, Phone } from "lucide-react";
 import Link from "next/link";
 import { env } from "@/config/env";
 import { formatNumber } from "@/lib/formatters";
+import { BrandLogo } from "@/components/ui/brand-logo";
 
 export function PublicFooter() {
   return (
@@ -9,9 +10,7 @@ export function PublicFooter() {
       <div className="page-container grid gap-10 py-12 sm:grid-cols-2 lg:grid-cols-[1.35fr_.7fr_.7fr_1fr] lg:py-16">
         <div>
           <p className="flex items-center gap-2.5 text-lg font-extrabold text-[var(--brand-strong)]">
-            <span className="grid size-10 place-items-center rounded-md bg-primary text-primary-foreground">
-              <GraduationCap className="size-6" aria-hidden="true" />
-            </span>
+            <BrandLogo />
             {env.appName}
           </p>
           <p className="mt-4 max-w-sm text-sm leading-7 text-muted-foreground">

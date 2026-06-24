@@ -20,6 +20,19 @@ export const metadata: Metadata = {
   title: { default: env.appName, template: `%s | ${env.appName}` },
   description: env.appDescription,
   manifest: "/manifest.webmanifest",
+  icons: {
+    icon: [
+      { url: "/logo.svg", type: "image/svg+xml" },
+      { url: "/favicon-32.png", type: "image/png", sizes: "32x32" },
+    ],
+    shortcut: "/favicon-32.png",
+    apple: [{ url: "/apple-touch-icon.png", type: "image/png", sizes: "180x180" }],
+  },
+  appleWebApp: {
+    capable: true,
+    title: env.appShortName,
+    statusBarStyle: "default",
+  },
   keywords: ["تحلیل آزمون", "مشاوره تحصیلی", "برنامه مطالعاتی", "دفترچه اشتباهات"],
   creator: env.appName,
   alternates: { canonical: "/" },

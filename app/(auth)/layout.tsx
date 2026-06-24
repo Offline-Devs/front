@@ -1,9 +1,9 @@
-import { GraduationCap } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { env } from "@/config/env";
 import { PageBreadcrumbs } from "@/components/layout/page-breadcrumbs";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { BrandLogo } from "@/components/ui/brand-logo";
 
 export default function AuthLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
@@ -15,9 +15,7 @@ export default function AuthLayout({ children }: Readonly<{ children: React.Reac
               href="/"
               className="flex w-fit items-center gap-3 font-black text-[var(--brand-strong)]"
             >
-              <span className="grid size-11 place-items-center rounded-md bg-primary text-primary-foreground">
-                <GraduationCap className="size-6" aria-hidden="true" />
-              </span>
+              <BrandLogo priority />
               {env.appShortName}
             </Link>
             <ThemeToggle />
