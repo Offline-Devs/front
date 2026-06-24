@@ -34,3 +34,31 @@ test("uses the provided logo on authentication pages", async ({ page }) => {
   await page.goto("/login");
   await expect(page.locator('img[src*="logo.svg"]')).toBeVisible();
 });
+
+test("uses the transparent light-green logo variant in dark theme", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "فعال‌کردن تم تیره" }).click();
+  await expect(page.locator(".brand-logo-light").first()).toBeHidden();
+  await expect(page.locator(".brand-logo-dark").first()).toBeVisible();
+
+  const colors = await page.evaluate(async () => {
+    const response = await fetch("/logo-dark.png");
+    const image = await createImageBitmap(await response.blob());
+    const canvas = document.createElement("canvas");
+    canvas.width = image.width;
+    canvas.height = image.height;
+    const context = canvas.getContext("2d")!;
+    context.drawImage(image, 0, 0);
+    const pixels = context.getImageData(0, 0, canvas.width, canvas.height).data;
+    let line: number[] = [];
+    for (let index = 0; index < pixels.length; index += 4) {
+      if (pixels[index + 3] > 250) {
+        line = Array.from(pixels.slice(index, index + 4));
+        break;
+      }
+    }
+    return { cornerAlpha: pixels[3], line };
+  });
+  expect(colors.cornerAlpha).toBe(0);
+  expect(colors.line).toEqual([115, 197, 167, 255]);
+});
