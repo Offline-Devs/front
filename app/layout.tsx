@@ -1,3 +1,15 @@
+/**
+ * @file app/layout.tsx
+ * @description Root Next.js layout — wraps every page in the application.
+ *
+ * Responsibilities:
+ *   - Sets the HTML lang="fa" dir="rtl" attributes for right-to-left Persian UI.
+ *   - Injects an inline theme-detection script that reads localStorage before
+ *     first paint to avoid a flash of the wrong color scheme.
+ *   - Exports Next.js Metadata (title template, OpenGraph, PWA manifest, icons).
+ *   - Wraps all children in AppProviders (TanStack Query, session bootstrap,
+ *     offline banner, toast container).
+ */
 import type { Metadata } from "next";
 import { AppProviders } from "@/components/providers/app-providers";
 import { env } from "@/config/env";

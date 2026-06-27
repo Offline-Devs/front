@@ -1,3 +1,11 @@
+/**
+ * @file app/opengraph-image.tsx
+ * @description Default Open Graph image generated at build time using Next.js ImageResponse.
+ *
+ * Produces a 1200×630 PNG with the app name and description rendered as
+ * styled JSX. Used as the fallback og:image for pages that do not define
+ * their own Open Graph image. The output is served at /opengraph-image.
+ */
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { env } from "@/config/env";

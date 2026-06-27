@@ -1,3 +1,12 @@
+/**
+ * @file app/(public)/blog/page.tsx
+ * @description Public blog listing page.
+ *
+ * Server component guarded by the enableBlog feature flag (returns
+ * notFound() when disabled). Fetches published posts via the
+ * ISR-cached getPublicPosts() helper and renders them as PostCards
+ * in a responsive grid.
+ */
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { BookOpenText } from "lucide-react";

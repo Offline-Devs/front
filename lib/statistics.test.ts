@@ -1,3 +1,11 @@
+/**
+ * @file lib/statistics.test.ts
+ * @description Unit tests for statistics date normalisation and range validation.
+ *
+ * Verifies normalizeStatisticsDate() converts Persian digits and hyphen
+ * separators, and validateStatisticsRange() rejects invalid date formats,
+ * inverted ranges, and accepts valid from/to pairs.
+ */
 import { describe, expect, it } from "vitest";
 import {
   normalizeStatisticsDate,

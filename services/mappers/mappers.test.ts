@@ -1,3 +1,13 @@
+/**
+ * @file services/mappers/mappers.test.ts
+ * @description Unit tests for API response mapper functions.
+ *
+ * Tests:
+ *   - mapDynamicField() parses the options JSON string to a string array and
+ *     resolves attachment URLs in mapPerformance().
+ *   - Both mappers return safe empty arrays for malformed JSON input.
+ *   - mapExam() applies the negative_mark penalty to subject percentage scores.
+ */
 import { describe, expect, it } from "vitest";
 import { dynamicFieldFixture, examFixture, performanceFixture } from "@/mocks/fixtures";
 import { mapDynamicField } from "./dynamic-field.mapper";

@@ -1,3 +1,13 @@
+/**
+ * @file tests/integration/feature-api.test.ts
+ * @description Integration tests for API service modules against the MSW mock server.
+ *
+ * Tests:
+ *   - Exam list gateway: verifies examsApi.list() fetches from the correct BFF
+ *     path and that mapExamList() transforms subject percentages correctly.
+ *   - Admin pagination: verifies adminApi.students() constructs the correct
+ *     query string from StudentFilters and that PaginatedResponse is returned.
+ */
 import { http, HttpResponse } from "msw";
 import { describe, expect, it } from "vitest";
 import { examFixture, studentFixture } from "@/mocks/fixtures";

@@ -1,3 +1,14 @@
+/**
+ * @file app/api/auth/refresh/route.ts
+ * @description BFF route: refreshes the access token using the stored refresh token.
+ *
+ * POST /api/auth/refresh
+ *   Validates same-origin, reads the current session, calls
+ *   refreshServerSession() which sends the refresh token to the backend
+ *   /auth/refresh endpoint. On success writes the updated session (new
+ *   access token + expiry) back to the cookie and returns { user, expires_in }.
+ *   Clears the session and returns 401 if the refresh token is invalid.
+ */
 import { refreshServerSession } from "@/lib/server/backend-client";
 import { clearSession, readSession, writeSession } from "@/lib/server/session";
 import { isSameOriginMutation } from "@/lib/server/route-utils";

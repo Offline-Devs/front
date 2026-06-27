@@ -1,3 +1,11 @@
+/**
+ * @file lib/formatters.test.ts
+ * @description Unit tests for the locale-aware number and date formatters.
+ *
+ * Verifies that formatNumber() produces Persian-digit output for the fa-IR
+ * locale and that formatDate() returns a medium-style Persian date string
+ * for a known ISO timestamp.
+ */
 import { describe, expect, it } from "vitest";
 import { formatDate, formatFileSize, formatNumber } from "./formatters";
 describe("Persian formatters", () => {

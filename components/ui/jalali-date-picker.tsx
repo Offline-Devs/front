@@ -1,3 +1,22 @@
+/**
+ * @file components/ui/jalali-date-picker.tsx
+ * @description Fully self-contained Jalali (Solar Hijri) date picker modal.
+ *
+ * Implements the Jalali calendar algorithm for leap-year detection and
+ * correct month lengths entirely in TypeScript — no external calendar library.
+ *
+ * Exported utilities (also used in tests):
+ *   isJalaliLeapYear(year)      — true when the year is a Jalali leap year.
+ *   daysInJalaliMonth(year, m)  — correct day count for any month/year pair.
+ *   getCurrentJalaliYear()      — derives the current Jalali year via Intl.
+ *
+ * Purpose prop controls year range:
+ *   "birth"   — year list ends at current year (no future birth dates).
+ *   "general" — year list extends 5 years into the future.
+ *
+ * The selected date is managed as a YYYY/MM/DD string, consistent with the
+ * zero-padded canonical format the backend stores and compares.
+ */
 "use client";
 
 import { CalendarDays, Check } from "lucide-react";

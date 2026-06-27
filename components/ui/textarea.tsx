@@ -1,3 +1,12 @@
+/**
+ * @file components/ui/textarea.tsx
+ * @description Styled resizable textarea with design system focus and error states.
+ *
+ * Matches the visual style of the Input component (same border, background,
+ * shadow, and focus ring tokens). Vertically resizable only (resize-y).
+ * aria-invalid border colour matches the Input's destructive ring style for
+ * consistent form validation feedback.
+ */
 import type { TextareaHTMLAttributes } from "react";
 import { cn } from "@/lib/cn";
 

@@ -1,3 +1,24 @@
+/**
+ * @file lib/server/route-utils.ts
+ * @description Shared utility functions for Next.js BFF route handlers.
+ *
+ * responseBody(response)    — reads the response body as an ArrayBuffer for
+ *   transparent proxying without text decoding overhead.
+ *
+ * copyResponse(response, body) — constructs a new Response with a curated
+ *   subset of the upstream headers (content-type, cache-control, rate-limit
+ *   headers, etc.) and the provided body. Strips internal headers that must
+ *   not be forwarded to the browser.
+ *
+ * errorResponse(error)      — converts a network / timeout error into a
+ *   structured 502 or 504 JSON response using the canonical backend error
+ *   body shape ({ error: string }).
+ *
+ * isSameOriginMutation(request) — validates that a mutation request's Origin
+ *   header matches the public host (accounting for reverse-proxy forwarded
+ *   headers). GET and HEAD requests always pass. Returns false for
+ *   cross-origin mutations to prevent CSRF.
+ */
 import type { ApiErrorBody } from "@/types/api";
 
 export async function responseBody(response: Response) {

@@ -1,3 +1,14 @@
+/**
+ * @file app/api/auth/verify-otp/route.ts
+ * @description BFF route: verifies OTP and writes the encrypted session cookie.
+ *
+ * POST /api/auth/verify-otp
+ *   Validates same-origin, forwards body to backend /auth/verify-otp.
+ *   On success, extracts access_token, refresh_token, expires_in, and user
+ *   from the backend response, encrypts them into a JWE session cookie via
+ *   writeSession(), then returns only { user, expires_in } to the browser.
+ *   Tokens are never sent to the client.
+ */
 import { backendFetch } from "@/lib/server/backend-client";
 import { writeSession } from "@/lib/server/session";
 import {

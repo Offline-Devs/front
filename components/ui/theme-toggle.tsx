@@ -1,3 +1,16 @@
+/**
+ * @file components/ui/theme-toggle.tsx
+ * @description Light / dark theme toggle button.
+ *
+ * Reads and writes the theme via the data-theme attribute on <html> and
+ * localStorage. Uses useSyncExternalStore with a custom subscribe function
+ * so the icon updates reactively when the theme changes in any tab (storage
+ * event) or within the same tab (custom app-theme-change event).
+ *
+ * Uses the View Transitions API (document.startViewTransition) when available
+ * and the user has not requested reduced motion, for a smooth page-level
+ * theme crossfade. Falls back to a CSS class-based transition.
+ */
 "use client";
 
 import { MoonStar, Sun } from "lucide-react";

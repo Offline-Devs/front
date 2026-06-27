@@ -1,3 +1,11 @@
+/**
+ * @file app/(admin)/admin/students/page.tsx
+ * @description Admin student management list page.
+ *
+ * Renders StudentsTable inside a Suspense boundary (skeleton fallback).
+ * The table is URL-driven — page and approved query params control
+ * pagination and the approval-status filter.
+ */
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { StudentsTable } from "@/components/admin/students-table";

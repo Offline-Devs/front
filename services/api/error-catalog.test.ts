@@ -1,3 +1,13 @@
+/**
+ * @file services/api/error-catalog.test.ts
+ * @description Unit tests for the API error catalog lookup function.
+ *
+ * Verifies describeApiError() returns:
+ *   - The correct retryable flag for 5xx vs. 4xx status codes.
+ *   - A Persian backend-message override when the error string matches a
+ *     known BACKEND_MESSAGES key (case-insensitive).
+ *   - The status-code default message when no backend message key matches.
+ */
 import { describe, expect, it } from "vitest";
 import { describeApiError } from "./error-catalog";
 

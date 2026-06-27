@@ -1,3 +1,11 @@
+/**
+ * @file lib/server/backend-client.test.ts
+ * @description Unit test for refreshServerSession() single-flight deduplication.
+ *
+ * Verifies that three concurrent refreshServerSession() calls for the same
+ * refresh token result in exactly one fetch to the backend /auth/refresh endpoint,
+ * and that all three callers receive the same updated access token.
+ */
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { userFixture } from "@/mocks/fixtures";
 import type { ServerSession } from "./session-codec";

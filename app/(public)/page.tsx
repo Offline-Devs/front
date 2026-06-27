@@ -1,3 +1,16 @@
+/**
+ * @file app/(public)/page.tsx
+ * @description Public landing page (home) of the Noshirvani Academy platform.
+ *
+ * Statically rendered server component. Sections:
+ *   - Hero with CTA button
+ *   - Four service cards (exam analysis, mistake notebook, study planning, performance tracking)
+ *   - Latest blog posts (fetched from the ISR-cached public content service)
+ *   - CallToAction banner
+ *
+ * Includes JSON-LD Organization structured data for SEO.
+ * OpenGraph metadata is exported via the Next.js metadata API.
+ */
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";

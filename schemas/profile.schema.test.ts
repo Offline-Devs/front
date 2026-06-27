@@ -1,3 +1,10 @@
+/**
+ * @file schemas/profile.schema.test.ts
+ * @description Unit tests for the profile schema date normalisation and validation.
+ *
+ * Verifies Persian digit and hyphen normalisation in jalali_birth_date, and
+ * that day 31 is rejected for Jalali months after the 6th (which have 30 days).
+ */
 import { describe, expect, it } from "vitest";
 import { profileSchema } from "./profile.schema";
 

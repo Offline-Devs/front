@@ -1,3 +1,10 @@
+/**
+ * @file schemas/performance.schema.test.ts
+ * @description Unit tests for the performance report schema.
+ *
+ * Verifies Jalali date normalisation from Persian digits and that submitting
+ * a report with both notes and study_plan empty fails validation.
+ */
 import { describe, expect, it } from "vitest";
 import { performanceSchema } from "./performance.schema";
 

@@ -1,3 +1,12 @@
+/**
+ * @file components/ui/card.tsx
+ * @description Container card with header, title, content, and footer sub-components.
+ *
+ * All sub-components are plain div/h3 elements with consistent padding,
+ * border, background, and shadow tokens from the design system. Server-
+ * renderable (no "use client"). Used extensively across dashboard, exam,
+ * mistake, and blog components.
+ */
 import type { HTMLAttributes } from "react";
 import { cn } from "@/lib/cn";
 

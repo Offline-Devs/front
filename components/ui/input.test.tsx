@@ -1,3 +1,10 @@
+/**
+ * @file components/ui/input.test.tsx
+ * @description Unit tests for the Input component's mobile keyboard mode inference.
+ *
+ * Verifies that type="number" and type="tel" inputs receive inputMode="numeric"
+ * automatically, and that an explicit inputMode="decimal" prop is not overridden.
+ */
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { Input } from "./input";

@@ -1,3 +1,14 @@
+/**
+ * @file lib/server/route-utils.test.ts
+ * @description Unit tests for BFF route utility functions.
+ *
+ * Tests:
+ *   - isSameOriginMutation correctly uses the X-Forwarded-Host / X-Forwarded-Proto
+ *     headers (set by the reverse proxy) rather than the internal container host.
+ *   - Cross-origin mutations are rejected.
+ *   - copyResponse forwards rate-limit headers (Retry-After, X-RateLimit-*)
+ *     and strips unrelated internal headers from the upstream response.
+ */
 // @vitest-environment node
 import { describe, expect, it } from "vitest";
 import { copyResponse, isSameOriginMutation } from "./route-utils";

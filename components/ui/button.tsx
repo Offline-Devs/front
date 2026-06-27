@@ -1,3 +1,19 @@
+/**
+ * @file components/ui/button.tsx
+ * @description Polymorphic button component with variant, size, and loading state.
+ *
+ * Built with class-variance-authority for type-safe variant composition.
+ *
+ * Variants: primary, secondary, outline, ghost, destructive, link.
+ * Sizes:    sm, md (default), lg, icon.
+ *
+ * When asChild=true uses Radix Slot to forward all props to the child element
+ * (e.g. <Link>), preserving accessibility attributes. When loading=true
+ * shows a spinning LoaderCircle icon and disables pointer events.
+ *
+ * Also exports buttonVariants for use in non-button elements that need the
+ * same visual styles (e.g. navigation links).
+ */
 "use client";
 
 import { Slot } from "@radix-ui/react-slot";

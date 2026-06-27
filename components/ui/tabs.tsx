@@ -1,3 +1,14 @@
+/**
+ * @file components/ui/tabs.tsx
+ * @description Accessible tab navigation built on Radix UI Tabs.
+ *
+ * TabsList renders a pill-shaped container. TabsTrigger highlights the
+ * active tab with primary background and text colours via the
+ * data-[state=active] selector. TabsContent adds a top margin and manages
+ * focus ring on keyboard activation.
+ *
+ * Exports: Tabs (Root), TabsList, TabsTrigger, TabsContent.
+ */
 "use client";
 
 import * as TabsPrimitive from "@radix-ui/react-tabs";

@@ -1,3 +1,11 @@
+/**
+ * @file lib/query-client.test.ts
+ * @description Unit tests for createQueryClient() configuration.
+ *
+ * Verifies that the mutation cache shows a success toast when
+ * mutation.meta.successMessage is set, and that the query cache suppresses
+ * the error toast when query.meta.suppressErrorToast is true.
+ */
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { toast } from "sonner";
 import { createQueryClient } from "./query-client";

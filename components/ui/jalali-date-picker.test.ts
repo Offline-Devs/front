@@ -1,3 +1,11 @@
+/**
+ * @file components/ui/jalali-date-picker.test.ts
+ * @description Unit tests for the Jalali calendar utility functions.
+ *
+ * Verifies correct month lengths (31 for months 1–6, 30 for 7–11, 29/30 for
+ * Esfand depending on leap year), and that isJalaliLeapYear correctly identifies
+ * leap years such as 1403.
+ */
 import { describe, expect, it } from "vitest";
 import { daysInJalaliMonth, isJalaliLeapYear } from "./jalali-date-picker";
 

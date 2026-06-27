@@ -1,3 +1,12 @@
+/**
+ * @file components/ui/input.tsx
+ * @description Base text input component with automatic mobile keyboard mode.
+ *
+ * Automatically sets inputMode="numeric" for type="number" and type="tel"
+ * inputs so mobile devices show a numeric keypad by default. An explicit
+ * inputMode prop overrides this behaviour (e.g. inputMode="decimal" for
+ * float inputs). Forwards a ref for integration with react-hook-form.
+ */
 import { forwardRef, type InputHTMLAttributes } from "react";
 import { cn } from "@/lib/cn";
 

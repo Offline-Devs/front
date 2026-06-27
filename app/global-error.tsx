@@ -1,3 +1,11 @@
+/**
+ * @file app/global-error.tsx
+ * @description Global Next.js error boundary — catches errors in the root layout.
+ *
+ * Only active in production. Must include its own <html> and <body> tags
+ * because it replaces the root layout when an error propagates to the
+ * top-most level. Shows a minimal Persian error message with a reset link.
+ */
 "use client";
 
 import { useEffect } from "react";

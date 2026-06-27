@@ -1,3 +1,18 @@
+/**
+ * @file lib/server/backend-client.ts
+ * @description Server-only HTTP client for Go backend communication.
+ *
+ * backendFetch(path, init) — wraps fetch with a per-request AbortController
+ *   timeout (serverEnv.apiTimeoutMs). Always sets cache:"no-store" so BFF
+ *   responses are never stale. Used by all BFF route handlers and server
+ *   layouts that communicate with the backend.
+ *
+ * refreshServerSession(session) — sends the stored refresh token to the
+ *   backend /auth/refresh endpoint and returns an updated ServerSession
+ *   (new access token + expiry). Implements a single-flight deduplication
+ *   map so concurrent requests sharing one refresh token make only one
+ *   backend call, preventing refresh-token race conditions under load.
+ */
 import "server-only";
 
 import { serverEnv } from "@/config/server-env";

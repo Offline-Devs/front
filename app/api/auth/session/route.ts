@@ -1,3 +1,13 @@
+/**
+ * @file app/api/auth/session/route.ts
+ * @description BFF route: reads the current session from the encrypted cookie.
+ *
+ * GET /api/auth/session
+ *   Decodes the HttpOnly JWE session cookie via readSession() and returns
+ *   { user, expires_in } (remaining seconds). Returns 401 when no valid
+ *   session exists. Used by SessionBootstrap on mount to hydrate the auth
+ *   store without exposing any token to client-side JavaScript.
+ */
 import { readSession } from "@/lib/server/session";
 import type { SessionResponse } from "@/types/auth";
 

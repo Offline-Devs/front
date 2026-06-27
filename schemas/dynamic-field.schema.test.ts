@@ -1,3 +1,10 @@
+/**
+ * @file schemas/dynamic-field.schema.test.ts
+ * @description Unit tests for the dynamic field schema.
+ *
+ * Verifies: valid string-array options pass, malformed JSON options fail,
+ * and technical names with spaces or uppercase characters are rejected.
+ */
 import { describe, expect, it } from "vitest";
 import { dynamicFieldSchema } from "./dynamic-field.schema";
 const base = {

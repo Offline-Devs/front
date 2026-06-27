@@ -1,3 +1,11 @@
+/**
+ * @file lib/upload-policy.test.ts
+ * @description Unit tests for client-side upload file validation.
+ *
+ * Verifies validateUploadFiles() rejects files exceeding the size limit,
+ * files with disallowed MIME types, and counts exceeding maxFiles, while
+ * accepting valid files within all constraints.
+ */
 import { describe, expect, it } from "vitest";
 import {
   DOCUMENT_TYPES,

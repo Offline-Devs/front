@@ -1,3 +1,13 @@
+/**
+ * @file tests/e2e/branding.spec.ts
+ * @description Playwright E2E tests for brand logo presence and visual correctness.
+ *
+ * Tests:
+ *   - The SVG logo URL is referenced in the HTML <head> and the web app manifest.
+ *   - The logo is visible on the auth layout pages.
+ *   - In dark mode the dark logo variant has a non-white pixel in its centre,
+ *     confirming the correct image is rendered.
+ */
 import { expect, test } from "@playwright/test";
 
 test("uses the provided logo for visible branding and install metadata", async ({ page }) => {

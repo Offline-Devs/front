@@ -1,3 +1,12 @@
+/**
+ * @file app/(admin)/admin/students/[id]/performance/new/page.tsx
+ * @description Page for creating a new performance report for a student.
+ *
+ * Resolves the [id] param and renders PerformanceForm in create mode.
+ * The admin fills in the report date, study plan, advisor notes, and
+ * file-attachment URLs. On save the form navigates back to the student
+ * detail page and invalidates the performance query cache reactively.
+ */
 import type { Metadata } from "next";
 import { PerformanceForm } from "@/components/performance/performance-form";
 export const metadata: Metadata = { title: "ثبت گزارش عملکرد" };

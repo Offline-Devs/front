@@ -1,3 +1,11 @@
+/**
+ * @file app/manifest.ts
+ * @description Next.js Web App Manifest route handler.
+ *
+ * Exports a MetadataRoute.Manifest object that Next.js serves at
+ * /manifest.webmanifest. Configures the PWA name, short name, icons,
+ * theme color, background color, and display mode using env values.
+ */
 import type { MetadataRoute } from "next";
 import { env } from "@/config/env";
 export default function manifest(): MetadataRoute.Manifest {

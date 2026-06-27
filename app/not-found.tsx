@@ -1,3 +1,11 @@
+/**
+ * @file app/not-found.tsx
+ * @description Global 404 Not Found page.
+ *
+ * Rendered by Next.js when notFound() is called from a server component or
+ * when no matching route exists. Shows a centered Persian message with a
+ * link back to the home page.
+ */
 import Link from "next/link";
 import { PageBreadcrumbs } from "@/components/layout/page-breadcrumbs";
 import { Button } from "@/components/ui/button";

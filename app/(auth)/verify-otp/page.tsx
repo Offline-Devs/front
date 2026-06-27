@@ -1,3 +1,12 @@
+/**
+ * @file app/(auth)/verify-otp/page.tsx
+ * @description OTP code verification page — step 2 of the login flow.
+ *
+ * Server component: redirects already-authenticated users away. Renders
+ * OtpForm which reads the pending phone number from sessionStorage, verifies
+ * the OTP, and routes the user to /dashboard, /admin, or /complete-profile
+ * depending on their role and whether a student profile exists.
+ */
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { OtpForm } from "@/components/auth/otp-form";

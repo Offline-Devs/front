@@ -1,3 +1,13 @@
+/**
+ * @file components/ui/data-table.tsx
+ * @description Styled HTML table primitives for tabular data display.
+ *
+ * Sub-components: TableContainer (scrollable wrapper with border/shadow),
+ * DataTable (min-width table), TableHeader, TableBody, TableRow, TableHead,
+ * TableCell. All are server-renderable divs/elements with design-system
+ * token classes. Used by StudentsTable, SubjectChart, TrendChart, and
+ * MistakeReasonsChart accessible data-table alternatives.
+ */
 import type {
   HTMLAttributes,
   TableHTMLAttributes,

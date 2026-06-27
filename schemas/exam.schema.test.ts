@@ -1,3 +1,10 @@
+/**
+ * @file schemas/exam.schema.test.ts
+ * @description Unit tests for the exam schema validation and date normalisation.
+ *
+ * Verifies: Persian digit date normalisation, negative mark range rejection,
+ * inconsistent answered-total invariant rejection, and duplicate subject name rejection.
+ */
 import { describe, expect, it } from "vitest";
 import { examSchema } from "./exam.schema";
 

@@ -1,3 +1,12 @@
+/**
+ * @file components/statistics/subject-chart.tsx
+ * @description Bar chart comparing performance percentages across subjects.
+ *
+ * Loaded dynamically with ssr:false via next/dynamic. Sorts subjects by
+ * descending performance before rendering. Also provides an accessible
+ * data table with correct / wrong / blank / percentage columns inside a
+ * <details> element for screen-reader users.
+ */
 "use client";
 import { useMemo } from "react";
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";

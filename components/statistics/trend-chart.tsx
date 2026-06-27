@@ -1,3 +1,13 @@
+/**
+ * @file components/statistics/trend-chart.tsx
+ * @description Line chart showing exam score trend over time.
+ *
+ * Loaded dynamically with ssr:false via next/dynamic in StatisticsDashboard
+ * because Recharts relies on browser layout APIs. Also renders an accessible
+ * data table inside a <details> element as a non-visual alternative to the chart.
+ *
+ * X-axis: Jalali exam date. Y-axis: score percentage (0–100).
+ */
 "use client";
 import { useMemo } from "react";
 import {

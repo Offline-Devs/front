@@ -1,3 +1,16 @@
+/**
+ * @file playwright.config.ts
+ * @description Playwright end-to-end test configuration.
+ *
+ * Targets a locally running Next.js dev server (port 3000) with a mock
+ * backend (tests/e2e/mock-backend.mjs, port 18080) as the webServer
+ * dependency. The mock backend is started automatically before E2E tests run.
+ *
+ * Browsers: Chromium only (desktop viewport) for CI speed.
+ * Reporters: list (console) + HTML (stored in test-results/).
+ * All tests share a single storageState auth fixture to avoid re-logging in
+ * for every spec.
+ */
 import { defineConfig, devices } from "@playwright/test";
 export default defineConfig({
   testDir: "./tests/e2e",

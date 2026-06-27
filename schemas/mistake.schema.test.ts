@@ -1,3 +1,10 @@
+/**
+ * @file schemas/mistake.schema.test.ts
+ * @description Unit tests for the mistake schema transforms and constraints.
+ *
+ * Verifies that empty string relation IDs are transformed to undefined, and
+ * that a question_number of 0 fails the positive() constraint.
+ */
 import { describe, expect, it } from "vitest";
 import { mistakeSchema } from "./mistake.schema";
 

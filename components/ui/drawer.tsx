@@ -1,3 +1,15 @@
+/**
+ * @file components/ui/drawer.tsx
+ * @description Slide-in panel overlay built on Radix UI Dialog.
+ *
+ * DrawerContent supports three sides: right (default), left, and bottom.
+ * The overlay uses a blurred backdrop. A close button is positioned
+ * relative to the chosen side. Used by DashboardHeader (mobile navigation)
+ * and PublicHeader (mobile navigation).
+ *
+ * Exports: Drawer (Root), DrawerTrigger, DrawerClose, DrawerContent,
+ * DrawerHeader, DrawerTitle, DrawerDescription.
+ */
 "use client";
 
 import * as DialogPrimitive from "@radix-ui/react-dialog";

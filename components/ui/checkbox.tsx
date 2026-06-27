@@ -1,3 +1,12 @@
+/**
+ * @file components/ui/checkbox.tsx
+ * @description Accessible checkbox with optional inline label and description.
+ *
+ * Built on @radix-ui/react-checkbox. Generates a stable id via useId() when
+ * none is provided so the label htmlFor association always works. The label
+ * and description text render alongside the checkbox for pointer-click
+ * convenience. aria-invalid is forwarded for form validation states.
+ */
 "use client";
 
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox";

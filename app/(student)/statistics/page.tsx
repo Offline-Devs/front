@@ -1,3 +1,12 @@
+/**
+ * @file app/(student)/statistics/page.tsx
+ * @description Student exam statistics and analysis page.
+ *
+ * Renders StatisticsDashboard wrapped in a Suspense boundary (skeleton
+ * fallback). The dashboard supports optional Jalali date range filters
+ * synced to URL query params and displays trend, subject-accuracy, and
+ * mistake-category charts.
+ */
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { StatisticsDashboard } from "@/components/statistics/statistics-dashboard";

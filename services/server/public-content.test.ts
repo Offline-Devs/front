@@ -1,3 +1,11 @@
+/**
+ * @file services/server/public-content.test.ts
+ * @description Unit tests for the public content server-side fetch helpers.
+ *
+ * Verifies that getPublicPosts(), getPublicPost(), and getMajors() return
+ * safe empty values ([] or null) when the backend fetch fails, rather than
+ * propagating the error and breaking the public page render.
+ */
 // @vitest-environment node
 
 import { afterEach, describe, expect, it, vi } from "vitest";

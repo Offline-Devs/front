@@ -1,3 +1,12 @@
+/**
+ * @file app/(student)/exams/[id]/edit/page.tsx
+ * @description Page for editing an existing exam entry.
+ *
+ * Server component. Fetches the exam directly from the backend (bypassing
+ * the client cache so edits always start from authoritative data), maps it
+ * through the exam mapper, and passes it to ExamForm in edit mode. Returns
+ * notFound() for a 404 response.
+ */
 import { notFound } from "next/navigation";
 import { ExamForm } from "@/components/exams/exam-form";
 import { backendFetch } from "@/lib/server/backend-client";

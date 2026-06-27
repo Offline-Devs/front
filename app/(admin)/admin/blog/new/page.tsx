@@ -1,3 +1,11 @@
+/**
+ * @file app/(admin)/admin/blog/new/page.tsx
+ * @description Page for creating a new blog post.
+ *
+ * Server component that calls requireRole("admin") to obtain the
+ * authenticated admin's user ID, then passes it to PostEditor as the
+ * authorId prop so the post is attributed correctly on save.
+ */
 import type { Metadata } from "next";
 import { PostEditor } from "@/components/blog/post-editor";
 import { requireRole } from "@/lib/server/auth-guard";

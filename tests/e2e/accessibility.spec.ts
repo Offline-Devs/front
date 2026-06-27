@@ -1,3 +1,13 @@
+/**
+ * @file tests/e2e/accessibility.spec.ts
+ * @description Playwright E2E accessibility checks for key public and auth pages.
+ *
+ * Uses @axe-core/playwright to run automated WCAG 2.1 AA checks. Tests cover:
+ *   - The public landing page for WCAG violations.
+ *   - Keyboard navigation and reduced-motion preferences on the login page.
+ *   - Toast notification ARIA position (top-center, role=region).
+ *   - Dark theme persistence across page reload and its axe accessibility score.
+ */
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 

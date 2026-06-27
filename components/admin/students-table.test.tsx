@@ -1,3 +1,12 @@
+/**
+ * @file components/admin/students-table.test.tsx
+ * @description Integration and accessibility tests for StudentsTable.
+ *
+ * Uses MSW to mock the /api/v1/admin/students/with-stats endpoint and verifies:
+ *   - Asynchronous student rows render with correct name and profile link.
+ *   - The rendered table passes axe accessibility checks (colour contrast
+ *     rule disabled since it depends on the host environment's computed styles).
+ */
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { render, screen } from "@testing-library/react";
 import { http, HttpResponse } from "msw";

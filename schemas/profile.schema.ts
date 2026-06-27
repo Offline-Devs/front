@@ -1,3 +1,15 @@
+/**
+ * @file schemas/profile.schema.ts
+ * @description Zod validation schema for the student profile form.
+ *
+ * jalaliDate — shared validator that normalises Persian digits and hyphens
+ *   to YYYY/MM/DD, validates the Jalali date pattern, and rejects day 31
+ *   for months 7–12 (the second half of the Jalali year has 30-day months).
+ *
+ * profileSchema — validates first_name, last_name (min 2 chars each), city,
+ *   jalali_birth_date (via jalaliDate), school, major (min 1 char), optional
+ *   profile_photo URL, and a dynamic_fields record.
+ */
 import { z } from "zod";
 import { normalizeNumericInput } from "@/lib/auth-flow";
 

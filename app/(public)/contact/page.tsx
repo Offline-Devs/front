@@ -1,3 +1,11 @@
+/**
+ * @file app/(public)/contact/page.tsx
+ * @description Public contact information page.
+ *
+ * Static server component guarded by the enableContactPage feature flag
+ * (returns notFound() when the flag is disabled). Displays four contact
+ * info cards using env.supportEmail and env.supportPhone values.
+ */
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Clock3, Mail, MapPin, Phone } from "lucide-react";

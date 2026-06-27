@@ -1,3 +1,13 @@
+/**
+ * @file components/auth/otp-form.test.tsx
+ * @description Unit tests for OtpForm routing logic and digit input behaviour.
+ *
+ * Verifies:
+ *   - The form redirects to /login when no pending phone is in sessionStorage.
+ *   - Pasting a six-digit Persian OTP code populates the digit inputs and,
+ *     after submitting, calls authApi.verifyOtp with the correct payload and
+ *     routes an admin user to /admin.
+ */
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";

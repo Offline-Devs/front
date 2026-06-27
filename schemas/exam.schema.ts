@@ -1,3 +1,16 @@
+/**
+ * @file schemas/exam.schema.ts
+ * @description Zod validation schema for exam creation/edit form inputs.
+ *
+ * subjectExamSchema — validates each subject row with cross-field invariants:
+ *   correct + wrong == answered, answered + blank == total_questions.
+ *
+ * examSchema — validates title, Jalali date (normalises Persian digits and
+ *   hyphens), negative_mark (0–1), subjects array (min 1, no duplicates by
+ *   subject_name), and dynamic_fields record.
+ *
+ * Exported types: ExamFormValues (input), ExamFormOutput (output after Zod transforms).
+ */
 import { z } from "zod";
 import { normalizeNumericInput } from "@/lib/auth-flow";
 

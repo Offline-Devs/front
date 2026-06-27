@@ -1,3 +1,12 @@
+/**
+ * @file app/(student)/performance/page.tsx
+ * @description Student performance reports timeline page.
+ *
+ * Read-only view. Renders PerformanceTimeline which fetches all
+ * performance records created by the admin for this student, displaying
+ * them as a chronological list with study plans, advisor notes, and
+ * file attachment links.
+ */
 import type { Metadata } from "next";
 import { PerformanceTimeline } from "@/components/performance/performance-timeline";
 export const metadata: Metadata = { title: "برنامه و گزارش عملکرد" };

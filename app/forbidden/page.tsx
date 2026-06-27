@@ -1,3 +1,15 @@
+/**
+ * @file app/forbidden/page.tsx
+ * @description 403 Forbidden access page.
+ *
+ * Shown when a user attempts to access a route they are not authorised for:
+ *   - A student navigating to /admin routes
+ *   - An admin navigating to student-only routes
+ *   - A student whose profile has been deleted by an administrator
+ *     (requireStudentProfile() redirects here on any non-OK profile response)
+ *
+ * Displays a ShieldX icon, a Persian explanation, and a home-page link.
+ */
 import Link from "next/link";
 import { ShieldX } from "lucide-react";
 import { Button } from "@/components/ui/button";

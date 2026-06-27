@@ -1,3 +1,12 @@
+/**
+ * @file lib/auth-flow.test.ts
+ * @description Unit tests for phone normalisation and auth destination routing.
+ *
+ * Verifies that normalizeIranianPhone() correctly converts 09xx, 9xx, +989xx,
+ * and 00989xx formats to the canonical +989xx E.164 form, and that
+ * authDestination() returns the correct route for admin, student-with-profile,
+ * and student-without-profile combinations.
+ */
 import { describe, expect, it } from "vitest";
 import { authDestination, normalizeIranianPhone, normalizeNumericInput } from "./auth-flow";
 

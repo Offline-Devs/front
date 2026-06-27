@@ -1,3 +1,16 @@
+/**
+ * @file components/ui/toast.tsx
+ * @description Global toast notification container and re-export.
+ *
+ * Wraps the Sonner Toaster with project-wide configuration:
+ *   position: top-center, RTL direction, 4-second duration,
+ *   up to 4 visible toasts, a close button on each toast.
+ *   Custom icons for success, error, warning, and info types.
+ *   CSS class names for design-system token styling (defined in globals.css).
+ *
+ * Re-exports the `toast` function from sonner so callers import from a single
+ * project path (@/components/ui/toast) rather than from the library directly.
+ */
 "use client";
 
 import { CircleAlert, CircleCheck, Info, TriangleAlert, X } from "lucide-react";

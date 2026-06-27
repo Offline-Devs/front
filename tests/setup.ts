@@ -1,3 +1,17 @@
+/**
+ * @file tests/setup.ts
+ * @description Global Vitest test environment setup.
+ *
+ * Runs before every test file. Responsibilities:
+ *   - Imports @testing-library/jest-dom/vitest to register custom matchers
+ *     (toBeInTheDocument, toHaveAttribute, etc.).
+ *   - Sets required server-only environment variables (BFF_SESSION_SECRET,
+ *     BFF_SESSION_COOKIE_SECURE) so server module imports do not throw.
+ *   - Starts / resets / stops the MSW mock server around each test.
+ *   - Polyfills crypto.subtle for the session-codec tests running in jsdom.
+ *   - Polyfills ResizeObserver and PointerEvent for Radix UI components.
+ *   - Polyfills window.matchMedia for theme-toggle tests.
+ */
 import "@testing-library/jest-dom/vitest";
 process.env.BFF_SESSION_SECRET = "test-session-secret-with-at-least-32-characters";
 process.env.BFF_SESSION_COOKIE_SECURE = "false";

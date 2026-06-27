@@ -1,3 +1,17 @@
+/**
+ * @file lib/content/sanitize.ts
+ * @description HTML sanitisation utilities for blog article content.
+ *
+ * sanitizeArticleHtml(value) — strips all tags and attributes except a
+ *   curated safe set (p, h2–h4, strong, em, ul, ol, li, blockquote, a,
+ *   code, pre, hr) and forces rel="noopener noreferrer" on all anchor tags.
+ *   javascript: and data: schemes are blocked. Used in the PostEditor preview
+ *   tab and the public blog post page's dangerouslySetInnerHTML call.
+ *
+ * articleExcerpt(value, maxLength?) — strips all HTML tags, collapses
+ *   whitespace, and truncates to maxLength characters (default 150) with an
+ *   ellipsis. Used by PostCard and AdminPostList for content previews.
+ */
 import sanitizeHtml from "sanitize-html";
 
 const allowedTags = [

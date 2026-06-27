@@ -1,3 +1,14 @@
+/**
+ * @file app/api/telemetry/route.ts
+ * @description BFF route: receives and logs client-side telemetry events.
+ *
+ * POST /api/telemetry
+ *   Validates same-origin, content-type, and a 2 KiB body size limit.
+ *   Sanitises the event through sanitizeTelemetry() which strips any
+ *   PII-like keys and validates the event type. Writes the clean event as
+ *   a structured JSON line to stdout (picked up by the container log driver)
+ *   and returns 204. Used by WebVitalsReporter for Core Web Vitals metrics.
+ */
 import { sanitizeTelemetry } from "@/lib/observability";
 import { isSameOriginMutation } from "@/lib/server/route-utils";
 

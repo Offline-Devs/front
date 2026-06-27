@@ -1,3 +1,10 @@
+/**
+ * @file app/(student)/mistakes/page.tsx
+ * @description Student mistake notebook list page.
+ *
+ * Renders MistakeList (searchable card grid with inline edit and delete)
+ * alongside a "New Mistake" button linking to /mistakes/new.
+ */
 import type { Metadata } from "next";
 import { Plus } from "lucide-react";
 import Link from "next/link";

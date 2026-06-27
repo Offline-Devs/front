@@ -1,3 +1,14 @@
+/**
+ * @file tests/e2e/critical-flows.spec.ts
+ * @description Playwright E2E tests for the most important user journeys.
+ *
+ * Tests (against the mock backend at port 18080):
+ *   - Logout: authenticated student clicks logout and is redirected to /login.
+ *   - Full student onboarding: OTP login → profile completion → exam creation
+ *     → mistake entry → verifies data appears in the respective lists.
+ *   - Admin approval + blog: admin logs in → approves a student → creates and
+ *     publishes a blog post → verifies it appears on the public blog page.
+ */
 import { expect, test, type Page } from "@playwright/test";
 
 async function login(page: Page, phone: string) {

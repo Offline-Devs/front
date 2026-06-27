@@ -1,3 +1,13 @@
+/**
+ * @file schemas/performance.schema.ts
+ * @description Zod validation schema for the admin performance report form.
+ *
+ * jalali_date — normalises Persian digits and hyphens to YYYY/MM/DD.
+ * notes / study_plan — trimmed strings; a superRefine rule requires at least
+ *   one of them to be non-empty so a report always has meaningful content.
+ * files — array of URL strings managed by the parent form component, not
+ *   directly editable in the schema (the form component handles URL validation).
+ */
 import { z } from "zod";
 import { normalizeNumericInput } from "@/lib/auth-flow";
 export const performanceSchema = z

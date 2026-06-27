@@ -1,3 +1,12 @@
+/**
+ * @file components/ui/badge.tsx
+ * @description Small pill label for status and category annotations.
+ *
+ * Variants: default (primary), secondary, success (green), warning (amber),
+ * destructive (red), outline. Used throughout the app for approval status
+ * (success / warning), post publish state (success / secondary), and
+ * dynamic field entity types (outline).
+ */
 import { cva, type VariantProps } from "class-variance-authority";
 import type { HTMLAttributes } from "react";
 import { cn } from "@/lib/cn";

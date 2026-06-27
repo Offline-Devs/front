@@ -1,3 +1,10 @@
+/**
+ * @file lib/jalali.test.ts
+ * @description Unit tests for normalizeJalaliDate().
+ *
+ * Verifies zero-padding of year, month, and day components, correct handling
+ * of already-padded dates, and error throwing for malformed input strings.
+ */
 import { describe, expect, it } from "vitest";
 import { normalizeJalaliDate } from "./jalali";
 describe("Jalali normalization", () => {

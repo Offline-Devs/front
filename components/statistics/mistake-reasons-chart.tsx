@@ -1,3 +1,11 @@
+/**
+ * @file components/statistics/mistake-reasons-chart.tsx
+ * @description Donut (pie) chart visualising the distribution of mistake categories.
+ *
+ * Loaded dynamically with ssr:false via next/dynamic. Sorts categories by
+ * descending count and assigns colours from a fixed palette. A paired data
+ * table inside a <details> element provides an accessible text alternative.
+ */
 "use client";
 import { useMemo } from "react";
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";

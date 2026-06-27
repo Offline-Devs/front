@@ -1,3 +1,16 @@
+/**
+ * @file components/ui/form-field.tsx
+ * @description Accessible form field wrapper: label, control, hint, and error.
+ *
+ * Clones the child control element to inject id, aria-labelledby,
+ * aria-describedby, and aria-invalid attributes automatically, eliminating
+ * the need to wire these by hand in every form. The generated description id
+ * links either the error message (role="alert") or the hint text to the
+ * control for screen readers.
+ *
+ * Required fields display a red asterisk before the label text (visually
+ * only; the asterisk is aria-hidden).
+ */
 import { cloneElement, isValidElement, useId, type ReactElement } from "react";
 import { Label } from "./label";
 import { cn } from "@/lib/cn";

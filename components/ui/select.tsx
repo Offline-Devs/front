@@ -1,3 +1,14 @@
+/**
+ * @file components/ui/select.tsx
+ * @description Accessible dropdown select built on Radix UI Select.
+ *
+ * SelectTrigger applies a default aria-label of "انتخاب گزینه" when none
+ * is provided; callers should always pass a descriptive label. SelectContent
+ * renders in a Portal with a capped scroll height and RTL direction.
+ * SelectItem shows a check indicator for the selected value.
+ *
+ * Exports: Select (Root), SelectValue, SelectTrigger, SelectContent, SelectItem.
+ */
 "use client";
 
 import * as SelectPrimitive from "@radix-ui/react-select";

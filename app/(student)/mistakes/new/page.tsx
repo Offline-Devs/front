@@ -1,3 +1,10 @@
+/**
+ * @file app/(student)/mistakes/new/page.tsx
+ * @description Page for recording a new mistake entry.
+ *
+ * Renders MistakeForm in standalone create mode. On save the form
+ * invalidates the mistakes cache and navigates to /mistakes.
+ */
 import type { Metadata } from "next";
 import { MistakeForm } from "@/components/mistakes/mistake-form";
 export const metadata: Metadata = { title: "ثبت اشتباه جدید" };

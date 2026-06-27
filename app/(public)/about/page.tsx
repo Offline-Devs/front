@@ -1,3 +1,10 @@
+/**
+ * @file app/(public)/about/page.tsx
+ * @description Public "About us" page describing the platform's mission and values.
+ *
+ * Static server component. Renders a hero section and four value-proposition
+ * cards (data-driven decisions, path transparency, human partnership, privacy).
+ */
 import type { Metadata } from "next";
 import { Eye, HeartHandshake, ShieldCheck, Target } from "lucide-react";
 import { CallToAction } from "@/components/marketing/call-to-action";

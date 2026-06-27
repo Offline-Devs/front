@@ -1,3 +1,15 @@
+/**
+ * @file mocks/fixtures/api.fixtures.ts
+ * @description Typed API response fixtures used across unit, component, and E2E tests.
+ *
+ * All fixtures use stable UUIDs and a fixed createdAt/updatedAt timestamp to
+ * keep snapshot output deterministic. Production code must never import this
+ * module — it is test-only and may expose internal structure that the real
+ * API would omit.
+ *
+ * Exports: userFixture, studentFixture, examFixture, performanceFixture,
+ *          blogPostFixture, dynamicFieldFixture.
+ */
 import type { BlogPost } from "@/types/blog";
 import type { DynamicFieldDefinition } from "@/types/dynamic-field";
 import type { Exam } from "@/types/exam";

@@ -1,3 +1,13 @@
+/**
+ * @file app/api/auth/request-otp/route.ts
+ * @description BFF route: proxies OTP request to the Go backend.
+ *
+ * POST /api/auth/request-otp
+ *   Validates same-origin origin header, then forwards the request body
+ *   verbatim to the backend's /auth/request-otp endpoint. Returns the
+ *   backend response (including the mock OTP in development mode) without
+ *   modification. No session cookie is touched.
+ */
 import { backendFetch } from "@/lib/server/backend-client";
 import {
   copyResponse,

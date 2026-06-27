@@ -1,3 +1,10 @@
+/**
+ * @file app/(admin)/admin/blog/page.tsx
+ * @description Admin blog management list page.
+ *
+ * Renders AdminPostList with tabs for all / draft / published posts,
+ * and a button to navigate to the new-post editor.
+ */
 import type { Metadata } from "next";
 import { Plus } from "lucide-react";
 import Link from "next/link";

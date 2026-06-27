@@ -1,3 +1,12 @@
+/**
+ * @file app/error.tsx
+ * @description Root Next.js error boundary component.
+ *
+ * Rendered automatically by Next.js when an unhandled error is thrown
+ * inside a route segment. Displays a user-facing error message with a
+ * "Try again" reset button that calls the provided reset() callback to
+ * attempt recovery without a full page reload.
+ */
 "use client";
 
 import { useEffect } from "react";

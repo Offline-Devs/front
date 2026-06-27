@@ -1,3 +1,10 @@
+/**
+ * @file app/(student)/exams/page.tsx
+ * @description Student exam list page.
+ *
+ * Renders ExamList (useQuery-driven card grid with inline delete) and a
+ * "New Exam" button that navigates to /exams/new.
+ */
 import type { Metadata } from "next";
 import { Plus } from "lucide-react";
 import Link from "next/link";

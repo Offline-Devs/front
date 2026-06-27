@@ -1,3 +1,12 @@
+/**
+ * @file app/sitemap.ts
+ * @description Next.js sitemap route handler.
+ *
+ * Exports an async function that returns a MetadataRoute.Sitemap array
+ * served at /sitemap.xml. Includes static public pages (home, about,
+ * services, contact, blog) and dynamically fetches all published blog post
+ * slugs from the ISR-cached public content service to add individual post URLs.
+ */
 import type { MetadataRoute } from "next";
 import { env } from "@/config/env";
 import { getPublicPosts } from "@/services/server/public-content";

@@ -1,3 +1,18 @@
+/**
+ * @file app/(public)/blog/[slug]/page.tsx
+ * @description Public blog post detail page.
+ *
+ * Server component. Fetches the post by slug from the ISR-cached
+ * getPublicPost() helper. Returns notFound() for missing posts.
+ *
+ * generateStaticParams — pre-generates paths for all published posts at
+ *   build time for static generation.
+ * generateMetadata — exports per-post Open Graph title, description, and
+ *   canonical URL metadata.
+ *
+ * Article HTML is sanitised with sanitizeArticleHtml before being rendered
+ * via dangerouslySetInnerHTML. Includes JSON-LD BlogPosting schema for SEO.
+ */
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { CalendarDays } from "lucide-react";

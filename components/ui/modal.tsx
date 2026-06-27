@@ -1,3 +1,17 @@
+/**
+ * @file components/ui/modal.tsx
+ * @description Centered modal dialog built on Radix UI Dialog.
+ *
+ * ModalContent renders inside a Portal with a blurred overlay backdrop.
+ * Content is centered via fixed transform and constrained to a max-w-lg.
+ * A close button is positioned at the top-end corner.
+ *
+ * Exports: Modal (Root), ModalTrigger, ModalClose, ModalContent,
+ * ModalHeader, ModalTitle, ModalDescription, ModalFooter.
+ *
+ * Used by JalaliDatePicker (date selection) and ConfirmDialog (destructive
+ * action confirmation). Drawer (slide-in panel) is a separate component.
+ */
 "use client";
 
 import * as DialogPrimitive from "@radix-ui/react-dialog";

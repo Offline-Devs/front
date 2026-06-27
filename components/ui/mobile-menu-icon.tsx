@@ -1,3 +1,12 @@
+/**
+ * @file components/ui/mobile-menu-icon.tsx
+ * @description Animated hamburger / close icon toggle for mobile navigation.
+ *
+ * Renders a Menu icon (when open=false) and an X icon (when open=true) layered
+ * on top of each other with CSS scale/rotate/opacity transitions. Provides a
+ * smooth morphing animation between states. The container is aria-hidden because
+ * the parent button provides the accessible label.
+ */
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/cn";
 

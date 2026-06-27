@@ -1,3 +1,10 @@
+/**
+ * @file app/(public)/blog/loading.tsx
+ * @description Streaming skeleton shown while the blog list page fetches posts.
+ *
+ * Next.js automatically renders this as the Suspense fallback during the
+ * server-side data fetch for app/(public)/blog/page.tsx.
+ */
 import { Skeleton } from "@/components/ui/skeleton";
 
 export default function BlogLoading() {

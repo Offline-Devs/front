@@ -1,3 +1,11 @@
+/**
+ * @file app/(student)/exams/new/page.tsx
+ * @description Page for creating a new exam entry.
+ *
+ * Renders ExamForm in create mode. The form fetches the student's major
+ * from their profile to populate the subject selector. On save, navigates
+ * to the new exam's detail page.
+ */
 import type { Metadata } from "next";
 import { ExamForm } from "@/components/exams/exam-form";
 export const metadata: Metadata = { title: "ثبت آزمون جدید" };

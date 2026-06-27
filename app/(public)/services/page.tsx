@@ -1,3 +1,11 @@
+/**
+ * @file app/(public)/services/page.tsx
+ * @description Public services overview page.
+ *
+ * Server component. Fetches the public major list from the ISR-cached
+ * getMajors() helper and renders six feature cards alongside a dynamic
+ * grid of supported academic majors and their subject lists.
+ */
 import type { Metadata } from "next";
 import {
   BarChart3,

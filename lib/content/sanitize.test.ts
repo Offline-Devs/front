@@ -1,3 +1,13 @@
+/**
+ * @file lib/content/sanitize.test.ts
+ * @description Unit tests for the article HTML sanitiser and excerpt generator.
+ *
+ * Verifies:
+ *   - Scripts, event handlers, images with onerror, and javascript: URLs are
+ *     all stripped while safe tags like <h2> are preserved.
+ *   - articleExcerpt produces plain text (no HTML tags) bounded by maxLength
+ *     with a trailing ellipsis.
+ */
 import { describe, expect, it } from "vitest";
 import { articleExcerpt, sanitizeArticleHtml } from "./sanitize";
 

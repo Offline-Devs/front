@@ -1,3 +1,11 @@
+/**
+ * @file app/(auth)/login/page.tsx
+ * @description Phone number entry page — step 1 of the OTP login flow.
+ *
+ * Server component: if a valid session already exists the user is
+ * redirected to /admin or /dashboard based on their role, so logged-in
+ * users never see this page. Renders PhoneForm for unauthenticated visitors.
+ */
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { PhoneForm } from "@/components/auth/phone-form";

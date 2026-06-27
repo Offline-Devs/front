@@ -1,3 +1,17 @@
+/**
+ * @file next.config.ts
+ * @description Next.js application configuration.
+ *
+ * Key settings:
+ *   output: "standalone"   — produces a self-contained build for Docker.
+ *   reactStrictMode: true  — enables double-invoke in development to surface side-effects.
+ *   images.formats          — AVIF and WebP for optimal browser delivery.
+ *   allowedDevOrigins       — permits 127.0.0.1 in addition to localhost.
+ *   headers()               — applies security headers (CSP, X-Frame-Options,
+ *                             X-Content-Type-Options, Permissions-Policy, COOP)
+ *                             to all routes and adds immutable cache headers for
+ *                             font assets. API routes get Cache-Control: no-store.
+ */
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {

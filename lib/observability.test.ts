@@ -1,3 +1,11 @@
+/**
+ * @file lib/observability.test.ts
+ * @description Unit tests for the telemetry event sanitiser.
+ *
+ * Verifies that sanitizeTelemetry() rejects null, arrays, events with
+ * unknown types, and events with oversized name strings, while accepting
+ * valid error and web-vital events and correctly stripping PII-like keys.
+ */
 import { describe, expect, it } from "vitest";
 import { sanitizeTelemetry } from "./observability";
 

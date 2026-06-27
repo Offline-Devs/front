@@ -1,3 +1,12 @@
+/**
+ * @file app/(admin)/admin/blog/[id]/edit/page.tsx
+ * @description Page for editing an existing blog post.
+ *
+ * Resolves [id] and the admin session in parallel, then renders
+ * EditPostEditor which loads the post from the admin blog query cache
+ * and passes it to PostEditor. Changes are saved via blogApi.update()
+ * with cache and ISR revalidation on success.
+ */
 import type { Metadata } from "next";
 import { EditPostEditor } from "@/components/blog/edit-post-editor";
 import { requireRole } from "@/lib/server/auth-guard";

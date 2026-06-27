@@ -1,3 +1,12 @@
+/**
+ * @file components/ui/pagination.tsx
+ * @description Simple previous / next pagination control.
+ *
+ * Renders nothing when totalPages <= 1. Previous and next buttons are
+ * disabled at the boundaries and when the disabled prop is true (e.g.
+ * while the next page is being fetched). The current page label uses
+ * aria-live="polite" for screen reader announcements. Used by StudentsTable.
+ */
 "use client";
 
 import { ChevronLeft, ChevronRight } from "lucide-react";

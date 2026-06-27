@@ -1,3 +1,12 @@
+/**
+ * @file app/(public)/layout.tsx
+ * @description Shared layout for all public (unauthenticated) pages.
+ *
+ * Wraps content with PublicHeader (sticky nav + mobile drawer) and
+ * PublicFooter. A PageBreadcrumbs strip sits between header and main
+ * content. No authentication check is performed in this layout — all
+ * routes inside (public) are freely accessible.
+ */
 import { PublicFooter } from "@/components/layout/public-footer";
 import { PublicHeader } from "@/components/layout/public-header";
 import { PageBreadcrumbs } from "@/components/layout/page-breadcrumbs";

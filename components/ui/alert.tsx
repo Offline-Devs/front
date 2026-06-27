@@ -1,3 +1,16 @@
+/**
+ * @file components/ui/alert.tsx
+ * @description Accessible inline alert / status component with four semantic variants.
+ *
+ * Variants:
+ *   info        — neutral card style (default).
+ *   success     — green-tinted border and background.
+ *   warning     — amber-tinted border and background.
+ *   destructive — red-tinted border, background, and text; sets role="alert".
+ *
+ * Non-destructive variants set role="status" for polite announcements.
+ * Sub-components: Alert, AlertTitle, AlertDescription.
+ */
 import { cva, type VariantProps } from "class-variance-authority";
 import type { HTMLAttributes } from "react";
 import { cn } from "@/lib/cn";

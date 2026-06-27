@@ -1,3 +1,13 @@
+/**
+ * @file app/(auth)/layout.tsx
+ * @description Split-panel layout for all authentication flow pages.
+ *
+ * Left panel: brand logo, ThemeToggle, PageBreadcrumbs, and the page
+ * content slot. Right panel (lg+ only): decorative illustration with an
+ * overlay tagline, hidden on smaller screens.
+ *
+ * Used by /login, /verify-otp, and /complete-profile.
+ */
 import Image from "next/image";
 import Link from "next/link";
 import { env } from "@/config/env";

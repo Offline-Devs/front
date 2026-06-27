@@ -1,3 +1,11 @@
+/**
+ * @file app/robots.ts
+ * @description Next.js robots.txt route handler.
+ *
+ * Exports a MetadataRoute.Robots object served at /robots.txt.
+ * Allows all crawlers to index the site (rules: []) and includes the
+ * sitemap URL derived from env.siteUrl for search engine discovery.
+ */
 import type { MetadataRoute } from "next";
 import { env } from "@/config/env";
 

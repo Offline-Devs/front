@@ -1,3 +1,13 @@
+/**
+ * @file lib/server/session-codec.test.ts
+ * @description Unit tests for the encrypted session codec round-trip and tamper detection.
+ *
+ * Verifies:
+ *   - A valid session encodes without embedding the raw token strings in the
+ *     cookie value (tokens remain opaque).
+ *   - The encoded value decodes back to the original session object.
+ *   - A modified ciphertext and a mismatched secret both result in null (rejected).
+ */
 // @vitest-environment node
 
 import { describe, expect, it } from "vitest";

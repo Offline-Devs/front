@@ -1,3 +1,15 @@
+/**
+ * @file services/api/client.test.ts
+ * @description Unit tests for the apiRequest() BFF fetch wrapper and ApiError class.
+ *
+ * Verifies:
+ *   - Non-OK responses throw ApiError with the correct status, code, and
+ *     Persian message resolved from the error catalog.
+ *   - Rate-limit headers (Retry-After, X-RateLimit-*) are parsed and attached
+ *     to the ApiError instance.
+ *   - A 204 No Content response returns undefined without attempting JSON parsing.
+ *   - On 401, the auth store's setUnauthenticated() is called.
+ */
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { userFixture } from "@/mocks/fixtures";
 import { useAuthStore } from "@/stores/auth-store";

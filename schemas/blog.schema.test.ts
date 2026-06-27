@@ -1,3 +1,10 @@
+/**
+ * @file schemas/blog.schema.test.ts
+ * @description Unit tests for blog schema validation and slug normalisation.
+ *
+ * Verifies normalizeBlogSlug handles mixed Persian/Latin input with excess
+ * whitespace, and that blogSchema rejects content below the minimum length.
+ */
 import { describe, expect, it } from "vitest";
 import { blogSchema, normalizeBlogSlug } from "./blog.schema";
 describe("blog schema", () => {
