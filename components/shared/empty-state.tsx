@@ -1,3 +1,11 @@
+/**
+ * @file components/shared/empty-state.tsx
+ * @description Reusable empty/zero-data state placeholder.
+ *
+ * Renders a dashed-border card with a centered icon (defaults to Inbox),
+ * a title, an optional description, and an optional action slot (typically
+ * a Button or Link). Used as the "no data" branch of list components.
+ */
 import { Inbox } from "lucide-react";
 import type { ReactNode } from "react";
 import { cn } from "@/lib/cn";

@@ -1,3 +1,17 @@
+/**
+ * @file services/mappers/exam.mapper.ts
+ * @description Normalises raw Exam API responses before they reach UI components.
+ *
+ * mapExam(value) — applies three transformations:
+ *  1. Clamps negative_mark to 0 for non-finite backend values.
+ *  2. Zero-pads the Jalali date to the canonical YYYY/MM/DD form expected by
+ *     date comparison and display logic.
+ *  3. Calculates each subject's percentage:
+ *       (correct - wrong × negative_mark) / total_questions × 100
+ *     The backend stores raw counts; percentage is a UI-only derived value.
+ *
+ * mapExamList — maps an array of exams through mapExam.
+ */
 import { normalizeJalaliDate } from "@/lib/jalali";
 import type { Exam } from "@/types/exam";
 

@@ -1,3 +1,15 @@
+/**
+ * @file components/layout/dashboard-navigation.tsx
+ * @description Role-aware navigation link list for dashboard sidebar and mobile drawer.
+ *
+ * Renders navigation items from config/navigation.ts for the given role. The active
+ * link is determined by comparing the current pathname with each item's href using
+ * startsWith for nested routes, with an exact match for the root dashboard and admin
+ * pages to avoid false positives.
+ *
+ * The optional onNavigate callback is used by the mobile drawer to close itself
+ * after the user selects a navigation item.
+ */
 "use client";
 
 import {

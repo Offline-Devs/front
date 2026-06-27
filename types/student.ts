@@ -1,3 +1,18 @@
+/**
+ * @file types/student.ts
+ * @description TypeScript types for User and Student entities at the API boundary.
+ *
+ * User and Student mirror the Go backend JSON models exactly. Timestamps remain
+ * ISO 8601 strings until a presentation formatter renders them. The optional
+ * `student` field on User is populated when the backend preloads the relation.
+ *
+ * DynamicValues   — a Record<string, unknown> for the JSONB dynamic_fields column
+ *   shared by Student, Exam, and Mistake models.
+ * StudentProfileInput — the subset of Student fields sent to POST /students/profile.
+ * StudentUpdateInput  — the partial subset available to admins via PUT /admin/students/:id.
+ * StudentWithStats    — extends Student with exam_count and mistake_count aggregates
+ *   returned by GET /admin/students/with-stats.
+ */
 export type DynamicValues = Record<string, unknown>;
 
 // User and Student mirror the backend JSON models at the API boundary. Backend timestamps remain ISO strings until a presentation formatter renders them.

@@ -1,3 +1,15 @@
+/**
+ * @file types/exam.ts
+ * @description TypeScript types for Exam and SubjectExam entities.
+ *
+ * SubjectExam includes backend-generated id, exam_id, and percentage fields.
+ * ExamInput and SubjectExamInput omit those read-only properties so mutation
+ * payloads don't accidentally send server-computed values back to the backend.
+ *
+ * Note on PUT semantics: the backend's UpdateExam endpoint replaces the entire
+ * subject collection when subjects are provided. ExamForm always submits the
+ * complete list of retained subjects when editing, not just changed rows.
+ */
 import type { DynamicValues } from "./student";
 
 // SubjectExam includes backend-generated identifiers and calculated fields. Create mappers deliberately omit those read-only properties from mutation payloads.

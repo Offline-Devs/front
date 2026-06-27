@@ -1,3 +1,14 @@
+/**
+ * @file components/exams/subject-score-row.tsx
+ * @description Single subject row within the ExamForm subject fieldarray.
+ *
+ * Renders inside a <fieldset> with a legend for accessibility. The subject_name
+ * field uses a Select populated from the backend's subjects list for the
+ * student's major when available, falling back to a plain text Input.
+ *
+ * Validates five numeric fields (total_questions, answered, correct, wrong, blank)
+ * with cross-field invariants enforced at the Zod schema level in exam.schema.ts.
+ */
 "use client";
 
 import { Trash2 } from "lucide-react";

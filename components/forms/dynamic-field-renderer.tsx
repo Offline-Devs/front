@@ -1,3 +1,16 @@
+/**
+ * @file components/forms/dynamic-field-renderer.tsx
+ * @description Renders a single admin-defined dynamic field as the appropriate input widget.
+ *
+ * Dispatches on field_type:
+ *   checkbox → Radix Checkbox with inline label.
+ *   select   → Radix Select populated from parsedOptions (JSON string → string[]).
+ *   date     → JalaliDatePicker.
+ *   number / text → Input with appropriate inputMode.
+ *
+ * Inactive fields (is_active = false) render null without consuming layout space.
+ * Aria-invalid is propagated from the error prop for accessible form validation.
+ */
 "use client";
 
 import { Checkbox } from "@/components/ui/checkbox";

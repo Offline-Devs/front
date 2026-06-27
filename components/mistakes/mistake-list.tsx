@@ -1,3 +1,12 @@
+/**
+ * @file components/mistakes/mistake-list.tsx
+ * @description Full mistake notebook list with search, inline edit, and delete.
+ *
+ * Client-side search filters by category, notes text, and question number.
+ * Inline edit opens a MistakeForm card for the selected mistake without leaving
+ * the page. Delete uses a ConfirmDialog and invalidates list/dashboard/statistics
+ * keys on success for reactive UI updates.
+ */
 "use client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Pencil, Plus, Trash2 } from "lucide-react";

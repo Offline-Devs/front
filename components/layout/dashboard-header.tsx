@@ -1,3 +1,13 @@
+/**
+ * @file components/layout/dashboard-header.tsx
+ * @description Sticky top header for the authenticated dashboard shell.
+ *
+ * Contains: ProfileAvatar (links to /profile for students), app name/role label,
+ * ThemeToggle, a placeholder notification bell, and a logout button.
+ *
+ * On mobile (< lg breakpoint) shows a Drawer trigger that opens the full
+ * DashboardNavigation in a slide-in panel from the right.
+ */
 "use client";
 
 import { Bell, LogOut } from "lucide-react";

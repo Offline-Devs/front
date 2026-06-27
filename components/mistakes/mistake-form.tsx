@@ -1,3 +1,17 @@
+/**
+ * @file components/mistakes/mistake-form.tsx
+ * @description Mistake entry form for the student error notebook.
+ *
+ * Used in two contexts:
+ *   Standalone new-mistake page (/mistakes/new) — navigates to /mistakes on save.
+ *   Inline edit within MistakeList — calls onSaved() to dismiss the inline form.
+ *
+ * Optional exam and subject selectors are populated from the cached exam list.
+ * Selecting an exam enables the subject selector, filtered to that exam's subjects.
+ *
+ * On save, invalidates mistake-dependent query keys (list, dashboard, statistics)
+ * so the error notebook and dashboard counts update reactively.
+ */
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";

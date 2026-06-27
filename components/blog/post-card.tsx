@@ -1,3 +1,12 @@
+/**
+ * @file components/blog/post-card.tsx
+ * @description Public blog post card for the blog listing page.
+ *
+ * Displays the post title (as a full-card link), publication date, and a
+ * plain-text excerpt derived from the HTML content via articleExcerpt.
+ * Hover animation lifts the card slightly. The title link spans the entire
+ * card via an after::pseudo-element overlay.
+ */
 import Link from "next/link";
 import { ArrowLeft, CalendarDays } from "lucide-react";
 import type { BlogPost } from "@/types/blog";

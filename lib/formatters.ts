@@ -1,3 +1,15 @@
+/**
+ * @file lib/formatters.ts
+ * @description Locale-aware number, date, and file-size formatters.
+ *
+ * All formatters use the locale and time zone configured in config/env.ts
+ * (default: fa-IR / Asia/Tehran) so the same presentation layer is used
+ * across public, student, and admin views.
+ *
+ * formatNumber(value)   — Intl.NumberFormat with fa-IR grouping and digits.
+ * formatDate(value)     — Intl.DateTimeFormat with dateStyle: "medium".
+ * formatFileSize(bytes) — converts bytes to a human-readable MB string.
+ */
 import { env } from "@/config/env";
 
 // Central Persian number, date, and file-size formatters keep locale behavior consistent across public, student, and administrator views.

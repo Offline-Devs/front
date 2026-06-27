@@ -1,3 +1,15 @@
+/**
+ * @file components/layout/public-header.tsx
+ * @description Sticky marketing site header with responsive navigation.
+ *
+ * Desktop: renders inline navigation links and a "ورود به سامانه" CTA button.
+ * Mobile: collapses navigation into a slide-in Drawer triggered by a hamburger
+ *   menu icon with an animated open/close transition.
+ *
+ * Navigation links are conditionally generated from env.enableBlog and
+ * env.enableContactPage feature flags so the header stays in sync with
+ * enabled/disabled public pages without code changes.
+ */
 "use client";
 
 import Link from "next/link";

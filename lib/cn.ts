@@ -1,3 +1,12 @@
+/**
+ * @file lib/cn.ts
+ * @description Tailwind CSS class merging utility.
+ *
+ * cn(...inputs) — combines clsx (conditional class joining) with tailwind-merge
+ *   (conflict resolution for Tailwind utilities). Components use this helper to
+ *   accept safe className overrides without generating broken utility combinations
+ *   such as "px-4 px-8" (which would apply the first and override with the second).
+ */
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 

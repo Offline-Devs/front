@@ -1,3 +1,18 @@
+/**
+ * @file components/layout/page-breadcrumbs.tsx
+ * @description Automatic breadcrumb trail derived from the current URL path.
+ *
+ * Splits the pathname into segments and maps each to a Persian label using the
+ * segmentLabels record. UUID-like and numeric segments are treated as entity
+ * identifiers and labelled relative to their parent segment (e.g. a UUID after
+ * "exams" becomes "جزئیات آزمون").
+ *
+ * Also renders a Back button that uses router.back() when browser history is
+ * available, falling back to navigating to the parent path.
+ *
+ * Supports an optional currentLabel override to display a dynamic entity name
+ * (e.g. the exam title) as the final breadcrumb.
+ */
 "use client";
 
 import { ArrowRight, ChevronLeft, Home } from "lucide-react";

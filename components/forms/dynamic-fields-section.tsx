@@ -1,3 +1,14 @@
+/**
+ * @file components/forms/dynamic-fields-section.tsx
+ * @description Section wrapper for a group of admin-defined dynamic fields.
+ *
+ * Filters to only active field definitions before rendering. Returns null if
+ * no active fields exist, so the section is completely absent from the form
+ * rather than showing an empty container.
+ *
+ * Renders fields in a two-column grid using DynamicFieldRenderer for each one.
+ * Used by ProfileForm (student profile page) for student-entity dynamic fields.
+ */
 "use client";
 import { DynamicFieldRenderer } from "./dynamic-field-renderer";
 import type { DynamicFieldDefinition } from "@/types/dynamic-field";

@@ -1,3 +1,14 @@
+/**
+ * @file components/exams/exam-list.tsx
+ * @description Paginated card list of the current student's exams with inline delete.
+ *
+ * Fetches the exam list via queryKeys.exams (GET /exams). On delete, removes the
+ * individual exam from cache and invalidates the list, dashboard, and statistics
+ * keys so all derived UI updates reactively without a manual reload.
+ *
+ * Each card shows the exam title, Jalali date, major, and subject count with links
+ * to the detail and edit pages.
+ */
 "use client";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";

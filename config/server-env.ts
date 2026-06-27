@@ -1,3 +1,23 @@
+/**
+ * @file config/server-env.ts
+ * @description Server-only secret and infrastructure configuration.
+ *
+ * Imports "server-only" to prevent this module from being bundled into the
+ * client-side JavaScript. All values are read from environment variables,
+ * validated with Zod, and exported as a typed `serverEnv` object.
+ *
+ * Key sections:
+ *   apiBaseUrl / apiTimeoutMs — internal backend URL (not exposed to clients)
+ *     and per-request timeout. Used by backendFetch in lib/server/backend-client.ts.
+ *   uploads — per-type byte limits and maximum file count used by the BFF proxy
+ *     to validate upload requests before forwarding to the backend.
+ *   session — BFF session cookie configuration: name, domain, secure flag,
+ *     sameSite policy, max-age, and the AES-256-GCM encryption secret.
+ *
+ * The session secret must be at least 32 characters in non-build environments.
+ * A placeholder is used at build time (when NEXT_PHASE = phase-production-build)
+ * so the build can proceed without production secrets being available in CI.
+ */
 import "server-only";
 
 import { z } from "zod";

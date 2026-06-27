@@ -1,3 +1,18 @@
+/**
+ * @file hooks/use-logout.ts
+ * @description Custom hook that encapsulates the full logout sequence.
+ *
+ * Returns an async function that:
+ *  1. Calls POST /api/auth/logout to clear the server-side session cookie.
+ *  2. Clears the entire TanStack Query cache.
+ *  3. Resets the auth store to unauthenticated.
+ *  4. Broadcasts the "logout" event to all open tabs via auth-channel.ts.
+ *  5. Navigates to /login.
+ *
+ * If the remote logout request fails (network error, expired session), the
+ * local session is still cleared and the user is redirected to /login.
+ * A warning toast is shown when the remote call fails.
+ */
 "use client";
 
 import { useQueryClient } from "@tanstack/react-query";

@@ -1,3 +1,21 @@
+/**
+ * @file lib/auth-channel.ts
+ * @description Cross-tab authentication event bus.
+ *
+ * Uses BroadcastChannel when available (same browser, all tabs), with a
+ * localStorage fallback for browsers or scenarios where BroadcastChannel is
+ * unavailable (e.g. iframe isolation).
+ *
+ * Supported events:
+ *   "logout"          — clears the TanStack Query cache and marks the auth store
+ *                       as unauthenticated in all open tabs.
+ *   "session-updated" — triggers a re-fetch of the session query key so a
+ *                       freshly refreshed token is picked up everywhere.
+ *
+ * broadcastAuthEvent(event) — fires an event from the current tab.
+ * subscribeToAuthEvents(listener) — subscribes to events and returns an
+ *   unsubscribe function for use in useEffect cleanup.
+ */
 type AuthEvent = "logout" | "session-updated";
 const channelName = "noshirvani-auth";
 const storageKey = "noshirvani:auth-event";

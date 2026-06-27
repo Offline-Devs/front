@@ -1,3 +1,17 @@
+/**
+ * @file components/performance/performance-timeline.tsx
+ * @description Student-facing timeline of performance report entries.
+ *
+ * Read-only view — students cannot create or edit performance records.
+ * Reports are created and managed by administrators via PerformanceForm.
+ *
+ * Fetches GET /students/performance via performanceApi.mine(). The response
+ * is mapped by the performance mapper which resolves file attachment URLs
+ * through the same-origin BFF proxy.
+ *
+ * Renders each record as a timeline entry with study plan, advisor notes, and
+ * downloadable file attachment links.
+ */
 "use client";
 import { useQuery } from "@tanstack/react-query";
 import { CalendarDays, Download, FileText } from "lucide-react";

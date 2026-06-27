@@ -1,3 +1,18 @@
+/**
+ * @file config/env.ts
+ * @description Public (NEXT_PUBLIC_*) environment variable schema and typed export.
+ *
+ * Uses Zod to validate every public env var at module load time. Invalid or missing
+ * required variables cause an immediate schema parse error that surfaces as a build
+ * or runtime error with a clear message — no silent undefined misses.
+ *
+ * Each variable is referenced by its explicit process.env.NEXT_PUBLIC_* name because
+ * Next.js performs compile-time string replacement only for statically-referenced
+ * NEXT_PUBLIC keys; dynamic access like process.env[key] is not replaced.
+ *
+ * The exported `env` object is safe to import in both client and server components.
+ * It never contains secrets — all secret configuration lives in config/server-env.ts.
+ */
 import { z } from "zod";
 
 const optionalUrl = z.union([z.literal(""), z.string().url()]);

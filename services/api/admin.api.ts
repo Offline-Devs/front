@@ -1,3 +1,28 @@
+/**
+ * @file services/api/admin.api.ts
+ * @description API client for administrator student and dynamic-field operations.
+ *
+ * Student operations:
+ *   students(filters)  — GET /admin/students/with-stats with pagination and
+ *                        approval-status filter. Uses the with-stats endpoint
+ *                        because it returns exam_count and mistake_count in a
+ *                        single request.
+ *   student(id)        — GET /admin/students/:id; full student detail.
+ *   exams(id)          — GET /admin/students/:id/exams
+ *   mistakes(id)       — GET /admin/students/:id/mistakes
+ *   updateStudent(id)  — PUT /admin/students/:id (partial update, admin fields).
+ *   approve(id)        — PUT /admin/students/:id/approve; sets is_approved = true.
+ *   removeStudent(id)  — DELETE /admin/students/:id; soft-deletes the student record.
+ *
+ * Dynamic field operations:
+ *   dynamicFields(entityType?) — GET /admin/dynamic-fields (optionally filtered).
+ *   createField(input)         — POST /admin/dynamic-fields
+ *   updateField(id, input)     — PUT /admin/dynamic-fields/:id
+ *   removeField(id)            — DELETE /admin/dynamic-fields/:id
+ *
+ * All dynamic-field responses are passed through the dynamic-field mapper which
+ * parses the options JSON string into a typed string array.
+ */
 import { apiRequest } from "./client";
 import type { PaginatedResponse, StatusResponse } from "@/types/api";
 import type { Student, StudentUpdateInput, StudentWithStats } from "@/types/student";

@@ -1,3 +1,17 @@
+/**
+ * @file components/statistics/statistics-dashboard.tsx
+ * @description Interactive statistics dashboard with Jalali date range filters.
+ *
+ * Manages date filter state locally and syncs to URL search params when the
+ * user applies or clears filters. The statistics query key includes the filter
+ * object so each unique range gets its own cache entry.
+ *
+ * Charts are loaded dynamically with next/dynamic (ssr: false) to avoid
+ * server-rendering Recharts components that depend on browser layout APIs.
+ *
+ * Sub-components: TrendChart, SubjectChart, MistakeReasonsChart, SummaryCards.
+ * All chart components are also exported with accessible data-table fallbacks.
+ */
 "use client";
 import { useQuery } from "@tanstack/react-query";
 import dynamic from "next/dynamic";

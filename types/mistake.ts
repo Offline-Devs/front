@@ -1,3 +1,15 @@
+/**
+ * @file types/mistake.ts
+ * @description TypeScript types for Mistake entities (the student error notebook).
+ *
+ * A Mistake may exist independently of any exam (exam_id is optional). When an
+ * exam is selected in the form, only the exams and subject records owned by the
+ * current student are presented for selection.
+ *
+ * MistakeInput / MistakeUpdateInput follow the same optional-id pattern: the
+ * mutation payloads use undefined (not empty string) for absent relation IDs,
+ * which the Zod schema enforces via its optionalId transform.
+ */
 import type { Exam, SubjectExam } from "./exam";
 import type { DynamicValues, Student } from "./student";
 

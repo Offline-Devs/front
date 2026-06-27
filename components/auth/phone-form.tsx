@@ -1,3 +1,15 @@
+/**
+ * @file components/auth/phone-form.tsx
+ * @description Login step 1: Iranian phone number input form.
+ *
+ * Submits to POST /api/auth/request-otp (BFF route). On success, stores the
+ * normalised phone number in sessionStorage via savePendingPhone and navigates
+ * to /verify-otp. The OTP form reads the pending phone from sessionStorage.
+ *
+ * Phone normalisation is handled by the Zod schema (normalizeIranianPhone) so
+ * students can type "0912...", "912...", or "+9812..." and all formats resolve
+ * to the +98 E.164 format the backend expects.
+ */
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";

@@ -1,3 +1,19 @@
+/**
+ * @file components/admin/student-overview.tsx
+ * @description Full admin view of a single student's profile, exams, mistakes,
+ * statistics, and performance reports.
+ *
+ * Rendered by app/(admin)/admin/students/[id]/page.tsx. Uses Tabs to organise
+ * content by domain. Each tab fires its own useQuery so data is fetched on
+ * demand and cached independently.
+ *
+ * ProfileEditor (inner component) — inline edit form for the admin-editable
+ *   subset of student fields (name, city, school, major). Uses local state
+ *   for the form values and invalidates the student cache on save.
+ *
+ * PerformanceForm is rendered inline when editingPerformance is set, allowing
+ *   the admin to edit an existing report without leaving the page.
+ */
 "use client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Pencil, Plus, Trash2 } from "lucide-react";

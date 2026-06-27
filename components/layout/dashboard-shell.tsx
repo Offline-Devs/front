@@ -1,3 +1,16 @@
+/**
+ * @file components/layout/dashboard-shell.tsx
+ * @description Persistent dashboard layout shell shared by student and admin roles.
+ *
+ * Renders a responsive two-column grid:
+ *   Left column (lg+): DashboardSidebar — sticky sidebar with brand logo and
+ *     role-specific navigation links.
+ *   Right column: DashboardHeader (sticky top bar with profile avatar, logout,
+ *     and mobile drawer trigger) + main content area with PageBreadcrumbs.
+ *
+ * The `role` prop switches navigation items, header labels, and profile avatar
+ * behaviour between student and admin views.
+ */
 import { DashboardSidebar } from "./dashboard-sidebar";
 import { DashboardHeader } from "./dashboard-header";
 import { PageBreadcrumbs } from "./page-breadcrumbs";

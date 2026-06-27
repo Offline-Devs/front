@@ -1,3 +1,23 @@
+/**
+ * @file components/exams/exam-form.tsx
+ * @description Exam creation and edit form for students.
+ *
+ * Handles both create (/exams/new) and update (/exams/:id/edit) via the same
+ * component — the presence of the `exam` prop switches the mutation target.
+ *
+ * On save:
+ *   - Sets the exam data in cache (queryKeys.exam(id)) for instant detail view.
+ *   - Invalidates all exam-dependent keys (list, dashboard, statistics).
+ *   - Navigates to the exam detail page.
+ *
+ * PUT semantics note: The backend replaces the entire subject collection on
+ * update. The form always submits every retained subject row. An informational
+ * Alert is shown to the user in edit mode to communicate this behaviour.
+ *
+ * The major comes from the student profile (fetched via useQuery when creating)
+ * or from the existing exam (when editing). Subject names are populated from the
+ * backend's /subjects?major=… endpoint for the student's registered major.
+ */
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";

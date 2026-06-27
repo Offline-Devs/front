@@ -1,3 +1,12 @@
+/**
+ * @file components/blog/edit-post-editor.tsx
+ * @description Wrapper that locates a post by ID in the admin blog list cache
+ * and passes it to PostEditor for editing.
+ *
+ * Uses the same ["admin", "blog"] query key as AdminPostList so the post data
+ * is served from cache without a separate network request. Falls back to an
+ * ApiErrorState if the post cannot be found.
+ */
 "use client";
 import { useQuery } from "@tanstack/react-query";
 import { ApiErrorState } from "@/components/shared/api-error-state";

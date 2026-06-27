@@ -1,3 +1,17 @@
+/**
+ * @file lib/observability.ts
+ * @description Lightweight client-side telemetry helpers.
+ *
+ * sanitizeTelemetry(input) — validates and sanitises an unknown event object
+ *   before logging. Strips keys matching a PII pattern (authorization, token,
+ *   phone, email, name, etc.) and enforces field length limits. Returns a typed
+ *   TelemetryEvent or null for invalid input.
+ *
+ * reportTelemetry(event) — sends a sanitised event to the BFF telemetry endpoint
+ *   (POST /api/telemetry) using navigator.sendBeacon when available, falling back
+ *   to a keepalive fetch. The BFF logs the event server-side as structured JSON
+ *   and never stores PII. Used by WebVitalsReporter for Core Web Vitals.
+ */
 type TelemetryEvent = {
   type: "error" | "web-vital";
   name: string;

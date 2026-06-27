@@ -1,3 +1,18 @@
+/**
+ * @file lib/statistics.ts
+ * @description Utility functions for the statistics filter UI.
+ *
+ * normalizeStatisticsDate(value) — strips whitespace, converts Persian/Arabic
+ *   digits, and replaces hyphens with slashes so the date filter inputs accept
+ *   both YYYY/MM/DD and YYYY-MM-DD input styles.
+ *
+ * validateStatisticsRange(from, to) — validates that both values match the
+ *   1[34]xx/mm/dd Jalali pattern and that from ≤ to. Returns an error string
+ *   or null.
+ *
+ * totalCategorizedMistakes(reasons) — sums all values in a mistakes-by-reason
+ *   record for display in the statistics summary card.
+ */
 import { normalizeNumericInput } from "./auth-flow";
 
 export function normalizeStatisticsDate(value: string) {

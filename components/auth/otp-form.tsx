@@ -1,3 +1,21 @@
+/**
+ * @file components/auth/otp-form.tsx
+ * @description Login step 2: six-digit OTP verification form.
+ *
+ * Reads the pending phone from sessionStorage. If absent, immediately redirects
+ * back to /login so the form is never shown in an inconsistent state.
+ *
+ * Key behaviours:
+ *   - Six individual digit inputs with keyboard navigation (ArrowLeft/Right,
+ *     Backspace focus movement) and paste support for both ASCII and Persian digits.
+ *   - On successful OTP verification, checks whether a student profile exists
+ *     (GET /students/profile) and routes to /dashboard (profile found) or
+ *     /complete-profile (404 — new user onboarding). Admins always go to /admin.
+ *   - On 401 error, clears the digit inputs so the student can retry.
+ *   - Resend OTP button with a countdown timer (env.otpResendSeconds).
+ *   - Displays the mock OTP code in a warning banner when running against the
+ *     development backend with EXPOSE_MOCK_OTP=true.
+ */
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";

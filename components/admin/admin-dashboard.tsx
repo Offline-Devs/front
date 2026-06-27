@@ -1,3 +1,13 @@
+/**
+ * @file components/admin/admin-dashboard.tsx
+ * @description Admin overview dashboard with student count summary cards.
+ *
+ * Fires three separate queries (all / approved / pending student counts) using
+ * limit: 1 so only the total count is fetched, not the full student list.
+ * This keeps the dashboard lightweight while still showing accurate counts.
+ *
+ * Provides a quick-access button to the pending-approval student list filter.
+ */
 "use client";
 import { useQuery } from "@tanstack/react-query";
 import { CheckCircle2, Clock3, UsersRound } from "lucide-react";

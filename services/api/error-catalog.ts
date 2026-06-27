@@ -1,3 +1,24 @@
+/**
+ * @file services/api/error-catalog.ts
+ * @description Translates raw backend error responses into controlled, user-facing
+ * Persian messages with retry metadata.
+ *
+ * Two lookup tables work together:
+ *
+ * STATUS_ERRORS — maps HTTP status codes to a default ErrorDescriptor.
+ *   Each descriptor carries a canonical error code (ApiErrorCode), a Persian
+ *   message, and a boolean indicating whether the client should offer a retry.
+ *
+ * BACKEND_MESSAGES — maps lower-cased backend `error` strings to Persian
+ *   overrides. These take precedence over the status-code defaults so that
+ *   domain-specific messages ("student approval required", "invalid jalali_date
+ *   format", etc.) are shown instead of a generic status message.
+ *
+ * describeApiError(status, body) — the single exported function; called by
+ *   ApiError in services/api/client.ts every time the backend returns a non-OK
+ *   response. Components never receive raw backend text — only the resolved
+ *   descriptor from this catalog.
+ */
 import type { ApiErrorBody, ApiErrorCode } from "@/types/api";
 
 type ErrorDescriptor = { code: ApiErrorCode; message: string; retryable: boolean };
@@ -32,11 +53,17 @@ const STATUS_ERRORS: Record<number, ErrorDescriptor> = {
   504: { code: "timeout", message: "پاسخ سرور بیش از حد طول کشید.", retryable: true },
 };
 
+/**
+ * Backend `error` field values mapped to Persian overrides.
+ * Keys must be lower-cased for the case-insensitive lookup in describeApiError.
+ */
 const BACKEND_MESSAGES: Record<string, string> = {
   "invalid or expired otp": "کد واردشده اشتباه یا منقضی شده است.",
   "user is inactive": "حساب کاربری شما غیرفعال است.",
   "profile not found": "پروفایل هنوز تکمیل نشده است.",
   "student profile not found": "پروفایل هنوز تکمیل نشده است.",
+  "student approval required":
+    "تا زمانی که مدیر پروفایل شما را تأیید نکند، به این بخش دسترسی ندارید.",
   "rate limit exceeded": "تعداد درخواست‌ها زیاد است؛ کمی بعد دوباره تلاش کنید.",
   "invalid refresh token": "نشست شما منقضی شده است. دوباره وارد شوید.",
   "backend unavailable": "ارتباط با سرور برقرار نشد.",
@@ -58,12 +85,19 @@ const BACKEND_MESSAGES: Record<string, string> = {
   "invalid upload type. allowed: document, profile": "نوع مقصد آپلود معتبر نیست.",
 };
 
-// Raw backend text is used only for error classification. Components receive controlled Persian messages and retry metadata rather than arbitrary server output.
+/**
+ * Resolves an HTTP status code and backend error body into a controlled
+ * ErrorDescriptor that components and ApiError can safely display.
+ * Raw backend strings are never surfaced directly to users.
+ */
 export function describeApiError(status: number, body: ApiErrorBody): ErrorDescriptor {
   const fallback = STATUS_ERRORS[status] ?? {
     code: "unknown" as const,
     message: "خطای پیش‌بینی‌نشده‌ای رخ داد.",
     retryable: status >= 500,
   };
-  return { ...fallback, message: BACKEND_MESSAGES[body.error.toLowerCase()] ?? fallback.message };
+  return {
+    ...fallback,
+    message: BACKEND_MESSAGES[body.error.toLowerCase()] ?? fallback.message,
+  };
 }

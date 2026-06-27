@@ -1,3 +1,18 @@
+/**
+ * @file components/auth/session-bootstrap.tsx
+ * @description Invisible client component that hydrates the auth store on mount.
+ *
+ * On first render it fires GET /api/auth/session to read the encrypted BFF
+ * cookie server-side and return the current user object. The result is written
+ * to the TanStack Query cache (queryKeys.session) and the Zustand auth store.
+ *
+ * Also subscribes to cross-tab auth events via auth-channel.ts:
+ *   "logout"          — clears the query cache and marks the user as unauthenticated.
+ *   "session-updated" — invalidates the session query key so a refreshed token
+ *                       is picked up in all open tabs.
+ *
+ * Renders null — has no visible output.
+ */
 "use client";
 
 import { useQuery, useQueryClient } from "@tanstack/react-query";

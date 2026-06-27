@@ -1,3 +1,20 @@
+/**
+ * @file lib/upload-policy.ts
+ * @description Client-side file upload validation policy.
+ *
+ * PROFILE_IMAGE_TYPES — accepted MIME types for profile photos (JPEG, PNG, WebP).
+ * DOCUMENT_TYPES — accepted MIME types for performance report attachments;
+ *   extends profile image types with application/pdf.
+ *
+ * validateUploadFiles(files, policy) — checks file count, individual MIME type,
+ *   and individual byte size against the provided policy. Returns a user-facing
+ *   Persian error string or null on success. Used in both the BFF proxy
+ *   (server-side pre-validation) and the FileUploader component (client-side UX).
+ *
+ * validateFileSignatures(files) — reads the first 12 bytes of each file and
+ *   verifies the magic-byte signature matches the declared MIME type. Prevents
+ *   MIME-type spoofing. Used in the BFF proxy only (requires ArrayBuffer access).
+ */
 export const PROFILE_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"] as const;
 export const DOCUMENT_TYPES = [...PROFILE_IMAGE_TYPES, "application/pdf"] as const;
 

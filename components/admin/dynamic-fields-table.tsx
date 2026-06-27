@@ -1,3 +1,13 @@
+/**
+ * @file components/admin/dynamic-fields-table.tsx
+ * @description Admin table of dynamic field definitions with entity-type filter.
+ *
+ * Inline edit opens a DynamicFieldForm card for the selected field definition.
+ * Delete uses a ConfirmDialog and invalidates the dynamic-fields cache prefix.
+ *
+ * The entity type filter is managed as local state; changing it fires a new query
+ * with the entity-specific key (queryKeys.dynamicFields(entity)).
+ */
 "use client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Pencil, Trash2 } from "lucide-react";

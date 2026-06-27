@@ -1,3 +1,11 @@
+/**
+ * @file components/layout/dashboard-sidebar.tsx
+ * @description Sticky sidebar navigation for the authenticated dashboard (lg+ screens).
+ *
+ * Hidden on mobile (the DashboardHeader's Drawer handles mobile navigation).
+ * Contains the brand logo, DashboardNavigation for the given role, and a footer
+ * showing the role label and app version.
+ */
 import Link from "next/link";
 import { env } from "@/config/env";
 import { BrandLogo } from "@/components/ui/brand-logo";

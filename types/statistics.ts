@@ -1,3 +1,18 @@
+/**
+ * @file types/statistics.ts
+ * @description TypeScript types for exam statistics and dashboard summary data.
+ *
+ * All types are consumed by the statistics dashboard components and mirror the
+ * Go backend's ExamStatistics and DashboardSummary response shapes.
+ *
+ * ExamStatistics   — aggregate returned by GET /students/statistics and
+ *                    GET /admin/students/:id/statistics. Includes subject-level
+ *                    accuracy, trend data, and mistake categorisation.
+ * DashboardSummary — lightweight summary returned by GET /students/dashboard.
+ *                    The is_approved field is used by the StudentDashboard to
+ *                    conditionally show the approval-pending banner.
+ * StatisticsFilters — optional from/to Jalali date strings passed as query params.
+ */
 // Defines the aggregate, trend, subject, and mistake-reason data returned by the backend statistics handler and consumed by both charts and accessible tables.
 export type SubjectStatistics = {
   subject_name: string;

@@ -1,3 +1,18 @@
+/**
+ * @file components/upload/file-uploader.tsx
+ * @description Profile photo upload component for the student profile form.
+ *
+ * Validates the selected file against PROFILE_IMAGE_TYPES and the configured
+ * profileUploadMaxMb limit before uploading. Shows a local blob: URL preview
+ * immediately (optimistic UX) while the upload mutation is in progress; revokes
+ * the object URL on unmount or when the file is cleared.
+ *
+ * On success, calls onChange(url) with the backend-relative URL which is then
+ * stored in the profile_photo form field and submitted with the profile save.
+ *
+ * Note: This component calls the /upload?type=profile student endpoint, which
+ * requires student role. Do not use this in admin-only contexts.
+ */
 "use client";
 
 import { useMutation } from "@tanstack/react-query";

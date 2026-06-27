@@ -1,3 +1,8 @@
+/**
+ * @file components/marketing/service-card.tsx
+ * @description Icon + title + description card for the services section of the landing page.
+ * The icon container transitions from secondary to primary on hover for visual feedback.
+ */
 import type { LucideIcon } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 

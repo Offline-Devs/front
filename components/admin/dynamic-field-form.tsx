@@ -1,3 +1,16 @@
+/**
+ * @file components/admin/dynamic-field-form.tsx
+ * @description Form for creating and editing admin-defined dynamic field definitions.
+ *
+ * Supports entity types: student, exam, mistake.
+ * Supports field types: text, number, select (with JSON options), checkbox, date.
+ *
+ * The JSON options textarea is only shown for "select" type fields. The Zod schema
+ * validates that options is a non-empty JSON array of non-empty strings.
+ *
+ * On save, invalidates the ["admin", "dynamic-fields"] query prefix so any
+ * filtered or unfiltered dynamic field list views update reactively.
+ */
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";

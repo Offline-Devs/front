@@ -1,3 +1,17 @@
+/**
+ * @file components/layout/profile-avatar.tsx
+ * @description User profile avatar for the dashboard header.
+ *
+ * For students: fetches the profile photo URL from the student profile query
+ * and renders a circular image with a link to /profile. Falls back to a
+ * UserRound icon when no photo is set.
+ *
+ * For admins: renders a ShieldCheck icon in a span (no link, since admins
+ * don't have a profile page in this application).
+ *
+ * The profile query is only enabled for the "student" role to avoid redundant
+ * fetches in the admin layout.
+ */
 "use client";
 
 import { useQuery } from "@tanstack/react-query";

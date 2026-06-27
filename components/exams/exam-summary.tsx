@@ -1,3 +1,14 @@
+/**
+ * @file components/exams/exam-summary.tsx
+ * @description Single exam detail view showing per-subject score breakdowns.
+ *
+ * Fetches GET /exams/:id via queryKeys.exam(id). The response is mapped by
+ * exam.mapper.ts which calculates subject percentages from raw correct/wrong
+ * counts and the exam's negative_mark.
+ *
+ * Renders a card per subject with correct / wrong / blank counts and the
+ * derived percentage score, plus a link to the exam edit page.
+ */
 "use client";
 
 import { useQuery } from "@tanstack/react-query";

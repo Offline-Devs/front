@@ -1,3 +1,12 @@
+/**
+ * @file components/shared/offline-banner.tsx
+ * @description Fixed network-offline notification banner.
+ *
+ * Listens to the browser's online/offline events and renders a full-width
+ * warning bar at the top of the viewport (z-index 100, above the sticky header)
+ * when navigator.onLine is false. Dismisses automatically when connectivity
+ * is restored. Rendered inside AppProviders for global coverage.
+ */
 "use client";
 
 import { WifiOff } from "lucide-react";

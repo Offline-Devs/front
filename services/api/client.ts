@@ -1,3 +1,30 @@
+/**
+ * @file services/api/client.ts
+ * @description Typed fetch wrapper and ApiError class for all BFF API requests.
+ *
+ * Architecture note — same-origin BFF pattern:
+ *   All API calls from browser components go to Next.js BFF routes under /api/.
+ *   The BFF injects the Bearer token from the encrypted HttpOnly session cookie
+ *   before forwarding to the Go backend. The browser never handles raw tokens.
+ *
+ * ApiError:
+ *   Thrown by apiRequest on any non-OK response. Carries:
+ *     status      — the HTTP status code
+ *     body        — the raw { error: string } body from the backend
+ *     code        — a controlled ApiErrorCode from the error catalog
+ *     message     — a user-facing Persian string (never raw backend text)
+ *     retryable   — whether the client should offer a retry button
+ *     retryAfterSeconds — from the Retry-After header (rate-limit responses)
+ *     rateLimit   — { limit, remaining, resetAt } from X-RateLimit-* headers
+ *
+ * apiRequest<T>(path, options):
+ *   - Paths starting with /api/ are used as-is (BFF auth routes).
+ *   - All other paths are prefixed with env.apiBasePath (default: /api/v1).
+ *   - FormData bodies omit the Content-Type header so the browser sets the
+ *     correct multipart boundary automatically.
+ *   - On 401 the auth store is set to "unauthenticated" to trigger UI guards.
+ *   - 204 No Content responses return undefined cast to T.
+ */
 import { env } from "@/config/env";
 import { useAuthStore } from "@/stores/auth-store";
 import type { ApiErrorBody } from "@/types/api";
@@ -34,7 +61,6 @@ export class ApiError extends Error {
 }
 type RequestOptions = RequestInit & { auth?: boolean };
 
-// Requests use same-origin BFF endpoints; the browser never handles bearer or refresh tokens.
 export async function apiRequest<T>(path: string, options: RequestOptions = {}): Promise<T> {
   const { auth: _auth, headers, ...init } = options;
   void _auth;

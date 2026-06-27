@@ -1,3 +1,13 @@
+/**
+ * @file components/shared/api-error-state.tsx
+ * @description Reusable error state component for failed API queries.
+ *
+ * Renders a destructive-bordered panel with an alert icon, a user-facing Persian
+ * error message (from ApiError.message or a generic fallback), and an optional
+ * retry button shown only when ApiError.retryable is true.
+ *
+ * Used by list and detail components as the isError branch of their useQuery return.
+ */
 import { AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ApiError } from "@/services/api/client";

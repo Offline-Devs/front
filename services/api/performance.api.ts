@@ -1,3 +1,19 @@
+/**
+ * @file services/api/performance.api.ts
+ * @description API client for student performance report operations.
+ *
+ * Students have read-only access:
+ *   mine()  — GET /students/performance; returns the student's performance records.
+ *
+ * Administrators have full CRUD:
+ *   forStudent(id) — GET /admin/students/:id/performance
+ *   create(id, input)   — POST /admin/students/:id/performance
+ *   update(id, input)   — PUT /admin/performance/:id
+ *   remove(id)          — DELETE /admin/performance/:id
+ *
+ * All responses are passed through the performance mapper which parses the JSON
+ * files string into an attachments string[] with resolved same-origin URLs.
+ */
 import { apiRequest } from "./client";
 import type {
   PerformanceHistory,

@@ -1,3 +1,20 @@
+/**
+ * @file services/api/blog.api.ts
+ * @description API client for blog post read and admin CRUD operations.
+ *
+ * Public (no auth):
+ *   publicList()  — GET /blog; published posts for the public blog page.
+ *   publicGet(slug) — GET /blog/:slug; single published post.
+ *
+ * Admin only:
+ *   adminList()        — GET /admin/blog; all posts including drafts.
+ *   create(input)      — POST /admin/blog
+ *   update(id, input)  — PUT /admin/blog/:id
+ *   publish(id)        — PUT /admin/blog/:id/publish
+ *   remove(id)         — DELETE /admin/blog/:id
+ *   revalidatePublicCache() — POST /api/cache/public-blog; triggers Next.js
+ *     ISR cache invalidation for the public blog so changes appear immediately.
+ */
 import { apiRequest } from "./client";
 import type { BlogInput, BlogPost } from "@/types/blog";
 import type { StatusResponse } from "@/types/api";

@@ -1,3 +1,22 @@
+/**
+ * @file services/server/public-content.ts
+ * @description Server-only helpers for fetching and caching public API content.
+ *
+ * Uses Next.js fetch with next.revalidate and next.tags for ISR (Incremental
+ * Static Regeneration). Public content (blog posts, major list) is cached at
+ * the CDN / Next.js data cache layer and revalidated on a timer or on-demand.
+ *
+ * publicCacheTags — string constants used as revalidation tags. The admin blog
+ *   save flow calls revalidatePublicCache() which triggers POST /api/cache/public-blog,
+ *   and the BFF route calls revalidateTag(publicCacheTags.blog) to purge the cache.
+ *
+ * getPublicPosts()  — blog post list with 5-minute revalidation.
+ * getPublicPost(slug) — single post with 5-minute revalidation.
+ * getMajors()       — major/subject list with 24-hour revalidation.
+ *
+ * All functions catch errors and return safe fallbacks so public pages degrade
+ * gracefully during backend outages.
+ */
 import "server-only";
 
 import { serverEnv } from "@/config/server-env";

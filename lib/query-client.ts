@@ -1,3 +1,23 @@
+/**
+ * @file lib/query-client.ts
+ * @description TanStack Query client factory with global error and success handling.
+ *
+ * createQueryClient() — called once per browser session in AppProviders. Configures:
+ *
+ *   MutationCache.onSuccess — shows a success toast when mutation.meta.successMessage
+ *     is set. Components opt in by providing the meta property.
+ *   MutationCache.onError   — shows an error toast with the Persian error message
+ *     from ApiError or a generic fallback.
+ *   QueryCache.onError      — shows an error toast for queries whose first fetch
+ *     fails, unless query.meta.suppressErrorToast is true (used by session and
+ *     approval guard queries that handle their own error UI).
+ *
+ *   Default query options:
+ *     staleTime / gcTime    — driven by NEXT_PUBLIC_QUERY_* env vars.
+ *     retry                 — retries up to queryRetryCount times for retryable
+ *                             ApiErrors; never retries mutations.
+ *     refetchOnWindowFocus  — driven by NEXT_PUBLIC_QUERY_REFETCH_ON_WINDOW_FOCUS.
+ */
 import { MutationCache, QueryCache, QueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { env } from "@/config/env";

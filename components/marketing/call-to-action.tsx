@@ -1,3 +1,8 @@
+/**
+ * @file components/marketing/call-to-action.tsx
+ * @description Full-width CTA section for the public landing page.
+ * Prompts visitors to sign in to the platform with a branded gradient background.
+ */
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";

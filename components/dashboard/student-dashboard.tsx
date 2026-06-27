@@ -1,3 +1,22 @@
+/**
+ * @file components/dashboard/student-dashboard.tsx
+ * @description Student dashboard with summary cards and recent-activity sections.
+ *
+ * Fetches:
+ *   statisticsApi.dashboard()  — GET /students/dashboard; requires approval.
+ *   mistakesApi.list()         — GET /mistakes; requires approval.
+ *
+ * Note: By the time this component renders, the parent ApprovalGuard in the
+ * student layout has already verified that is_approved is true for this render
+ * path. The is_approved check inside the dashboard data is kept as a secondary
+ * indicator but the approval gate is enforced at the layout level.
+ *
+ * Displays:
+ *   - Three summary stat cards (total exams, mistakes, average score).
+ *   - Up to three recent exams as clickable links.
+ *   - Up to three recent mistakes as inline cards.
+ *   - Approval and study-plan informational banners from dashboard data.
+ */
 "use client";
 
 import { useQuery } from "@tanstack/react-query";

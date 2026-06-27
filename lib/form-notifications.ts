@@ -1,3 +1,16 @@
+/**
+ * @file lib/form-notifications.ts
+ * @description React Hook Form error notification helpers.
+ *
+ * notifyFormErrors(errors) — called by form.handleSubmit's second argument
+ *   (the invalid handler). Extracts the first field error message from the
+ *   FieldErrors tree and displays it as an error toast so the user gets
+ *   immediate feedback even when the form error is for a field that is
+ *   scrolled out of view.
+ *
+ * notifyValidationMessage(message?) — shows a specific validation message or
+ *   a generic fallback toast. Used by ProfileForm's dynamic-field validator.
+ */
 import type { FieldErrors } from "react-hook-form";
 import { toast } from "sonner";
 

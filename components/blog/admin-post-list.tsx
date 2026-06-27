@@ -1,3 +1,15 @@
+/**
+ * @file components/blog/admin-post-list.tsx
+ * @description Admin list of all blog posts with filter tabs and inline actions.
+ *
+ * Filter tabs: all / draft / published — client-side filter on the full post list.
+ *
+ * Actions per post: edit (link to edit page), publish (for drafts), view public
+ * article (for published posts), and delete with confirmation.
+ *
+ * Publish and delete both invalidate admin and public blog caches and trigger
+ * the ISR revalidation endpoint so the public blog updates immediately.
+ */
 "use client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Eye, Pencil, Plus, Send, Trash2 } from "lucide-react";

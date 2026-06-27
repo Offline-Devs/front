@@ -1,3 +1,18 @@
+/**
+ * @file components/admin/approval-actions.tsx
+ * @description Approve, revoke, and delete action buttons for admin student management.
+ *
+ * All mutations invalidate the student detail, the student list, and the admin
+ * dashboard counts on success so the UI reflects state changes reactively.
+ *
+ * Approve — PUT /admin/students/:id/approve
+ * Revoke  — PUT /admin/students/:id with { is_approved: false }
+ * Delete  — DELETE /admin/students/:id; removes from cache and navigates to list.
+ *
+ * After deletion the student's active session will be redirected to /forbidden
+ * by the requireStudentProfile() server guard on their next navigation, because
+ * their profile no longer exists in the backend.
+ */
 "use client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { CheckCircle2, Trash2, XCircle } from "lucide-react";
@@ -36,8 +51,8 @@ export function ApprovalActions({ studentId, approved }: { studentId: string; ap
     onSuccess: async () => {
       queryClient.removeQueries({ queryKey: queryKeys.adminStudent(studentId) });
       await queryClient.invalidateQueries({ queryKey: ["admin", "students"] });
+      await queryClient.invalidateQueries({ queryKey: ["admin", "dashboard"] });
       router.replace("/admin/students");
-      router.refresh();
     },
   });
   return (

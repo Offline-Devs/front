@@ -1,3 +1,22 @@
+/**
+ * @file components/profile/profile-form.tsx
+ * @description Student profile creation and update form.
+ *
+ * Used in two modes:
+ *
+ * Onboarding (onboarding=true) — rendered by /complete-profile for new students.
+ *   On save, redirects to /dashboard. The backend creates the student record.
+ *
+ * Edit (onboarding=false, default) — rendered by /profile for updates.
+ *   On save, updates the TanStack Query cache in place and invalidates dependent
+ *   keys so the UI reflects changes reactively without a full page reload.
+ *
+ * Profile updates do NOT reset the admin-assigned is_approved flag. The backend's
+ * POST /students/profile endpoint excludes is_approved from its update map.
+ *
+ * Sections: identity info, education info (major from backend majors API),
+ * profile photo (FileUploader → /upload?type=profile), and dynamic fields.
+ */
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -71,8 +90,9 @@ export function ProfileForm({ profile, dynamicFields = [], onboarding = false }:
     onSuccess: async (savedProfile) => {
       queryClient.setQueryData(queryKeys.profile, savedProfile);
       await invalidateDependencies(queryClient, invalidation.profile);
-      if (onboarding) router.replace("/dashboard");
-      router.refresh();
+      if (onboarding) {
+        router.replace("/dashboard");
+      }
     },
   });
   const dynamicValues = useWatch({ control: form.control, name: "dynamic_fields" });

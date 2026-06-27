@@ -1,3 +1,11 @@
+/**
+ * @file components/layout/public-footer.tsx
+ * @description Marketing site footer with contact info and quick-access links.
+ *
+ * Rendered by app/(public)/layout.tsx for all public-facing pages.
+ * Contact info (email, phone) uses env values from config/env.ts.
+ * The copyright year is calculated dynamically via new Date().getFullYear().
+ */
 import { Mail, Phone } from "lucide-react";
 import Link from "next/link";
 import { env } from "@/config/env";

@@ -1,3 +1,8 @@
+/**
+ * @file components/marketing/section-heading.tsx
+ * @description Reusable section heading with optional eyebrow label and description.
+ * Supports centered alignment via the `centered` prop for hero and CTA sections.
+ */
 import { cn } from "@/lib/cn";
 
 export function SectionHeading({

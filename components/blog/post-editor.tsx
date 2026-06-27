@@ -1,3 +1,18 @@
+/**
+ * @file components/blog/post-editor.tsx
+ * @description Admin blog post create and edit form.
+ *
+ * Supports HTML content authoring with a tabbed write/preview interface.
+ * The preview renders sanitised HTML via sanitizeArticleHtml so the admin
+ * sees an accurate representation of what the student-facing blog will display.
+ *
+ * A "build slug from title" helper normalises the title to a URL-safe slug
+ * (Persian and Latin characters allowed; spaces → hyphens).
+ *
+ * On save, invalidates the admin and public blog cache keys and triggers the
+ * BFF ISR cache revalidation endpoint so changes appear immediately in the
+ * public blog without waiting for the revalidate timer.
+ */
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";

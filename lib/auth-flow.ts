@@ -1,3 +1,25 @@
+/**
+ * @file lib/auth-flow.ts
+ * @description Client-side utilities for the OTP login flow and auth routing.
+ *
+ * normalizeNumericInput — converts Persian/Arabic-Indic digit strings to ASCII
+ *   digits. Used by OTP digit inputs and date fields across the app.
+ *
+ * normalizeIranianPhone — accepts Iranian phone numbers in various formats
+ *   (09xx, 9xx, 989xx, 00989xx) and normalises to the +989xxxxxxxxx E.164 form
+ *   expected by the backend.
+ *
+ * savePendingPhone / getPendingPhone / clearPendingPhone — sessionStorage helpers
+ *   that carry the phone number from the login page to the OTP verification page.
+ *   Also stores the mock OTP returned by the development server for easy testing.
+ *
+ * getDevelopmentOtp — retrieves the stored development OTP for display in the
+ *   OTP form's test mode banner.
+ *
+ * authDestination(role, hasProfile) — returns the correct post-login redirect
+ *   path: /admin for admins, /dashboard for students with a profile, and
+ *   /complete-profile for students without one.
+ */
 const PHONE_STORAGE_KEY = "auth.pending-phone";
 const DEV_OTP_STORAGE_KEY = "auth.dev-otp";
 

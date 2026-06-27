@@ -1,3 +1,16 @@
+/**
+ * @file components/admin/students-table.tsx
+ * @description Paginated admin table of all students with approval-status filter.
+ *
+ * URL-driven pagination: page and approved query params are reflected in the URL
+ * so the browser back button works and links can be shared.
+ *
+ * Uses placeholderData: (previous) => previous so the table keeps the previous
+ * page visible during navigation, preventing layout shifts.
+ *
+ * Each row links to the student detail page (StudentOverview). The approval
+ * status badge uses the success/warning badge variants for visual distinction.
+ */
 "use client";
 import { useQuery } from "@tanstack/react-query";
 import { Eye } from "lucide-react";
