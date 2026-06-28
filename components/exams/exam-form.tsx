@@ -58,14 +58,12 @@ export function ExamForm({ exam }: { exam?: Exam }) {
       negative_mark: exam?.negative_mark ?? 0.33,
       dynamic_fields: exam?.dynamic_fields ?? {},
       subjects: exam?.subjects?.length
-        ? exam.subjects.map(
-            ({ subject_name, total_questions, correct, wrong }) => ({
-              subject_name,
-              total_questions,
-              correct,
-              wrong,
-            }),
-          )
+        ? exam.subjects.map(({ subject_name, total_questions, correct, wrong }) => ({
+            subject_name,
+            total_questions,
+            correct,
+            wrong,
+          }))
         : [{ ...emptySubject }],
     },
   });
@@ -155,9 +153,7 @@ export function ExamForm({ exam }: { exam?: Exam }) {
         <div className="flex items-center justify-between gap-3">
           <div>
             <h2 className="font-bold">نتیجه درس‌ها</h2>
-            <p className="text-sm text-muted-foreground">
-              کل سؤال = صحیح + غلط + نزده.
-            </p>
+            <p className="text-sm text-muted-foreground">کل سؤال = صحیح + غلط + نزده.</p>
           </div>
           <Button type="button" variant="outline" onClick={() => append({ ...emptySubject })}>
             <Plus className="size-4" />

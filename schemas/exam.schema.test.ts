@@ -13,9 +13,7 @@ const validExam = {
   jalali_date: "۱۴۰۵-۰۳-۳۱",
   negative_mark: 0.25,
   dynamic_fields: {},
-  subjects: [
-    { subject_name: "زیست", total_questions: 20, correct: 14, wrong: 4 },
-  ],
+  subjects: [{ subject_name: "زیست", total_questions: 20, correct: 14, wrong: 4 }],
 };
 
 describe("exam schema invariants", () => {
