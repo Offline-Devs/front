@@ -43,10 +43,8 @@ import { notifyFormErrors } from "@/lib/form-notifications";
 const emptySubject = {
   subject_name: "",
   total_questions: 0,
-  answered: 0,
   correct: 0,
   wrong: 0,
-  blank: 0,
 };
 
 export function ExamForm({ exam }: { exam?: Exam }) {
@@ -61,13 +59,11 @@ export function ExamForm({ exam }: { exam?: Exam }) {
       dynamic_fields: exam?.dynamic_fields ?? {},
       subjects: exam?.subjects?.length
         ? exam.subjects.map(
-            ({ subject_name, total_questions, answered, correct, wrong, blank }) => ({
+            ({ subject_name, total_questions, correct, wrong }) => ({
               subject_name,
               total_questions,
-              answered,
               correct,
               wrong,
-              blank,
             }),
           )
         : [{ ...emptySubject }],
@@ -160,7 +156,7 @@ export function ExamForm({ exam }: { exam?: Exam }) {
           <div>
             <h2 className="font-bold">نتیجه درس‌ها</h2>
             <p className="text-sm text-muted-foreground">
-              صحیح + غلط = پاسخ‌داده‌شده و پاسخ‌داده‌شده + نزده = کل سؤال.
+              کل سؤال = صحیح + غلط + نزده.
             </p>
           </div>
           <Button type="button" variant="outline" onClick={() => append({ ...emptySubject })}>

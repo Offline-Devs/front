@@ -34,7 +34,7 @@ export function mapExam(value: Exam): Exam {
         subject.total_questions > 0
           ? ((subject.correct - subject.wrong * negativeMark) / subject.total_questions) * 100
           : 0,
-    })),
+    })) as Exam["subjects"],
   };
 }
 export const mapExamList = (values: Exam[]) => values.map(mapExam);

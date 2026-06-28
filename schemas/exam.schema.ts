@@ -20,24 +20,15 @@ const subjectExamSchema = z
   .object({
     subject_name: z.string().trim().min(1, "درس را انتخاب کنید."),
     total_questions: count,
-    answered: count,
     correct: count,
     wrong: count,
-    blank: count,
   })
   .superRefine((value, context) => {
-    if (value.correct + value.wrong !== value.answered) {
-      context.addIssue({
-        code: "custom",
-        path: ["answered"],
-        message: "پاسخ‌داده‌شده باید برابر صحیح + غلط باشد.",
-      });
-    }
-    if (value.answered + value.blank !== value.total_questions) {
+    if (value.correct + value.wrong > value.total_questions) {
       context.addIssue({
         code: "custom",
         path: ["total_questions"],
-        message: "مجموع پاسخ‌داده‌شده و نزده با تعداد سؤال برابر نیست.",
+        message: "مجموع صحیح و غلط نمی‌تواند از تعداد سؤال‌ها بیشتر باشد.",
       });
     }
   });
