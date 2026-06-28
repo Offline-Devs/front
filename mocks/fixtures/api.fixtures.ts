@@ -53,11 +53,8 @@ const subjectExamFixture = {
   exam_id: "44444444-4444-4444-8444-444444444444",
   subject_name: "زیست‌شناسی",
   total_questions: 20,
-  answered: 18,
   correct: 15,
   wrong: 3,
-  blank: 2,
-  percentage: 70,
 };
 
 export const examFixture = {

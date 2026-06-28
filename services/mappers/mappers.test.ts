@@ -26,6 +26,8 @@ describe("response mappers", () => {
     expect(mapPerformance({ ...performanceFixture, files: "{}" }).attachments).toEqual([]);
   });
   it("applies the exam negative mark to subject percentages", () => {
-    expect(mapExam(examFixture).subjects?.[0].percentage).toBeCloseTo(70.05);
+    expect((mapExam(examFixture).subjects?.[0] as Record<string, unknown>).percentage).toBeCloseTo(
+      70.05,
+    );
   });
 });

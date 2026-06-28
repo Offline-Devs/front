@@ -68,13 +68,11 @@ export function SubjectScoreRow({
             <Input {...register(`subjects.${index}.subject_name`)} />
           )}
         </FormField>
-        {(["total_questions", "answered", "correct", "wrong", "blank"] as const).map((name) => {
+        {(["total_questions", "correct", "wrong"] as const).map((name) => {
           const labels = {
             total_questions: "تعداد سؤال",
-            answered: "پاسخ‌داده‌شده",
             correct: "صحیح",
             wrong: "غلط",
-            blank: "نزده",
           };
           return (
             <FormField key={name} label={labels[name]} error={errors?.[name]?.message} required>

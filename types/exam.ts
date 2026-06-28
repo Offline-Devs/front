@@ -18,11 +18,8 @@ export type SubjectExam = {
   exam_id: string;
   subject_name: string;
   total_questions: number;
-  answered: number;
   correct: number;
   wrong: number;
-  blank: number;
-  percentage: number;
 };
 export type Exam = {
   id: string;
@@ -38,7 +35,7 @@ export type Exam = {
   updated_at: string;
   subjects?: SubjectExam[];
 };
-export type SubjectExamInput = Omit<SubjectExam, "id" | "exam_id" | "percentage">;
+export type SubjectExamInput = Omit<SubjectExam, "id" | "exam_id">;
 export type ExamInput = {
   title: string;
   jalali_date: string;

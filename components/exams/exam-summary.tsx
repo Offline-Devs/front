@@ -52,29 +52,38 @@ export function ExamSummary({ id }: { id: string }) {
         </Button>
       </div>
       <div className="grid gap-4 md:grid-cols-2">
-        {exam.data.subjects?.map((subject) => (
-          <Card key={subject.id || subject.subject_name}>
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <CardTitle>{subject.subject_name}</CardTitle>
-                <span className="text-2xl font-black text-primary">
-                  {formatNumber(subject.percentage)}٪
-                </span>
-              </div>
-            </CardHeader>
-            <CardContent className="grid grid-cols-3 gap-3 text-center text-sm">
-              <div className="rounded-md bg-success/10 p-3">
-                <b className="block text-success">{formatNumber(subject.correct)}</b>صحیح
-              </div>
-              <div className="rounded-md bg-destructive/10 p-3">
-                <b className="block text-destructive">{formatNumber(subject.wrong)}</b>غلط
-              </div>
-              <div className="rounded-md bg-muted p-3">
-                <b className="block">{formatNumber(subject.blank)}</b>نزده
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+        {exam.data.subjects?.map((subject) => {
+          const blank = subject.total_questions - subject.correct - subject.wrong;
+          const percentage =
+            subject.total_questions > 0
+              ? ((subject.correct - subject.wrong * exam.data.negative_mark) /
+                  subject.total_questions) *
+                100
+              : 0;
+          return (
+            <Card key={subject.id || subject.subject_name}>
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <CardTitle>{subject.subject_name}</CardTitle>
+                  <span className="text-2xl font-black text-primary">
+                    {formatNumber(percentage)}٪
+                  </span>
+                </div>
+              </CardHeader>
+              <CardContent className="grid grid-cols-3 gap-3 text-center text-sm">
+                <div className="rounded-md bg-success/10 p-3">
+                  <b className="block text-success">{formatNumber(subject.correct)}</b>صحیح
+                </div>
+                <div className="rounded-md bg-destructive/10 p-3">
+                  <b className="block text-destructive">{formatNumber(subject.wrong)}</b>غلط
+                </div>
+                <div className="rounded-md bg-muted p-3">
+                  <b className="block">{formatNumber(blank)}</b>نزده
+                </div>
+              </CardContent>
+            </Card>
+          );
+        })}
       </div>
     </div>
   );
