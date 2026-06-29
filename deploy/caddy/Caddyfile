@@ -1,0 +1,15 @@
+http://ayandesabz.dev37.ir, http://62.60.198.215 {
+	redir https://ayandesabz.dev37.ir{uri} permanent
+}
+
+https://ayandesabz.dev37.ir {
+	tls /opt/ayandesabz/caddy/certs/fullchain.pem /opt/ayandesabz/caddy/certs/privkey.pem
+
+	encode zstd gzip
+
+	request_body {
+		max_size 55MB
+	}
+
+	reverse_proxy web:3000
+}

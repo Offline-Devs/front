@@ -1,0 +1,119 @@
+name: ayandesabz
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+
+  backend:
+    image: ayandesabz-backend:offline
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?sslmode=disable
+      REDIS_ADDR: redis:6379
+      ENVIRONMENT: ${BACKEND_ENVIRONMENT}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET}
+      JWT_ACCESS_TTL: ${JWT_ACCESS_TTL}
+      JWT_REFRESH_TTL: ${JWT_REFRESH_TTL}
+      OTP_PROVIDER: ${OTP_PROVIDER}
+      EXPOSE_MOCK_OTP: ${EXPOSE_MOCK_OTP}
+      SMSIR_API_KEY: ${SMSIR_API_KEY}
+      SMSIR_TEMPLATE_ID: ${SMSIR_TEMPLATE_ID}
+      GIN_MODE: release
+      UPLOAD_PATH: /uploads
+      SERVER_ADDR: :8080
+      CORS_ORIGINS: ${CORS_ORIGINS}
+      ADMIN_PHONES: ${ADMIN_PHONES}
+    volumes:
+      - uploads:/uploads
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1:8080/health"]
+      interval: 10s
+      timeout: 3s
+      retries: 20
+    expose:
+      - "8080"
+    restart: unless-stopped
+
+  web:
+    image: ayandesabz-web:offline
+    env_file:
+      - .env
+    environment:
+      NODE_ENV: production
+      HOSTNAME: 0.0.0.0
+      API_BASE_URL: http://backend:8080
+      API_TIMEOUT_MS: ${API_TIMEOUT_MS}
+      LOG_LEVEL: ${LOG_LEVEL}
+      PROFILE_UPLOAD_MAX_MB: ${PROFILE_UPLOAD_MAX_MB}
+      DOCUMENT_UPLOAD_MAX_MB: ${DOCUMENT_UPLOAD_MAX_MB}
+      MULTIPLE_UPLOAD_MAX_FILES: ${MULTIPLE_UPLOAD_MAX_FILES}
+      BFF_SESSION_COOKIE_NAME: ${BFF_SESSION_COOKIE_NAME}
+      BFF_SESSION_COOKIE_DOMAIN: ${BFF_SESSION_COOKIE_DOMAIN}
+      BFF_SESSION_COOKIE_SECURE: ${BFF_SESSION_COOKIE_SECURE}
+      BFF_SESSION_COOKIE_SAME_SITE: ${BFF_SESSION_COOKIE_SAME_SITE}
+      BFF_SESSION_MAX_AGE_SECONDS: ${BFF_SESSION_MAX_AGE_SECONDS}
+      BFF_SESSION_SECRET: ${BFF_SESSION_SECRET}
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1:3000/"]
+      interval: 10s
+      timeout: 3s
+      retries: 20
+    expose:
+      - "3000"
+    restart: unless-stopped
+
+  caddy:
+    image: caddy:2.8-alpine
+    depends_on:
+      web:
+        condition: service_healthy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./caddy/certs:/opt/ayandesabz/caddy/certs:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  redis_data:
+  uploads:
+  caddy_data:
+  caddy_config:
