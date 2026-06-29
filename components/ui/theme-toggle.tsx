@@ -52,6 +52,13 @@ function subscribeToTheme(onChange: () => void) {
   };
 }
 
+function canAnimateThemeChange() {
+  return (
+    !window.matchMedia("(prefers-reduced-motion: reduce)").matches &&
+    window.matchMedia("(hover: hover) and (pointer: fine)").matches
+  );
+}
+
 export function ThemeToggle({ className }: { className?: string }) {
   const theme = useSyncExternalStore(subscribeToTheme, currentTheme, () => "light");
 
@@ -63,12 +70,15 @@ export function ThemeToggle({ className }: { className?: string }) {
         id: "theme-change",
       });
     };
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const documentWithTransition = document as Document & {
       startViewTransition?: (callback: () => void) => void;
     };
-    if (!reducedMotion && documentWithTransition.startViewTransition) {
+    if (canAnimateThemeChange() && documentWithTransition.startViewTransition) {
       documentWithTransition.startViewTransition(update);
+      return;
+    }
+    if (!canAnimateThemeChange()) {
+      update();
       return;
     }
     document.documentElement.classList.add("theme-transitioning");

@@ -22,16 +22,16 @@ export function BrandLogo({
     <span className={cn("block h-11 w-10 shrink-0", className)}>
       <Image
         src="/logo.svg"
-        width={39}
-        height={43}
+        width={192}
+        height={208}
         alt={`لوگوی ${env.appName}`}
         className="brand-logo-light h-full w-full object-contain"
         priority={priority}
       />
       <Image
-        src="/logo-dark.png"
-        width={390}
-        height={430}
+        src="/logo-dark.svg"
+        width={192}
+        height={208}
         alt={`لوگوی ${env.appName}`}
         className="brand-logo-dark h-full w-full object-contain"
         priority={priority}

@@ -257,6 +257,18 @@
   animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+@media (hover: none), (pointer: coarse) {
+  .theme-transitioning *,
+  .theme-transitioning *::before,
+  .theme-transitioning *::after {
+    transition: none !important;
+  }
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none !important;
+  }
+}
+
 [data-sonner-toaster] {
   --width: min(26rem, calc(100vw - 2rem)) !important;
 }

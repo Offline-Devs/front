@@ -1,6 +1,6 @@
 <svg width="192" height="208" viewBox="0 0 192 208" fill="none" xmlns="http://www.w3.org/2000/svg">
   <title>Ayandeh Sabz logo</title>
-  <g stroke="#408A71" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round">
+  <g stroke="#73C5A7" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round">
     <path
       d="M48 103.5C45.7 92.8 46.4 81.7 50.2 71.4C58.1 49.8 76.7 36 96 36C115.3 36 133.9 49.8 141.8 71.4C145.6 81.7 146.3 92.8 144 103.5"
     />
@@ -11,7 +11,7 @@
     <circle cx="64" cy="153" r="13" />
     <circle cx="128" cy="153" r="13" />
   </g>
-  <g fill="#408A71">
+  <g fill="#73C5A7">
     <circle cx="78" cy="88" r="5.5" />
     <circle cx="114" cy="88" r="5.5" />
   </g>
