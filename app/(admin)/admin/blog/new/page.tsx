@@ -17,7 +17,7 @@ export default async function NewBlogPage() {
       <div>
         <h1 className="text-2xl font-black">مقاله جدید</h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          محتوا را با HTML محدود بنویسید و پیش از انتشار بررسی کنید.
+          متن مقاله را با ابزارهای ویرایشگر آماده کنید و پیش از انتشار پیش‌نمایش بگیرید.
         </p>
       </div>
       <PostEditor authorId={session.user.id} />

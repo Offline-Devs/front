@@ -2,7 +2,7 @@
  * @file components/blog/post-editor.tsx
  * @description Admin blog post create and edit form.
  *
- * Supports HTML content authoring with a tabbed write/preview interface.
+ * Supports visual content authoring with a tabbed write/preview interface.
  * The preview renders sanitised HTML via sanitizeArticleHtml so the admin
  * sees an accurate representation of what the student-facing blog will display.
  *
@@ -25,7 +25,6 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { FormField } from "@/components/ui/form-field";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Textarea } from "@/components/ui/textarea";
 import { notifyFormErrors } from "@/lib/form-notifications";
 import { sanitizeArticleHtml } from "@/lib/content/sanitize";
 import {
@@ -37,6 +36,7 @@ import {
 import { blogApi } from "@/services/api/blog.api";
 import { invalidation, invalidateDependencies } from "@/services/api/invalidation";
 import type { BlogPost } from "@/types/blog";
+import { RichTextEditor } from "./rich-text-editor";
 
 export function PostEditor({ authorId, post }: { authorId: string; post?: BlogPost }) {
   const router = useRouter();
@@ -51,7 +51,7 @@ export function PostEditor({ authorId, post }: { authorId: string; post?: BlogPo
       published: post?.published ?? false,
     },
   });
-  const content = useWatch({ control: form.control, name: "content" });
+  const content = useWatch({ control: form.control, name: "content" }) ?? "";
   const published = useWatch({ control: form.control, name: "published" });
   const save = useMutation<unknown, Error, BlogFormOutput>({
     meta: { successMessage: post ? "مقاله ویرایش شد." : "مقاله ایجاد شد." },
@@ -102,7 +102,7 @@ export function PostEditor({ authorId, post }: { authorId: string; post?: BlogPo
       </div>
       <Tabs defaultValue="write">
         <TabsList>
-          <TabsTrigger value="write">ویرایش HTML</TabsTrigger>
+          <TabsTrigger value="write">نوشتن مقاله</TabsTrigger>
           <TabsTrigger value="preview">
             <Eye className="me-2 size-4" />
             پیش‌نمایش امن
@@ -111,15 +111,17 @@ export function PostEditor({ authorId, post }: { authorId: string; post?: BlogPo
         <TabsContent value="write">
           <FormField
             label="محتوای مقاله"
-            hint="تگ‌های امن مانند p، h2، ul، strong و a پشتیبانی می‌شوند."
             error={form.formState.errors.content?.message}
             required
           >
-            <Textarea
-              {...form.register("content")}
-              dir="rtl"
-              rows={20}
-              className="font-mono leading-7"
+            <RichTextEditor
+              value={content}
+              onChange={(value) =>
+                form.setValue("content", value, {
+                  shouldDirty: true,
+                  shouldValidate: form.formState.isSubmitted,
+                })
+              }
             />
           </FormField>
         </TabsContent>

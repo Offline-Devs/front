@@ -41,6 +41,7 @@ export function AdminPostList() {
     mutationFn: blogApi.publish,
     onSuccess: async () => {
       await refreshPublic();
+      await posts.refetch();
     },
   });
   const remove = useMutation({
@@ -95,7 +96,11 @@ export function AdminPostList() {
                 </Button>
                 {post.published && (
                   <Button asChild size="sm" variant="ghost">
-                    <Link href={`/blog/${encodeURIComponent(post.slug)}`} target="_blank">
+                    <Link
+                      href={`/blog/${encodeURIComponent(post.slug)}`}
+                      target="_blank"
+                      prefetch={false}
+                    >
                       <Eye className="size-4" />
                       مشاهده
                     </Link>

@@ -21,7 +21,9 @@ const allowedTags = [
   "h3",
   "h4",
   "strong",
+  "b",
   "em",
+  "i",
   "ul",
   "ol",
   "li",
@@ -30,6 +32,7 @@ const allowedTags = [
   "code",
   "pre",
   "hr",
+  "div",
 ];
 
 export function sanitizeArticleHtml(value: string) {
@@ -38,6 +41,9 @@ export function sanitizeArticleHtml(value: string) {
     allowedAttributes: { a: ["href", "title", "target", "rel"], code: ["dir"], pre: ["dir"] },
     allowedSchemes: ["http", "https", "mailto", "tel"],
     transformTags: {
+      b: "strong",
+      i: "em",
+      div: "p",
       a: (_tag, attributes) => ({
         tagName: "a",
         attribs: {

@@ -42,6 +42,20 @@ async function publicFetch<T>(path: string, revalidate: number, tags: string[]):
   return response.json() as Promise<T>;
 }
 
+async function publicFetchFresh<T>(path: string): Promise<T> {
+  const response = await fetch(`${serverEnv.apiBaseUrl}${path}`, {
+    cache: "no-store",
+    headers: { Accept: "application/json" },
+    signal: AbortSignal.timeout(serverEnv.apiTimeoutMs),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Public API request failed with ${response.status}`);
+  }
+
+  return response.json() as Promise<T>;
+}
+
 export async function getPublicPosts() {
   try {
     return await publicFetch<BlogPost[]>("/blog", 300, [publicCacheTags.blog]);
@@ -57,7 +71,12 @@ export async function getPublicPost(slug: string) {
       `public-blog:${slug}`,
     ]);
   } catch {
-    return null;
+    try {
+      const posts = await publicFetchFresh<BlogPost[]>("/blog");
+      return posts.find((post) => post.slug === slug) ?? null;
+    } catch {
+      return null;
+    }
   }
 }
 
