@@ -36,4 +36,15 @@ describe("public content cache policy", () => {
     const { getMajors } = await import("./public-content");
     await expect(getMajors()).resolves.toEqual([]);
   });
+  it("falls back to a fresh public list when direct blog detail lookup fails", async () => {
+    const fetchMock = vi.fn(async () =>
+      Response.json([{ ...blogPostFixture, slug: "nested/article" }]),
+    );
+    vi.stubGlobal("fetch", fetchMock);
+    const { getPublicPost } = await import("./public-content");
+    await expect(getPublicPost("nested/article")).resolves.toMatchObject({
+      slug: "nested/article",
+    });
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+  });
 });

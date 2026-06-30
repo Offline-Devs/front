@@ -22,6 +22,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { blogPostPath } from "@/lib/blog-path";
 import { articleExcerpt } from "@/lib/content/sanitize";
 import { blogApi } from "@/services/api/blog.api";
 import { invalidation, invalidateDependencies } from "@/services/api/invalidation";
@@ -96,11 +97,7 @@ export function AdminPostList() {
                 </Button>
                 {post.published && (
                   <Button asChild size="sm" variant="ghost">
-                    <Link
-                      href={`/blog/${encodeURIComponent(post.slug)}`}
-                      target="_blank"
-                      prefetch={false}
-                    >
+                    <Link href={blogPostPath(post.slug)} target="_blank" prefetch={false}>
                       <Eye className="size-4" />
                       مشاهده
                     </Link>

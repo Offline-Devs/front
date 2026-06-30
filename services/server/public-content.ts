@@ -64,16 +64,56 @@ export async function getPublicPosts() {
   }
 }
 
-export async function getPublicPost(slug: string) {
+function safeDecode(value: string) {
   try {
-    return await publicFetch<BlogPost>(`/blog/${encodeURIComponent(slug)}`, 300, [
+    return decodeURIComponent(value);
+  } catch {
+    return value;
+  }
+}
+
+function comparableSlugs(value: string) {
+  const trimmed = value.trim().replace(/^\/+|\/+$/g, "");
+  const decoded = safeDecode(trimmed);
+  const encoded = encodeURIComponent(decoded);
+  return new Set([
+    trimmed,
+    decoded,
+    encoded,
+    decoded.replace(/^\/+|\/+$/g, ""),
+    decoded.split("/").map(encodeURIComponent).join("/"),
+  ]);
+}
+
+async function findPublicPostFromFreshList(slug: string) {
+  const candidates = comparableSlugs(slug);
+  const posts = await publicFetchFresh<BlogPost[]>("/blog");
+  return (
+    posts.find((post) => {
+      const postCandidates = comparableSlugs(post.slug);
+      return [...candidates].some((candidate) => postCandidates.has(candidate));
+    }) ?? null
+  );
+}
+
+export async function getPublicPost(slug: string) {
+  const cleanSlug = slug.trim().replace(/^\/+|\/+$/g, "");
+  if (cleanSlug.includes("/")) {
+    try {
+      return await findPublicPostFromFreshList(cleanSlug);
+    } catch {
+      return null;
+    }
+  }
+
+  try {
+    return await publicFetch<BlogPost>(`/blog/${encodeURIComponent(cleanSlug)}`, 300, [
       publicCacheTags.blog,
-      `public-blog:${slug}`,
+      `public-blog:${cleanSlug}`,
     ]);
   } catch {
     try {
-      const posts = await publicFetchFresh<BlogPost[]>("/blog");
-      return posts.find((post) => post.slug === slug) ?? null;
+      return await findPublicPostFromFreshList(cleanSlug);
     } catch {
       return null;
     }

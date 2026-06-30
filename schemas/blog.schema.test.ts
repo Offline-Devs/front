@@ -11,6 +11,9 @@ describe("blog schema", () => {
   it("normalizes Persian and Latin slug spacing", () => {
     expect(normalizeBlogSlug("  تحلیل  آزمون Test  ")).toBe("تحلیل-آزمون-test");
   });
+  it("normalizes separators and punctuation in slugs", () => {
+    expect(normalizeBlogSlug("  Blog / New: Test؟  ")).toBe("blog-new-test");
+  });
   it("rejects very short content", () => {
     expect(
       blogSchema.safeParse({

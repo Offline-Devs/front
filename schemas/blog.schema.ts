@@ -12,7 +12,13 @@
  */
 import { z } from "zod";
 export function normalizeBlogSlug(value: string) {
-  return value.trim().toLowerCase().replace(/\s+/g, "-").replace(/-+/g, "-").replace(/^-|-$/g, "");
+  return value
+    .normalize("NFKC")
+    .trim()
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N}]+/gu, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "");
 }
 export const blogSchema = z.object({
   title: z.string().trim().min(3, "عنوان باید حداقل ۳ نویسه باشد."),

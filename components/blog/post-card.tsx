@@ -10,6 +10,7 @@
 import Link from "next/link";
 import { ArrowLeft, CalendarDays } from "lucide-react";
 import type { BlogPost } from "@/types/blog";
+import { blogPostPath } from "@/lib/blog-path";
 import { articleExcerpt } from "@/lib/content/sanitize";
 import { formatDate } from "@/lib/formatters";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -23,10 +24,7 @@ export function PostCard({ post }: { post: BlogPost }) {
           <time dateTime={post.created_at}>{formatDate(post.created_at)}</time>
         </div>
         <CardTitle className="leading-8">
-          <Link
-            href={`/blog/${encodeURIComponent(post.slug)}`}
-            className="after:absolute after:inset-0"
-          >
+          <Link href={blogPostPath(post.slug)} className="after:absolute after:inset-0">
             {post.title}
           </Link>
         </CardTitle>

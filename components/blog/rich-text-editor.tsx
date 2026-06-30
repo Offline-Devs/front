@@ -245,6 +245,7 @@ export function RichTextEditor({
         <div
           ref={editorRef}
           contentEditable
+          dir="rtl"
           role="textbox"
           aria-multiline="true"
           aria-invalid={ariaInvalid}
