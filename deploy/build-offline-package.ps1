@@ -1,13 +1,30 @@
 $ErrorActionPreference = "Stop"
 
 $DeployDir = $PSScriptRoot
-$ProjectRoot = Split-Path -Parent $DeployDir
+$FrontendRoot = Split-Path -Parent $DeployDir
+$WorkspaceRoot = Split-Path -Parent $FrontendRoot
+$BackendRoot = Join-Path $WorkspaceRoot "backend\backend"
 $EnvPath = Join-Path $DeployDir ".env"
 $ImagesDir = Join-Path $DeployDir "images"
 $ImageTar = Join-Path $ImagesDir "ayandesabz-images.tar"
 
+function Invoke-Docker {
+    docker @args
+    if ($LASTEXITCODE -ne 0) {
+        throw "Docker command failed with exit code ${LASTEXITCODE}: docker $($args -join ' ')"
+    }
+}
+
 if (-not (Test-Path $EnvPath)) {
     throw "Missing env file: $EnvPath"
+}
+
+if (-not (Test-Path (Join-Path $BackendRoot "Dockerfile"))) {
+    throw "Backend Dockerfile not found. Expected backend context: $BackendRoot"
+}
+
+if (-not (Test-Path (Join-Path $FrontendRoot "Dockerfile"))) {
+    throw "Frontend Dockerfile not found. Expected frontend context: $FrontendRoot"
 }
 
 $envMap = @{}
@@ -28,7 +45,7 @@ $webImage = "ayandesabz-web:offline"
 $runtimeImages = @("postgres:16-alpine", "redis:7-alpine", "caddy:2.8-alpine")
 
 Write-Host "Building backend image..."
-docker build -t $backendImage (Join-Path $ProjectRoot "backend\backend")
+Invoke-Docker build -t $backendImage $BackendRoot
 
 Write-Host "Building web image..."
 $publicKeys = @(
@@ -59,17 +76,17 @@ $publicKeys = @(
 
 $buildArgs = @("build", "-t", $webImage)
 foreach ($key in $publicKeys) {
-    if ($envMap.ContainsKey($key)) {
+    if ($envMap.ContainsKey($key) -and -not [string]::IsNullOrWhiteSpace($envMap[$key])) {
         $buildArgs += "--build-arg"
         $buildArgs += "$key=$($envMap[$key])"
     }
 }
-$buildArgs += (Join-Path $ProjectRoot "front")
-docker @buildArgs
+$buildArgs += $FrontendRoot
+Invoke-Docker @buildArgs
 
 foreach ($image in $runtimeImages) {
     Write-Host "Pulling $image..."
-    docker pull $image
+    Invoke-Docker pull $image
 }
 
 if (Test-Path $ImageTar) {
@@ -77,8 +94,10 @@ if (Test-Path $ImageTar) {
 }
 
 Write-Host "Saving offline image bundle to $ImageTar..."
-docker save -o $ImageTar $backendImage $webImage @runtimeImages
+Invoke-Docker save -o $ImageTar $backendImage $webImage @runtimeImages
 
 Write-Host "Done."
-docker images $backendImage $webImage
+foreach ($image in @($backendImage, $webImage) + $runtimeImages) {
+    Invoke-Docker images $image
+}
 Get-Item $ImageTar | Select-Object FullName, Length

@@ -18,6 +18,10 @@ import { z } from "zod";
 const optionalUrl = z.union([z.literal(""), z.string().url()]);
 const booleanString = z.enum(["true", "false"]).transform((value) => value === "true");
 
+function envValue(name: string, fallback: string) {
+  return process.env[name]?.trim() || fallback;
+}
+
 const publicEnvSchema = z.object({
   appName: z.string().trim().min(1),
   appShortName: z.string().trim().min(1),
@@ -49,28 +53,30 @@ const publicEnvSchema = z.object({
 
 // Each public variable is accessed explicitly because Next.js performs compile-time replacement only for statically referenced NEXT_PUBLIC keys. These values are configuration, never secrets.
 export const env = publicEnvSchema.parse({
-  appName: process.env.NEXT_PUBLIC_APP_NAME ?? "آینده سبز",
-  appShortName: process.env.NEXT_PUBLIC_APP_SHORT_NAME ?? "آینده سبز",
-  appDescription:
-    process.env.NEXT_PUBLIC_APP_DESCRIPTION ?? "پلتفرم تحلیل عملکرد درسی دانش آموزان کنکوری",
-  appVersion: process.env.NEXT_PUBLIC_APP_VERSION ?? "0.1.0",
-  siteUrl: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
-  apiBasePath: process.env.NEXT_PUBLIC_API_BASE_PATH ?? "/api/v1",
-  locale: process.env.NEXT_PUBLIC_LOCALE ?? "fa-IR",
-  timeZone: process.env.NEXT_PUBLIC_TIME_ZONE ?? "Asia/Tehran",
-  supportEmail: process.env.NEXT_PUBLIC_SUPPORT_EMAIL ?? "support@example.com",
-  supportPhone: process.env.NEXT_PUBLIC_SUPPORT_PHONE ?? "+980000000000",
+  appName: envValue("NEXT_PUBLIC_APP_NAME", "آینده سبز"),
+  appShortName: envValue("NEXT_PUBLIC_APP_SHORT_NAME", "آینده سبز"),
+  appDescription: envValue(
+    "NEXT_PUBLIC_APP_DESCRIPTION",
+    "پلتفرم تحلیل عملکرد درسی دانش آموزان کنکوری",
+  ),
+  appVersion: envValue("NEXT_PUBLIC_APP_VERSION", "0.1.0"),
+  siteUrl: envValue("NEXT_PUBLIC_SITE_URL", "http://localhost:3000"),
+  apiBasePath: envValue("NEXT_PUBLIC_API_BASE_PATH", "/api/v1"),
+  locale: envValue("NEXT_PUBLIC_LOCALE", "fa-IR"),
+  timeZone: envValue("NEXT_PUBLIC_TIME_ZONE", "Asia/Tehran"),
+  supportEmail: envValue("NEXT_PUBLIC_SUPPORT_EMAIL", "support@example.com"),
+  supportPhone: envValue("NEXT_PUBLIC_SUPPORT_PHONE", "+980000000000"),
   instagramUrl: process.env.NEXT_PUBLIC_INSTAGRAM_URL ?? "",
   telegramUrl: process.env.NEXT_PUBLIC_TELEGRAM_URL ?? "",
-  queryStaleTimeMs: process.env.NEXT_PUBLIC_QUERY_STALE_TIME_MS ?? "60000",
-  queryGcTimeMs: process.env.NEXT_PUBLIC_QUERY_GC_TIME_MS ?? "600000",
-  queryRetryCount: process.env.NEXT_PUBLIC_QUERY_RETRY_COUNT ?? "1",
-  queryRefetchOnWindowFocus: process.env.NEXT_PUBLIC_QUERY_REFETCH_ON_WINDOW_FOCUS ?? "false",
-  otpResendSeconds: process.env.NEXT_PUBLIC_OTP_RESEND_SECONDS ?? "120",
-  defaultPageSize: process.env.NEXT_PUBLIC_DEFAULT_PAGE_SIZE ?? "20",
-  profileUploadMaxMb: process.env.NEXT_PUBLIC_PROFILE_UPLOAD_MAX_MB ?? "10",
-  documentUploadMaxMb: process.env.NEXT_PUBLIC_DOCUMENT_UPLOAD_MAX_MB ?? "50",
-  multipleUploadMaxFiles: process.env.NEXT_PUBLIC_MULTIPLE_UPLOAD_MAX_FILES ?? "10",
-  enableBlog: process.env.NEXT_PUBLIC_ENABLE_BLOG ?? "true",
-  enableContactPage: process.env.NEXT_PUBLIC_ENABLE_CONTACT_PAGE ?? "true",
+  queryStaleTimeMs: envValue("NEXT_PUBLIC_QUERY_STALE_TIME_MS", "60000"),
+  queryGcTimeMs: envValue("NEXT_PUBLIC_QUERY_GC_TIME_MS", "600000"),
+  queryRetryCount: envValue("NEXT_PUBLIC_QUERY_RETRY_COUNT", "1"),
+  queryRefetchOnWindowFocus: envValue("NEXT_PUBLIC_QUERY_REFETCH_ON_WINDOW_FOCUS", "false"),
+  otpResendSeconds: envValue("NEXT_PUBLIC_OTP_RESEND_SECONDS", "120"),
+  defaultPageSize: envValue("NEXT_PUBLIC_DEFAULT_PAGE_SIZE", "20"),
+  profileUploadMaxMb: envValue("NEXT_PUBLIC_PROFILE_UPLOAD_MAX_MB", "10"),
+  documentUploadMaxMb: envValue("NEXT_PUBLIC_DOCUMENT_UPLOAD_MAX_MB", "50"),
+  multipleUploadMaxFiles: envValue("NEXT_PUBLIC_MULTIPLE_UPLOAD_MAX_FILES", "10"),
+  enableBlog: envValue("NEXT_PUBLIC_ENABLE_BLOG", "true"),
+  enableContactPage: envValue("NEXT_PUBLIC_ENABLE_CONTACT_PAGE", "true"),
 });
