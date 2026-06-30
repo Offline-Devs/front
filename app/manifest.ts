@@ -7,12 +7,16 @@
  * theme color, background color, and display mode using env values.
  */
 import type { MetadataRoute } from "next";
-import { env } from "@/config/env";
+import { getBrandConfig } from "@/config/branding";
+
+export const dynamic = "force-dynamic";
+
 export default function manifest(): MetadataRoute.Manifest {
+  const brand = getBrandConfig();
   return {
-    name: env.appName,
-    short_name: env.appShortName,
-    description: env.appDescription,
+    name: brand.appName,
+    short_name: brand.appShortName,
+    description: brand.appDescription,
     start_url: "/",
     display: "standalone",
     background_color: "#f7faf8",

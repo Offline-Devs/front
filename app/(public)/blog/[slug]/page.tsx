@@ -5,8 +5,6 @@
  * Server component. Fetches the post by slug from the ISR-cached
  * getPublicPost() helper. Returns notFound() for missing posts.
  *
- * generateStaticParams — pre-generates paths for all published posts at
- *   build time for static generation.
  * generateMetadata — exports per-post Open Graph title, description, and
  *   canonical URL metadata.
  *
@@ -17,17 +15,18 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { CalendarDays } from "lucide-react";
 import { JsonLd } from "@/components/seo/json-ld";
+import { getBrandConfig } from "@/config/branding";
 import { env } from "@/config/env";
 import { articleExcerpt, sanitizeArticleHtml } from "@/lib/content/sanitize";
 import { formatDate } from "@/lib/formatters";
 import { articleJsonLd } from "@/lib/seo/json-ld";
-import { getPublicPost, getPublicPosts } from "@/services/server/public-content";
+import { getPublicPost } from "@/services/server/public-content";
 
 type Props = { params: Promise<{ slug: string }> };
-export async function generateStaticParams() {
-  return (await getPublicPosts()).map((post) => ({ slug: post.slug }));
-}
+export const dynamic = "force-dynamic";
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const brand = getBrandConfig();
   const { slug } = await params;
   const post = await getPublicPost(slug);
   if (!post) return { title: "مقاله پیدا نشد" };
@@ -40,7 +39,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       type: "article",
       locale: "fa_IR",
       url: `${env.siteUrl}/blog/${encodeURIComponent(post.slug)}`,
-      siteName: env.appName,
+      siteName: brand.appName,
       title: post.title,
       description,
       publishedTime: post.created_at,

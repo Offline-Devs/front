@@ -29,6 +29,7 @@ import { cn } from "@/lib/cn";
 import { MobileMenuIcon } from "@/components/ui/mobile-menu-icon";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { BrandLogo } from "@/components/ui/brand-logo";
+import type { BrandConfig } from "@/config/branding";
 
 const publicLinks = [
   { href: "/", label: "خانه" },
@@ -38,7 +39,7 @@ const publicLinks = [
   ...(env.enableContactPage ? [{ href: "/contact", label: "تماس" }] : []),
 ];
 
-export function PublicHeader() {
+export function PublicHeader({ brand }: { brand: BrandConfig }) {
   const [menuOpen, setMenuOpen] = useState(false);
   return (
     <header className="sticky top-0 z-40 border-b border-border/80 bg-card/95 backdrop-blur-xl">
@@ -57,10 +58,10 @@ export function PublicHeader() {
           <DrawerContent side="right">
             <DrawerHeader className="mb-5">
               <div className="flex items-center gap-3">
-                <BrandLogo />
-                <DrawerTitle>{env.appName}</DrawerTitle>
+                <BrandLogo label={brand.appName} />
+                <DrawerTitle>{brand.appName}</DrawerTitle>
               </div>
-              <DrawerDescription>{env.appDescription}</DrawerDescription>
+              <DrawerDescription>{brand.appDescription}</DrawerDescription>
             </DrawerHeader>
             <nav aria-label="ناوبری موبایل" className="grid gap-1">
               {publicLinks.map((item) => (
@@ -85,8 +86,8 @@ export function PublicHeader() {
           href="/"
           className="flex items-center gap-2.5 text-lg font-extrabold text-[var(--brand-strong)]"
         >
-          <BrandLogo priority />
-          <span>{env.appShortName}</span>
+          <BrandLogo priority label={brand.appName} />
+          <span>{brand.appShortName}</span>
         </Link>
         <div className="hidden items-center gap-1 md:flex">
           {publicLinks.map((item) => (

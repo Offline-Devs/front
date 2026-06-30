@@ -8,15 +8,16 @@
  * The priority prop is forwarded to preload whichever variant is above the fold.
  */
 import Image from "next/image";
-import { env } from "@/config/env";
 import { cn } from "@/lib/cn";
 
 export function BrandLogo({
   className,
   priority = false,
+  label = "آینده سبز",
 }: {
   className?: string;
   priority?: boolean;
+  label?: string;
 }) {
   return (
     <span className={cn("block h-11 w-10 shrink-0", className)}>
@@ -24,7 +25,7 @@ export function BrandLogo({
         src="/logo.svg"
         width={192}
         height={208}
-        alt={`لوگوی ${env.appName}`}
+        alt={`لوگوی ${label}`}
         className="brand-logo-light h-full w-full object-contain"
         priority={priority}
       />
@@ -32,7 +33,7 @@ export function BrandLogo({
         src="/logo-dark.svg"
         width={192}
         height={208}
-        alt={`لوگوی ${env.appName}`}
+        alt={`لوگوی ${label}`}
         className="brand-logo-dark h-full w-full object-contain"
         priority={priority}
       />

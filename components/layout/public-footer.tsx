@@ -8,21 +8,23 @@
  */
 import { Mail, Phone } from "lucide-react";
 import Link from "next/link";
+import { getBrandConfig } from "@/config/branding";
 import { env } from "@/config/env";
 import { formatNumber } from "@/lib/formatters";
 import { BrandLogo } from "@/components/ui/brand-logo";
 
 export function PublicFooter() {
+  const brand = getBrandConfig();
   return (
     <footer className="mt-auto border-t border-primary/10 bg-card">
       <div className="page-container grid gap-10 py-12 sm:grid-cols-2 lg:grid-cols-[1.35fr_.7fr_.7fr_1fr] lg:py-16">
         <div>
           <p className="flex items-center gap-2.5 text-lg font-extrabold text-[var(--brand-strong)]">
-            <BrandLogo />
-            {env.appName}
+            <BrandLogo label={brand.appName} />
+            {brand.appName}
           </p>
           <p className="mt-4 max-w-sm text-sm leading-7 text-muted-foreground">
-            {env.appDescription}
+            {brand.appDescription}
           </p>
         </div>
         <div className="grid content-start gap-2 text-sm">
@@ -62,7 +64,7 @@ export function PublicFooter() {
         </address>
       </div>
       <div className="border-t border-border/70 py-5 text-center text-xs text-muted-foreground">
-        © {formatNumber(new Date().getFullYear())} {env.appName}
+        © {formatNumber(new Date().getFullYear())} {brand.appName}
       </div>
     </footer>
   );

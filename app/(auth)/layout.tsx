@@ -10,12 +10,13 @@
  */
 import Image from "next/image";
 import Link from "next/link";
-import { env } from "@/config/env";
+import { getBrandConfig } from "@/config/branding";
 import { PageBreadcrumbs } from "@/components/layout/page-breadcrumbs";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { BrandLogo } from "@/components/ui/brand-logo";
 
 export default function AuthLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  const brand = getBrandConfig();
   return (
     <main className="brand-grid min-h-screen bg-background p-4 sm:p-6 lg:grid lg:place-items-center">
       <div className="mx-auto grid min-h-[calc(100vh-2rem)] w-full max-w-6xl overflow-hidden rounded-[1.5rem] border border-primary/10 bg-card shadow-[var(--shadow-lg)] sm:min-h-0 lg:grid-cols-[1fr_.9fr]">
@@ -25,14 +26,13 @@ export default function AuthLayout({ children }: Readonly<{ children: React.Reac
               href="/"
               className="flex w-fit items-center gap-3 font-black text-[var(--brand-strong)]"
             >
-              <BrandLogo priority />
-              {env.appShortName}
+              <BrandLogo priority label={brand.appName} />
+              {brand.appShortName}
             </Link>
             <ThemeToggle />
           </div>
           <PageBreadcrumbs className="mb-8 border-b border-primary/10 pb-4" />
           <div className="my-auto">{children}</div>
-          <p className="mt-10 text-xs text-muted-foreground">ورود امن با کد یک‌بارمصرف</p>
         </div>
         <div className="relative hidden min-h-[680px] overflow-hidden bg-secondary lg:block">
           <Image

@@ -10,12 +10,16 @@
 import { PublicFooter } from "@/components/layout/public-footer";
 import { PublicHeader } from "@/components/layout/public-header";
 import { PageBreadcrumbs } from "@/components/layout/page-breadcrumbs";
+import { getBrandConfig } from "@/config/branding";
+
+export const dynamic = "force-dynamic";
 
 // Public pages share this shell so their header and footer remain independent from authenticated dashboard navigation and authorization guards.
 export default function PublicLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  const brand = getBrandConfig();
   return (
     <div className="flex min-h-screen flex-col">
-      <PublicHeader />
+      <PublicHeader brand={brand} />
       <main className="flex-1">
         <div className="border-b border-primary/10 bg-card">
           <PageBreadcrumbs contained />

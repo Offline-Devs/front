@@ -21,7 +21,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { env } from "@/config/env";
+import type { BrandConfig } from "@/config/branding";
 import { DashboardNavigation } from "./dashboard-navigation";
 import { useLogout } from "@/hooks/use-logout";
 import { MobileMenuIcon } from "@/components/ui/mobile-menu-icon";
@@ -29,7 +29,13 @@ import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { ProfileAvatar } from "./profile-avatar";
 import { BrandLogo } from "@/components/ui/brand-logo";
 
-export function DashboardHeader({ role }: { role: "student" | "admin" }) {
+export function DashboardHeader({
+  role,
+  brand,
+}: {
+  role: "student" | "admin";
+  brand: BrandConfig;
+}) {
   const logout = useLogout();
   const [menuOpen, setMenuOpen] = useState(false);
   return (
@@ -49,8 +55,8 @@ export function DashboardHeader({ role }: { role: "student" | "admin" }) {
         <DrawerContent side="right">
           <DrawerHeader className="mb-6">
             <div className="flex items-center gap-3">
-              <BrandLogo />
-              <DrawerTitle>{env.appName}</DrawerTitle>
+              <BrandLogo label={brand.appName} />
+              <DrawerTitle>{brand.appName}</DrawerTitle>
             </div>
             <DrawerDescription>
               {role === "admin" ? "دسترسی مدیریت" : "حساب دانش‌آموز"}
@@ -60,7 +66,7 @@ export function DashboardHeader({ role }: { role: "student" | "admin" }) {
         </DrawerContent>
       </Drawer>
       <div>
-        <p className="font-bold text-[var(--brand-strong)] lg:hidden">{env.appShortName}</p>
+        <p className="font-bold text-[var(--brand-strong)] lg:hidden">{brand.appShortName}</p>
         <p className="hidden text-sm font-bold text-[var(--brand-strong)] lg:block">
           {role === "admin" ? "پنل مدیریت" : "پنل دانش‌آموز"}
         </p>

@@ -52,6 +52,7 @@ export function OtpForm() {
   const queryClient = useQueryClient();
   const setUser = useAuthStore((state) => state.setUser);
   const inputRefs = useRef<Array<HTMLInputElement | null>>([]);
+  const lastSubmittedCodeRef = useRef("");
   const [phone, setPhone] = useState<string | null>(null);
   const [digits, setDigits] = useState(() => Array<string>(OTP_LENGTH).fill(""));
   const [remainingSeconds, setRemainingSeconds] = useState(env.otpResendSeconds);
@@ -116,6 +117,7 @@ export function OtpForm() {
     },
     onError: (error) => {
       if (error instanceof ApiError && error.status === 401) {
+        lastSubmittedCodeRef.current = "";
         setDigits(Array<string>(OTP_LENGTH).fill(""));
         form.setValue("code", "");
         inputRefs.current[0]?.focus();
@@ -130,6 +132,7 @@ export function OtpForm() {
       savePendingPhone(phone!, response.otp);
       setDevelopmentOtp(response.otp ?? null);
       setRemainingSeconds(env.otpResendSeconds);
+      lastSubmittedCodeRef.current = "";
       setDigits(Array<string>(OTP_LENGTH).fill(""));
       form.setValue("code", "");
       inputRefs.current[0]?.focus();
@@ -141,16 +144,58 @@ export function OtpForm() {
     },
   });
 
-  function updateDigits(nextDigits: string[]) {
+  function submitCompletedCode(code: string) {
+    if (!phone || code.length !== OTP_LENGTH || verifyOtp.isPending) return;
+    if (lastSubmittedCodeRef.current === code) return;
+
+    lastSubmittedCodeRef.current = code;
+    form.clearErrors("code");
+    verifyOtp.mutate({ phone, code });
+  }
+
+  function updateDigits(nextDigits: string[], shouldSubmit = false) {
     setDigits(nextDigits);
-    form.setValue("code", nextDigits.join(""), { shouldValidate: true });
+    const code = nextDigits.join("");
+    form.setValue("code", code, { shouldValidate: code.length === OTP_LENGTH });
+
+    if (code.length < OTP_LENGTH) {
+      lastSubmittedCodeRef.current = "";
+      return;
+    }
+    if (shouldSubmit) submitCompletedCode(code);
+  }
+
+  function applyDigits(startIndex: number, value: string) {
+    const normalized = normalizeNumericInput(value).replace(/\D/g, "").slice(0, OTP_LENGTH);
+    if (!normalized) return;
+
+    const nextDigits = normalized.length >= OTP_LENGTH ? Array<string>(OTP_LENGTH).fill("") : [...digits];
+    const offset = normalized.length >= OTP_LENGTH ? 0 : startIndex;
+
+    normalized.split("").forEach((digit, index) => {
+      const targetIndex = offset + index;
+      if (targetIndex < OTP_LENGTH) nextDigits[targetIndex] = digit;
+    });
+
+    updateDigits(nextDigits, true);
+
+    const nextEmptyIndex = nextDigits.findIndex((digit) => !digit);
+    const focusIndex =
+      nextEmptyIndex === -1 ? OTP_LENGTH - 1 : Math.min(nextEmptyIndex, OTP_LENGTH - 1);
+    inputRefs.current[focusIndex]?.focus();
   }
 
   function handleDigitChange(index: number, value: string) {
-    const digit = normalizeNumericInput(value).replace(/\D/g, "").slice(-1);
+    const normalized = normalizeNumericInput(value).replace(/\D/g, "");
+    if (normalized.length > 1) {
+      applyDigits(index, normalized);
+      return;
+    }
+
+    const digit = normalized.slice(-1);
     const nextDigits = [...digits];
     nextDigits[index] = digit;
-    updateDigits(nextDigits);
+    updateDigits(nextDigits, true);
     if (digit && index < OTP_LENGTH - 1) inputRefs.current[index + 1]?.focus();
   }
 
@@ -166,18 +211,12 @@ export function OtpForm() {
     }
   }
 
-  function handlePaste(event: ClipboardEvent<HTMLDivElement>) {
-    const pasted = normalizeNumericInput(event.clipboardData.getData("text"))
-      .replace(/\D/g, "")
-      .slice(0, OTP_LENGTH);
+  function handlePaste(index: number, event: ClipboardEvent<HTMLInputElement | HTMLDivElement>) {
+    const pasted = normalizeNumericInput(event.clipboardData.getData("text")).replace(/\D/g, "");
     if (!pasted) return;
     event.preventDefault();
-    const nextDigits = Array<string>(OTP_LENGTH).fill("");
-    pasted.split("").forEach((digit, index) => {
-      nextDigits[index] = digit;
-    });
-    updateDigits(nextDigits);
-    inputRefs.current[Math.min(pasted.length, OTP_LENGTH) - 1]?.focus();
+    event.stopPropagation();
+    applyDigits(index, pasted);
   }
 
   if (!phone) return <div className="h-56 animate-pulse rounded-md bg-muted" />;
@@ -197,7 +236,7 @@ export function OtpForm() {
         را وارد کنید.
       </p>
 
-      <div dir="ltr" className="flex justify-center gap-2" onPaste={handlePaste}>
+      <div dir="ltr" className="flex justify-center gap-2" onPaste={(event) => handlePaste(0, event)}>
         {digits.map((digit, index) => (
           <Input
             key={index}
@@ -207,11 +246,12 @@ export function OtpForm() {
             value={digit}
             onChange={(event) => handleDigitChange(index, event.target.value)}
             onKeyDown={(event) => handleKeyDown(index, event)}
+            onPaste={(event) => handlePaste(index, event)}
             inputMode="numeric"
             autoComplete={index === 0 ? "one-time-code" : "off"}
             maxLength={1}
             aria-label={`رقم ${index + 1} کد تأیید`}
-            className="size-12 px-0 text-center text-xl font-bold sm:size-14"
+            className="otp-input size-12 px-0 text-center text-xl font-bold sm:size-14"
           />
         ))}
       </div>

@@ -1,48 +1,71 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-.tar
-.tar.gz
-
-# dependencies
-/node_modules
-/.pnp
+# Dependencies
+node_modules/
+.pnp
 .pnp.*
 .yarn/*
 !.yarn/patches
 !.yarn/plugins
 !.yarn/releases
+!.yarn/sdks
 !.yarn/versions
 
-# testing
-/coverage
-/playwright-report
-/test-results
-/blob-report
+# Next.js / React build output
+.next/
+out/
+build/
+dist/
+next-env.d.ts
+*.tsbuildinfo
 
-# next.js
-/.next/
-/out/
+# Test and coverage output
+coverage/
+playwright-report/
+test-results/
+blob-report/
+.nyc_output/
 
-# production
-/build
+# Tool caches
+.eslintcache
+.stylelintcache
+.turbo/
+.vercel/
+.vite/
+.vitest/
+.cache/
 
-# misc
-.DS_Store
-*.pem
-
-# debug
+# Logs
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
+# Environment files
 .env
-.env.prod
+.env.*
+!.env.example
+!.env.local.example
+!.env.production.example
+deploy/.env
+!deploy/.env.example
 
-# vercel
-.vercel
+# Docker/offline deployment artifacts
+*.tar
+*.tar.gz
+*.tgz
+deploy/images/
 
-# typescript
-*.tsbuildinfo
-next-env.d.ts
+# OS and editor files
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*.swo
+
+# Local certificates and secrets
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx

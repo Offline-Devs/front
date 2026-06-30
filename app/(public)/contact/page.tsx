@@ -11,13 +11,20 @@ import { notFound } from "next/navigation";
 import { Clock3, Mail, MapPin, Phone } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { SectionHeading } from "@/components/marketing/section-heading";
+import { getBrandConfig } from "@/config/branding";
 import { env } from "@/config/env";
 
-export const metadata: Metadata = {
+export const dynamic = "force-dynamic";
+
+export function generateMetadata(): Metadata {
+  const brand = getBrandConfig();
+
+  return {
   title: "تماس با ما",
-  description: `راه‌های ارتباط با پشتیبانی ${env.appName}`,
+  description: `راه‌های ارتباط با پشتیبانی ${brand.appName}`,
   alternates: { canonical: "/contact" },
-};
+  };
+}
 export default function ContactPage() {
   if (!env.enableContactPage) notFound();
   return (

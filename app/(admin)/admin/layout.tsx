@@ -8,9 +8,14 @@
  * with role="admin" to render the admin sidebar and header.
  */
 import { DashboardShell } from "@/components/layout/dashboard-shell";
+import { getBrandConfig } from "@/config/branding";
 import { requireRole } from "@/lib/server/auth-guard";
 // The admin shell executes the server-side role guard before rendering navigation or any privileged child route.
 export default async function AdminLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   await requireRole("admin");
-  return <DashboardShell role="admin">{children}</DashboardShell>;
+  return (
+    <DashboardShell role="admin" brand={getBrandConfig()}>
+      {children}
+    </DashboardShell>
+  );
 }

@@ -10,13 +10,19 @@ import { Eye, HeartHandshake, ShieldCheck, Target } from "lucide-react";
 import { CallToAction } from "@/components/marketing/call-to-action";
 import { SectionHeading } from "@/components/marketing/section-heading";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { env } from "@/config/env";
+import { getBrandConfig } from "@/config/branding";
 
-export const metadata: Metadata = {
+export const dynamic = "force-dynamic";
+
+export function generateMetadata(): Metadata {
+  const brand = getBrandConfig();
+
+  return {
   title: "درباره ما",
-  description: `درباره ${env.appName} و رویکرد آن در تحلیل آزمون و مشاوره تحصیلی`,
+  description: `درباره ${brand.appName} و رویکرد آن در تحلیل آزمون و مشاوره تحصیلی`,
   alternates: { canonical: "/about" },
-};
+  };
+}
 const values = [
   {
     icon: Target,
@@ -41,6 +47,8 @@ const values = [
 ];
 
 export default function AboutPage() {
+  const brand = getBrandConfig();
+
   return (
     <>
       <section className="brand-grid border-b border-primary/10 bg-card">
@@ -48,7 +56,7 @@ export default function AboutPage() {
           <SectionHeading
             eyebrow="درباره ما"
             title="تحلیل دقیق برای مطالعه هدفمند"
-            description={`${env.appName} برای تبدیل نتایج آزمون و تجربه‌های روزانه مطالعه به یک مسیر روشن و قابل پیگیری ساخته شده است.`}
+            description={`${brand.appName} برای تبدیل نتایج آزمون و تجربه‌های روزانه مطالعه به یک مسیر روشن و قابل پیگیری ساخته شده است.`}
           />
         </div>
       </section>

@@ -11,23 +11,26 @@
  *
  * Additional schema helpers can be added here as the public page set grows.
  */
+import { getBrandConfig } from "@/config/branding";
 import { env } from "@/config/env";
 import type { BlogPost } from "@/types/blog";
 import { articleExcerpt } from "@/lib/content/sanitize";
 
 export function organizationJsonLd() {
+  const brand = getBrandConfig();
   return {
     "@context": "https://schema.org",
     "@type": "EducationalOrganization",
-    name: env.appName,
+    name: brand.appName,
     url: env.siteUrl,
-    description: env.appDescription,
+    description: brand.appDescription,
     email: env.supportEmail,
     telephone: env.supportPhone,
     sameAs: [env.instagramUrl, env.telegramUrl].filter(Boolean),
   };
 }
 export function articleJsonLd(post: BlogPost) {
+  const brand = getBrandConfig();
   return {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -36,6 +39,6 @@ export function articleJsonLd(post: BlogPost) {
     datePublished: post.created_at,
     dateModified: post.updated_at,
     mainEntityOfPage: `${env.siteUrl}/blog/${encodeURIComponent(post.slug)}`,
-    publisher: { "@type": "EducationalOrganization", name: env.appName, url: env.siteUrl },
+    publisher: { "@type": "EducationalOrganization", name: brand.appName, url: env.siteUrl },
   };
 }

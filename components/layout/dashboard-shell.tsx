@@ -14,16 +14,18 @@
 import { DashboardSidebar } from "./dashboard-sidebar";
 import { DashboardHeader } from "./dashboard-header";
 import { PageBreadcrumbs } from "./page-breadcrumbs";
+import type { BrandConfig } from "@/config/branding";
 
 export function DashboardShell({
   children,
   role,
-}: Readonly<{ children: React.ReactNode; role: "student" | "admin" }>) {
+  brand,
+}: Readonly<{ children: React.ReactNode; role: "student" | "admin"; brand: BrandConfig }>) {
   return (
     <div className="min-h-screen bg-background lg:grid lg:grid-cols-[17.5rem_minmax(0,1fr)]">
-      <DashboardSidebar role={role} />
+      <DashboardSidebar role={role} brand={brand} />
       <div className="min-w-0">
-        <DashboardHeader role={role} />
+        <DashboardHeader role={role} brand={brand} />
         <main className="dashboard-content">
           <PageBreadcrumbs className="mb-6 rounded-lg border border-primary/10 bg-card px-4 py-3 shadow-[var(--shadow-sm)]" />
           {children}

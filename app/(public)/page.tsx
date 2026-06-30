@@ -21,15 +21,19 @@ import { SectionHeading } from "@/components/marketing/section-heading";
 import { ServiceCard } from "@/components/marketing/service-card";
 import { PostCard } from "@/components/blog/post-card";
 import { JsonLd } from "@/components/seo/json-ld";
+import { getBrandConfig } from "@/config/branding";
 import { env } from "@/config/env";
 import { organizationJsonLd } from "@/lib/seo/json-ld";
 import { getPublicPosts } from "@/services/server/public-content";
 
-export const metadata: Metadata = {
-  title: { absolute: env.appName },
-  description: env.appDescription,
-  alternates: { canonical: "/" },
-};
+export function generateMetadata(): Metadata {
+  const brand = getBrandConfig();
+  return {
+    title: { absolute: brand.appName },
+    description: brand.appDescription,
+    alternates: { canonical: "/" },
+  };
+}
 const services = [
   {
     icon: BookOpenCheck,

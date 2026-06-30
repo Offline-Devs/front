@@ -23,12 +23,13 @@
  */
 import { DashboardShell } from "@/components/layout/dashboard-shell";
 import { ApprovalGuard } from "@/components/auth/approval-guard";
+import { getBrandConfig } from "@/config/branding";
 import { requireStudentProfile } from "@/lib/server/auth-guard";
 
 export default async function StudentLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   await requireStudentProfile();
   return (
-    <DashboardShell role="student">
+    <DashboardShell role="student" brand={getBrandConfig()}>
       <ApprovalGuard>{children}</ApprovalGuard>
     </DashboardShell>
   );
