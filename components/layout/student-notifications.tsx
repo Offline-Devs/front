@@ -57,7 +57,9 @@ export function StudentNotifications() {
   }
 
   const unreadCount = notifications.data?.unread_count ?? 0;
-  const items = notifications.data?.notifications ?? [];
+  const items = [...(notifications.data?.notifications ?? [])]
+    .sort((a, b) => Date.parse(b.created_at) - Date.parse(a.created_at))
+    .slice(0, 5);
 
   return (
     <div ref={rootRef} className="relative">

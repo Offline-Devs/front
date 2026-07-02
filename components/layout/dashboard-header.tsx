@@ -57,7 +57,7 @@ export function DashboardHeader({
               {role === "admin" ? "دسترسی مدیریت" : "حساب دانش‌آموز"}
             </DrawerDescription>
           </DrawerHeader>
-          <DashboardNavigation role={role} />
+          <DashboardNavigation role={role} onNavigate={() => setMenuOpen(false)} />
         </DrawerContent>
       </Drawer>
       <div>

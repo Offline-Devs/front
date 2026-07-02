@@ -16,6 +16,7 @@ import { FormField } from "@/components/ui/form-field";
 import { JalaliDatePicker } from "@/components/ui/jalali-date-picker";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/components/ui/toast";
+import { UploadProgress } from "@/components/upload/upload-progress";
 import { env } from "@/config/env";
 import { notifyFormErrors } from "@/lib/form-notifications";
 import { formatFileSize } from "@/lib/formatters";
@@ -56,6 +57,11 @@ export function PerformanceForm({
   const queryClient = useQueryClient();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [attachedUrls, setAttachedUrls] = useState<string[]>(() => parseStringArray(record?.files));
+  const [uploadProgress, setUploadProgress] = useState<{
+    percent: number;
+    loaded?: number;
+    total?: number;
+  } | null>(null);
 
   const form = useForm<PerformanceFormValues, unknown, PerformanceFormOutput>({
     resolver: zodResolver(performanceSchema),
@@ -71,7 +77,10 @@ export function PerformanceForm({
 
   const upload = useMutation({
     meta: { successMessage: "فایل‌ها بارگذاری شدند." },
-    mutationFn: (files: File[]) => uploadApi.multiple(files, "document"),
+    mutationFn: (files: File[]) =>
+      uploadApi.multiple(files, "document", {
+        onProgress: ({ percent, loaded, total }) => setUploadProgress({ percent, loaded, total }),
+      }),
     onSuccess: (files) => {
       setAttachedUrls((prev) => {
         const next = [...prev];
@@ -80,6 +89,12 @@ export function PerformanceForm({
         }
         return next;
       });
+      const totalSize = files.reduce((sum, file) => sum + file.size, 0);
+      setUploadProgress({ percent: 100, loaded: totalSize, total: totalSize });
+      window.setTimeout(() => setUploadProgress(null), 900);
+    },
+    onError: () => {
+      setUploadProgress(null);
     },
   });
 
@@ -94,6 +109,7 @@ export function PerformanceForm({
       toast.error(error, { id: "performance-upload-validation" });
       return;
     }
+    setUploadProgress({ percent: 0 });
     upload.mutate(files);
   }
 
@@ -229,8 +245,13 @@ export function PerformanceForm({
           );
         })}
 
-        {upload.isPending && (
-          <p className="text-xs text-muted-foreground">در حال بارگذاری فایل‌ها...</p>
+        {uploadProgress && (upload.isPending || uploadProgress.percent >= 100) && (
+          <UploadProgress
+            value={uploadProgress.percent}
+            loaded={uploadProgress.loaded}
+            total={uploadProgress.total}
+            label="بارگذاری پیوست‌ها"
+          />
         )}
         {attachedUrls.length === 0 && !upload.isPending && (
           <p className="text-xs text-muted-foreground">هیچ پیوستی اضافه نشده است.</p>

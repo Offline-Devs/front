@@ -21,6 +21,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { ApprovalActions } from "./approval-actions";
 import { PerformanceForm } from "@/components/performance/performance-form";
+import { ProfilePhotoPreview } from "@/components/shared/profile-photo-preview";
 import { ApiErrorState } from "@/components/shared/api-error-state";
 import { ConfirmDialog } from "@/components/shared/confirm-dialog";
 import { Badge } from "@/components/ui/badge";
@@ -168,19 +169,26 @@ export function StudentOverview({ studentId }: { studentId: string }) {
   if (student.isError)
     return <ApiErrorState error={student.error} retry={() => void student.refetch()} />;
   if (!student.data) return null;
+  const studentName = `${student.data.first_name} ${student.data.last_name}`.trim();
   return (
     <div className="grid gap-6">
       <div className="flex flex-wrap items-start justify-between gap-4">
-        <div>
-          <div className="flex items-center gap-3">
-            <h1 className="text-2xl font-black">
-              {student.data.first_name} {student.data.last_name}
-            </h1>
-            <Badge variant={student.data.is_approved ? "success" : "warning"}>
-              {student.data.is_approved ? "تأییدشده" : "در انتظار"}
-            </Badge>
+        <div className="flex min-w-0 items-center gap-4">
+          <ProfilePhotoPreview
+            src={student.data.profile_photo}
+            label={studentName}
+            fallback="student"
+            size="lg"
+          />
+          <div className="min-w-0">
+            <div className="flex flex-wrap items-center gap-3">
+              <h1 className="text-2xl font-black">{studentName}</h1>
+              <Badge variant={student.data.is_approved ? "success" : "warning"}>
+                {student.data.is_approved ? "تأییدشده" : "در انتظار"}
+              </Badge>
+            </div>
+            <p className="mt-2 text-sm text-muted-foreground">پرونده کامل دانش‌آموز</p>
           </div>
-          <p className="mt-2 text-sm text-muted-foreground">پرونده کامل دانش‌آموز</p>
         </div>
         <ApprovalActions studentId={studentId} approved={student.data.is_approved} />
       </div>

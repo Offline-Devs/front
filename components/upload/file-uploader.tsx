@@ -16,14 +16,16 @@
 "use client";
 
 import { useMutation } from "@tanstack/react-query";
-import { Camera, Trash2, UploadCloud } from "lucide-react";
+import { Trash2, UploadCloud } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { ProfilePhotoPreview } from "@/components/shared/profile-photo-preview";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/toast";
 import { env } from "@/config/env";
 import { resolveUploadUrl } from "@/lib/upload-url";
 import { uploadApi } from "@/services/api/upload.api";
 import { PROFILE_IMAGE_TYPES, validateUploadFiles } from "@/lib/upload-policy";
+import { UploadProgress } from "./upload-progress";
 
 type FileUploaderProps = {
   value?: string;
@@ -36,13 +38,26 @@ export function FileUploader({ value, onChange, disabled }: FileUploaderProps) {
   const [previewUrl, setPreviewUrl] = useState<string | null>(
     value ? resolveUploadUrl(value) : null,
   );
+  const [progress, setProgress] = useState<{
+    percent: number;
+    loaded?: number;
+    total?: number;
+  } | null>(null);
   const [validationError, setValidationError] = useState<string | null>(null);
   const upload = useMutation({
     meta: { successMessage: "تصویر پروفایل بارگذاری شد." },
-    mutationFn: (file: File) => uploadApi.one(file, "profile"),
+    mutationFn: (file: File) =>
+      uploadApi.one(file, "profile", {
+        onProgress: ({ percent, loaded, total }) => setProgress({ percent, loaded, total }),
+      }),
     onSuccess: (response) => {
       onChange(response.url);
       setPreviewUrl(resolveUploadUrl(response.url));
+      setProgress({ percent: 100, loaded: response.size, total: response.size });
+      window.setTimeout(() => setProgress(null), 900);
+    },
+    onError: () => {
+      setProgress(null);
     },
   });
 
@@ -67,12 +82,14 @@ export function FileUploader({ value, onChange, disabled }: FileUploaderProps) {
     }
     const localPreview = URL.createObjectURL(file);
     setPreviewUrl(localPreview);
+    setProgress({ percent: 0 });
     upload.mutate(file);
   }
 
   function removeFile() {
     if (previewUrl?.startsWith("blob:")) URL.revokeObjectURL(previewUrl);
     setPreviewUrl(null);
+    setProgress(null);
     setValidationError(null);
     onChange("");
     if (inputRef.current) inputRef.current.value = "";
@@ -82,18 +99,13 @@ export function FileUploader({ value, onChange, disabled }: FileUploaderProps) {
   return (
     <div className="grid gap-3">
       <div className="flex flex-wrap items-center gap-4">
-        <div
-          role="img"
-          aria-label={previewUrl ? "پیش‌نمایش عکس پروفایل" : "عکس پروفایل انتخاب نشده"}
-          className="grid size-24 shrink-0 place-items-center rounded-full border bg-muted bg-cover bg-center text-muted-foreground"
-          style={
-            previewUrl
-              ? { backgroundImage: `url(${JSON.stringify(previewUrl).slice(1, -1)})` }
-              : undefined
-          }
-        >
-          {!previewUrl && <Camera className="size-8" aria-hidden="true" />}
-        </div>
+        <ProfilePhotoPreview
+          src={previewUrl ?? undefined}
+          label="پیش‌نمایش عکس پروفایل"
+          fallback="camera"
+          size="lg"
+          className="shadow-none"
+        />
         <div className="flex flex-wrap gap-2">
           <Button
             type="button"
@@ -129,6 +141,14 @@ export function FileUploader({ value, onChange, disabled }: FileUploaderProps) {
       <p className="text-xs text-muted-foreground">
         فرمت JPG، PNG یا WebP؛ حداکثر {env.profileUploadMaxMb.toLocaleString("fa-IR")} مگابایت.
       </p>
+      {progress && (upload.isPending || progress.percent >= 100) && (
+        <UploadProgress
+          value={progress.percent}
+          loaded={progress.loaded}
+          total={progress.total}
+          label="بارگذاری عکس پروفایل"
+        />
+      )}
       {(validationError || upload.isError) && (
         <p className="text-xs text-destructive" role="alert">
           {validationError ?? upload.error?.message}
