@@ -21,6 +21,7 @@ export const queryKeys = {
   exam: (id: string) => ["exams", id] as const,
   mistakes: ["mistakes"] as const,
   performance: ["performance"] as const,
+  notifications: ["notifications"] as const,
   statistics: (filters?: object) => ["statistics", filters ?? {}] as const,
   dashboard: ["dashboard"] as const,
   majors: ["majors"] as const,

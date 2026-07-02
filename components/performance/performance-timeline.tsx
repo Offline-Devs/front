@@ -1,18 +1,9 @@
 /**
  * @file components/performance/performance-timeline.tsx
  * @description Student-facing timeline of performance report entries.
- *
- * Read-only view — students cannot create or edit performance records.
- * Reports are created and managed by administrators via PerformanceForm.
- *
- * Fetches GET /students/performance via performanceApi.mine(). The response
- * is mapped by the performance mapper which resolves file attachment URLs
- * through the same-origin BFF proxy.
- *
- * Renders each record as a timeline entry with study plan, advisor notes, and
- * downloadable file attachment links.
  */
 "use client";
+
 import { useQuery } from "@tanstack/react-query";
 import { CalendarDays, Download, FileText } from "lucide-react";
 import { ApiErrorState } from "@/components/shared/api-error-state";
@@ -36,6 +27,7 @@ export function PerformanceTimeline() {
     queryFn: performanceApi.mine,
     staleTime: 60_000,
   });
+
   if (performance.isLoading)
     return (
       <div className="grid gap-5">
@@ -44,8 +36,10 @@ export function PerformanceTimeline() {
         ))}
       </div>
     );
+
   if (performance.isError)
     return <ApiErrorState error={performance.error} retry={() => void performance.refetch()} />;
+
   if (!performance.data?.length)
     return (
       <EmptyState
@@ -53,10 +47,15 @@ export function PerformanceTimeline() {
         description="یادداشت‌ها و برنامه‌های مطالعاتی ثبت‌شده توسط مشاور در این صفحه نمایش داده می‌شوند."
       />
     );
+
   return (
     <ol className="relative grid gap-6 before:absolute before:inset-y-3 before:right-3 before:w-px before:bg-border sm:before:right-4">
       {performance.data.map((item) => (
-        <li key={item.id} className="relative pr-9 sm:pr-12">
+        <li
+          key={item.id}
+          id={`performance-${item.id}`}
+          className="relative scroll-mt-24 pr-9 sm:pr-12"
+        >
           <span className="absolute right-0 top-5 grid size-7 place-items-center rounded-full border-4 border-background bg-primary sm:size-9">
             <CalendarDays
               className="size-3.5 text-primary-foreground sm:size-4"
@@ -102,6 +101,7 @@ export function PerformanceTimeline() {
                           href={url}
                           target="_blank"
                           rel="noopener noreferrer"
+                          download
                           className="flex items-center gap-2 rounded-md border p-3 text-sm font-medium text-primary hover:bg-muted"
                         >
                           <Download className="size-4" aria-hidden="true" />

@@ -4,7 +4,7 @@
  *
  * UploadKind  — "profile" or "document"; passed as the ?type query parameter
  *   to the /upload endpoints and used by the BFF proxy to select the correct
- *   validation policy (MIME types, byte limits, and file count).
+ *   validation policy.
  * UploadResponse — returned by the Go backend after a successful upload.
  *   The url field is a backend-relative path that resolveUploadUrl converts
  *   to a same-origin BFF URL for browser display.

@@ -1,16 +1,10 @@
 /**
  * @file components/layout/dashboard-header.tsx
  * @description Sticky top header for the authenticated dashboard shell.
- *
- * Contains: ProfileAvatar (links to /profile for students), app name/role label,
- * ThemeToggle, a placeholder notification bell, and a logout button.
- *
- * On mobile (< lg breakpoint) shows a Drawer trigger that opens the full
- * DashboardNavigation in a slide-in panel from the right.
  */
 "use client";
 
-import { Bell, LogOut } from "lucide-react";
+import { LogOut } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -21,13 +15,14 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import type { BrandConfig } from "@/config/branding";
-import { DashboardNavigation } from "./dashboard-navigation";
-import { useLogout } from "@/hooks/use-logout";
+import { BrandLogo } from "@/components/ui/brand-logo";
 import { MobileMenuIcon } from "@/components/ui/mobile-menu-icon";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
+import type { BrandConfig } from "@/config/branding";
+import { useLogout } from "@/hooks/use-logout";
+import { DashboardNavigation } from "./dashboard-navigation";
 import { ProfileAvatar } from "./profile-avatar";
-import { BrandLogo } from "@/components/ui/brand-logo";
+import { StudentNotifications } from "./student-notifications";
 
 export function DashboardHeader({
   role,
@@ -74,9 +69,7 @@ export function DashboardHeader({
       </div>
       <div className="ms-auto flex items-center gap-2">
         <ThemeToggle />
-        <Button variant="ghost" size="icon" aria-label="اعلان‌ها">
-          <Bell className="size-5" />
-        </Button>
+        {role === "student" && <StudentNotifications />}
         <Button variant="ghost" size="icon" onClick={() => void logout()} aria-label="خروج از حساب">
           <LogOut className="size-5" />
         </Button>

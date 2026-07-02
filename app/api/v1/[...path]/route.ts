@@ -20,8 +20,8 @@
  *      • total payload is within the per-request byte budget:
  *          single upload  → maxBytes × 1
  *          multiple upload → maxBytes × maxFiles   ← bug fix applied here
- *      • each file's MIME type is in the allowed set
- *      • each file passes a magic-byte signature check
+ *      • profile uploads match the allowed image MIME/signature set
+ *      • document uploads accept any MIME type and are limited by size/count
  *    Rejections are returned as 400 / 413 / 415 before the body reaches the backend.
  *
  * 4. Header sanitisation — host, content-length, connection, authorization, and
@@ -36,7 +36,6 @@ import { clearSession, readSession, writeSession } from "@/lib/server/session";
 import { copyResponse, errorResponse, isSameOriginMutation } from "@/lib/server/route-utils";
 import { serverEnv } from "@/config/server-env";
 import {
-  DOCUMENT_TYPES,
   PROFILE_IMAGE_TYPES,
   validateFileSignatures,
   validateUploadFiles,
@@ -75,7 +74,6 @@ async function validateUpload(path: string[], url: URL, headers: Headers, body: 
       : {
           maxBytes: serverEnv.uploads.documentMaxBytes,
           maxFiles: isMultiple ? serverEnv.uploads.maxFiles : 1,
-          mimeTypes: DOCUMENT_TYPES,
         };
 
   // Total body budget accounts for all files in a multi-file request.
@@ -99,6 +97,8 @@ async function validateUpload(path: string[], url: URL, headers: Headers, body: 
       { error },
       { status: error.includes("حجم") ? 413 : error.includes("نوع") ? 415 : 400 },
     );
+
+  if (kind !== "profile") return null;
 
   const signatureError = await validateFileSignatures(files);
   return signatureError ? Response.json({ error: signatureError }, { status: 415 }) : null;

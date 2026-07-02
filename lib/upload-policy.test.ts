@@ -7,12 +7,7 @@
  * accepting valid files within all constraints.
  */
 import { describe, expect, it } from "vitest";
-import {
-  DOCUMENT_TYPES,
-  PROFILE_IMAGE_TYPES,
-  validateFileSignatures,
-  validateUploadFiles,
-} from "./upload-policy";
+import { PROFILE_IMAGE_TYPES, validateFileSignatures, validateUploadFiles } from "./upload-policy";
 
 const mb = 1024 * 1024;
 describe("upload policy", () => {
@@ -33,8 +28,7 @@ describe("upload policy", () => {
       }),
     ).toMatch(/نوع/);
     expect(
-      validateUploadFiles([{ type: "application/pdf", size: 2 * mb }], {
-        mimeTypes: DOCUMENT_TYPES,
+      validateUploadFiles([{ type: "application/x-zip-compressed", size: 2 * mb }], {
         maxBytes: mb,
         maxFiles: 1,
       }),
@@ -47,9 +41,16 @@ describe("upload policy", () => {
           { type: "application/pdf", size: 10 },
           { type: "application/pdf", size: 10 },
         ],
-        { mimeTypes: DOCUMENT_TYPES, maxBytes: mb, maxFiles: 1 },
+        { maxBytes: mb, maxFiles: 1 },
       ),
     ).toMatch(/تعداد/));
+  it("allows arbitrary document MIME types when no MIME policy is provided", () =>
+    expect(
+      validateUploadFiles([{ type: "application/x-msdownload", size: 10 }], {
+        maxBytes: mb,
+        maxFiles: 1,
+      }),
+    ).toBeNull());
   it("checks file signatures instead of trusting MIME metadata", async () => {
     expect(
       await validateFileSignatures([

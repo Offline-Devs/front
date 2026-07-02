@@ -3,8 +3,8 @@
  * @description Client-side file upload validation policy.
  *
  * PROFILE_IMAGE_TYPES — accepted MIME types for profile photos (JPEG, PNG, WebP).
- * DOCUMENT_TYPES — accepted MIME types for performance report attachments;
- *   extends profile image types with application/pdf.
+ * Document uploads intentionally allow any MIME type; performance report
+ * attachments are constrained by count and size instead of extension.
  *
  * validateUploadFiles(files, policy) — checks file count, individual MIME type,
  *   and individual byte size against the provided policy. Returns a user-facing
@@ -16,9 +16,8 @@
  *   MIME-type spoofing. Used in the BFF proxy only (requires ArrayBuffer access).
  */
 export const PROFILE_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"] as const;
-export const DOCUMENT_TYPES = [...PROFILE_IMAGE_TYPES, "application/pdf"] as const;
 
-type UploadPolicy = { maxBytes: number; maxFiles: number; mimeTypes: readonly string[] };
+type UploadPolicy = { maxBytes: number; maxFiles: number; mimeTypes?: readonly string[] };
 
 export function validateUploadFiles(
   files: Array<Pick<File, "size" | "type">>,
@@ -27,7 +26,8 @@ export function validateUploadFiles(
   if (!files.length) return "حداقل یک فایل الزامی است.";
   if (files.length > policy.maxFiles) return "تعداد فایل‌ها بیشتر از حد مجاز است.";
   for (const file of files) {
-    if (!policy.mimeTypes.includes(file.type)) return "نوع فایل مجاز نیست.";
+    if (policy.mimeTypes?.length && !policy.mimeTypes.includes(file.type))
+      return "نوع فایل مجاز نیست.";
     if (file.size <= 0 || file.size > policy.maxBytes) return "حجم فایل خارج از محدوده مجاز است.";
   }
   return null;
