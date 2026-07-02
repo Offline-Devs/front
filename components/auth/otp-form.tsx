@@ -23,7 +23,14 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ArrowRight, RotateCcw } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState, type ClipboardEvent, type KeyboardEvent } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type ClipboardEvent,
+  type FormEvent,
+  type KeyboardEvent,
+} from "react";
 import { useForm } from "react-hook-form";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
@@ -46,17 +53,20 @@ import { studentApi } from "@/services/api/student.api";
 import { useAuthStore } from "@/stores/auth-store";
 
 const OTP_LENGTH = 6;
+type SubmitMode = "auto" | "manual";
 
 export function OtpForm() {
   const router = useRouter();
   const queryClient = useQueryClient();
   const setUser = useAuthStore((state) => state.setUser);
   const inputRefs = useRef<Array<HTMLInputElement | null>>([]);
-  const lastSubmittedCodeRef = useRef("");
+  const lastAutoSubmittedCodeRef = useRef("");
+  const lastSubmissionModeRef = useRef<SubmitMode>("manual");
   const [phone, setPhone] = useState<string | null>(null);
   const [digits, setDigits] = useState(() => Array<string>(OTP_LENGTH).fill(""));
   const [remainingSeconds, setRemainingSeconds] = useState(env.otpResendSeconds);
   const [developmentOtp, setDevelopmentOtp] = useState<string | null>(null);
+  const [manualVerificationError, setManualVerificationError] = useState<string | null>(null);
   const form = useForm<OtpFormValues, unknown, OtpFormOutput>({
     resolver: zodResolver(otpSchema),
     defaultValues: { phone: "", code: "" },
@@ -116,8 +126,16 @@ export function OtpForm() {
       router.refresh();
     },
     onError: (error) => {
+      const isManualSubmission = lastSubmissionModeRef.current === "manual";
+      if (isManualSubmission) {
+        setManualVerificationError(
+          error instanceof Error ? error.message : "خطای پیش‌بینی‌نشده‌ای رخ داد.",
+        );
+      }
+
       if (error instanceof ApiError && error.status === 401) {
-        lastSubmittedCodeRef.current = "";
+        lastAutoSubmittedCodeRef.current = "";
+        if (!isManualSubmission) return;
         setDigits(Array<string>(OTP_LENGTH).fill(""));
         form.setValue("code", "");
         inputRefs.current[0]?.focus();
@@ -132,7 +150,8 @@ export function OtpForm() {
       savePendingPhone(phone!, response.otp);
       setDevelopmentOtp(response.otp ?? null);
       setRemainingSeconds(env.otpResendSeconds);
-      lastSubmittedCodeRef.current = "";
+      lastAutoSubmittedCodeRef.current = "";
+      setManualVerificationError(null);
       setDigits(Array<string>(OTP_LENGTH).fill(""));
       form.setValue("code", "");
       inputRefs.current[0]?.focus();
@@ -144,12 +163,15 @@ export function OtpForm() {
     },
   });
 
-  function submitCompletedCode(code: string) {
+  function submitCompletedCode(code: string, mode: SubmitMode) {
     if (!phone || code.length !== OTP_LENGTH || verifyOtp.isPending) return;
-    if (lastSubmittedCodeRef.current === code) return;
+    if (mode === "auto" && lastAutoSubmittedCodeRef.current === code) return;
 
-    lastSubmittedCodeRef.current = code;
+    if (mode === "auto") lastAutoSubmittedCodeRef.current = code;
+    lastSubmissionModeRef.current = mode;
+    setManualVerificationError(null);
     form.clearErrors("code");
+    if (verifyOtp.isError) verifyOtp.reset();
     verifyOtp.mutate({ phone, code });
   }
 
@@ -159,10 +181,12 @@ export function OtpForm() {
     form.setValue("code", code, { shouldValidate: code.length === OTP_LENGTH });
 
     if (code.length < OTP_LENGTH) {
-      lastSubmittedCodeRef.current = "";
+      lastAutoSubmittedCodeRef.current = "";
+      setManualVerificationError(null);
+      if (verifyOtp.isError) verifyOtp.reset();
       return;
     }
-    if (shouldSubmit) submitCompletedCode(code);
+    if (shouldSubmit) submitCompletedCode(code, "auto");
   }
 
   function applyDigits(startIndex: number, value: string) {
@@ -219,6 +243,13 @@ export function OtpForm() {
     applyDigits(index, pasted);
   }
 
+  function handleFormSubmit(event: FormEvent<HTMLFormElement>) {
+    void form.handleSubmit(
+      (values) => submitCompletedCode(values.code, "manual"),
+      notifyFormErrors,
+    )(event);
+  }
+
   if (!phone) return <div className="h-56 animate-pulse rounded-md bg-muted" />;
 
   return (
@@ -226,7 +257,7 @@ export function OtpForm() {
       className="grid gap-5"
       aria-label="فرم کد تأیید"
       noValidate
-      onSubmit={form.handleSubmit((values) => verifyOtp.mutate(values), notifyFormErrors)}
+      onSubmit={handleFormSubmit}
     >
       <p className="text-sm leading-6 text-muted-foreground">
         کد ۶ رقمی ارسال‌شده به{" "}
@@ -248,8 +279,8 @@ export function OtpForm() {
             onKeyDown={(event) => handleKeyDown(index, event)}
             onPaste={(event) => handlePaste(index, event)}
             inputMode="numeric"
-            autoComplete={index === 0 ? "one-time-code" : "off"}
-            maxLength={1}
+            autoComplete="one-time-code"
+            maxLength={OTP_LENGTH}
             aria-label={`رقم ${index + 1} کد تأیید`}
             className="otp-input size-12 px-0 text-center text-xl font-bold sm:size-14"
           />
@@ -273,9 +304,9 @@ export function OtpForm() {
         </Alert>
       )}
 
-      {verifyOtp.isError && (
+      {manualVerificationError && (
         <Alert variant="destructive">
-          <AlertDescription>{verifyOtp.error.message}</AlertDescription>
+          <AlertDescription>{manualVerificationError}</AlertDescription>
         </Alert>
       )}
 

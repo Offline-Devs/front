@@ -24,21 +24,25 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Plus, Save } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useFieldArray, useForm, useWatch } from "react-hook-form";
 import { SubjectScoreRow } from "./subject-score-row";
+import { DynamicFieldsSection } from "@/components/forms/dynamic-fields-section";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { FormField } from "@/components/ui/form-field";
 import { Input } from "@/components/ui/input";
 import { JalaliDatePicker } from "@/components/ui/jalali-date-picker";
 import { examSchema, type ExamFormOutput, type ExamFormValues } from "@/schemas/exam.schema";
+import { dynamicFieldsApi } from "@/services/api/dynamic-fields.api";
 import { examsApi } from "@/services/api/exams.api";
 import { invalidateDependencies, invalidation } from "@/services/api/invalidation";
 import { queryKeys } from "@/services/api/query-keys";
 import { studentApi } from "@/services/api/student.api";
 import { subjectsApi } from "@/services/api/subjects.api";
 import type { Exam, ExamInput } from "@/types/exam";
-import { notifyFormErrors } from "@/lib/form-notifications";
+import { validateDynamicFieldValues } from "@/lib/dynamic-fields";
+import { notifyFormErrors, notifyValidationMessage } from "@/lib/form-notifications";
 
 const emptySubject = {
   subject_name: "",
@@ -50,6 +54,7 @@ const emptySubject = {
 export function ExamForm({ exam }: { exam?: Exam }) {
   const router = useRouter();
   const queryClient = useQueryClient();
+  const [dynamicErrors, setDynamicErrors] = useState<Record<string, string>>({});
   const form = useForm<ExamFormValues, unknown, ExamFormOutput>({
     resolver: zodResolver(examSchema),
     defaultValues: {
@@ -69,7 +74,13 @@ export function ExamForm({ exam }: { exam?: Exam }) {
   });
   const { fields, append, remove } = useFieldArray({ control: form.control, name: "subjects" });
   const watchedSubjects = useWatch({ control: form.control, name: "subjects" });
+  const dynamicValues = useWatch({ control: form.control, name: "dynamic_fields" });
   const examDate = useWatch({ control: form.control, name: "jalali_date" });
+  const dynamicFieldQuery = useQuery({
+    queryKey: queryKeys.dynamicFields("exam"),
+    queryFn: () => dynamicFieldsApi.list("exam"),
+    staleTime: 300_000,
+  });
   const profile = useQuery({
     queryKey: queryKeys.profile,
     queryFn: studentApi.getProfile,
@@ -103,6 +114,12 @@ export function ExamForm({ exam }: { exam?: Exam }) {
   });
 
   function submit(values: ExamFormOutput) {
+    const errors = validateDynamicFieldValues(dynamicFieldQuery.data ?? [], values.dynamic_fields);
+    setDynamicErrors(errors);
+    if (Object.keys(errors).length > 0) {
+      notifyValidationMessage(Object.values(errors)[0]);
+      return;
+    }
     save.mutate(values);
   }
   return (
@@ -181,6 +198,20 @@ export function ExamForm({ exam }: { exam?: Exam }) {
           </p>
         )}
       </section>
+      <DynamicFieldsSection
+        fields={dynamicFieldQuery.data ?? []}
+        values={dynamicValues}
+        errors={dynamicErrors}
+        disabled={save.isPending}
+        onChange={(name, value) => {
+          form.setValue(
+            "dynamic_fields",
+            { ...dynamicValues, [name]: value },
+            { shouldDirty: true },
+          );
+          setDynamicErrors((current) => ({ ...current, [name]: "" }));
+        }}
+      />
       {save.isError && (
         <Alert variant="destructive">
           <AlertDescription>{save.error.message}</AlertDescription>

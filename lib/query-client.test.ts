@@ -8,6 +8,7 @@
  */
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { toast } from "sonner";
+import { ApiError } from "@/services/api/client";
 import { createQueryClient } from "./query-client";
 
 vi.mock("sonner", () => ({
@@ -36,6 +37,17 @@ describe("global query notifications", () => {
     });
     await expect(mutation.execute(undefined)).rejects.toThrow("عملیات ناموفق بود.");
     expect(toast.error).toHaveBeenCalledWith("عملیات ناموفق بود.");
+  });
+
+  it("does not announce unauthorized mutation errors", async () => {
+    const client = createQueryClient();
+    const mutation = client.getMutationCache().build(client, {
+      mutationFn: async () => {
+        throw new ApiError(401, { error: "unauthenticated" });
+      },
+    });
+    await expect(mutation.execute(undefined)).rejects.toBeInstanceOf(ApiError);
+    expect(toast.error).not.toHaveBeenCalled();
   });
 
   it("does not announce expected query errors", async () => {

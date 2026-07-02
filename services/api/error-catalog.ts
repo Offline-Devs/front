@@ -83,6 +83,12 @@ const BACKEND_MESSAGES: Record<string, string> = {
   "birth_date and jalali_birth_date are mutually exclusive":
     "برای تولد فقط یکی از تاریخ‌های شمسی یا میلادی قابل ارسال است.",
   "invalid upload type. allowed: document, profile": "نوع مقصد آپلود معتبر نیست.",
+  "invalid dynamic field entity_type": "موجودیت فیلد سفارشی معتبر نیست.",
+  "invalid dynamic field name": "نام فنی فیلد سفارشی معتبر نیست.",
+  "dynamic field label is required": "عنوان نمایشی فیلد سفارشی الزامی است.",
+  "invalid dynamic field type": "نوع فیلد سفارشی معتبر نیست.",
+  "invalid dynamic field options": "گزینه‌های فیلد انتخابی معتبر نیست.",
+  "dynamic field already exists": "برای این موجودیت، فیلدی با این نام فنی قبلاً ساخته شده است.",
 };
 
 /**

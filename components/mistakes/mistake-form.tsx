@@ -17,7 +17,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Save } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
+import { DynamicFieldsSection } from "@/components/forms/dynamic-fields-section";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { FormField } from "@/components/ui/form-field";
@@ -35,12 +37,14 @@ import {
   type MistakeFormOutput,
   type MistakeFormValues,
 } from "@/schemas/mistake.schema";
+import { dynamicFieldsApi } from "@/services/api/dynamic-fields.api";
 import { examsApi } from "@/services/api/exams.api";
 import { invalidateDependencies, invalidation } from "@/services/api/invalidation";
 import { mistakesApi } from "@/services/api/mistakes.api";
 import { queryKeys } from "@/services/api/query-keys";
 import type { Mistake } from "@/types/mistake";
-import { notifyFormErrors } from "@/lib/form-notifications";
+import { validateDynamicFieldValues } from "@/lib/dynamic-fields";
+import { notifyFormErrors, notifyValidationMessage } from "@/lib/form-notifications";
 
 export function MistakeForm({
   mistake,
@@ -53,6 +57,7 @@ export function MistakeForm({
 }) {
   const router = useRouter();
   const queryClient = useQueryClient();
+  const [dynamicErrors, setDynamicErrors] = useState<Record<string, string>>({});
   const form = useForm<MistakeFormValues, unknown, MistakeFormOutput>({
     resolver: zodResolver(mistakeSchema),
     defaultValues: {
@@ -66,7 +71,13 @@ export function MistakeForm({
   });
   const examId = useWatch({ control: form.control, name: "exam_id" });
   const subjectExamId = useWatch({ control: form.control, name: "subject_exam_id" });
+  const dynamicValues = useWatch({ control: form.control, name: "dynamic_fields" });
   const exams = useQuery({ queryKey: queryKeys.exams, queryFn: examsApi.list, staleTime: 30_000 });
+  const dynamicFieldQuery = useQuery({
+    queryKey: queryKeys.dynamicFields("mistake"),
+    queryFn: () => dynamicFieldsApi.list("mistake"),
+    staleTime: 300_000,
+  });
   const selectedExam = exams.data?.find((exam) => exam.id === examId);
   const save = useMutation({
     meta: { successMessage: mistake ? "تغییرات اشتباه ذخیره شد." : "اشتباه جدید ثبت شد." },
@@ -82,6 +93,12 @@ export function MistakeForm({
     },
   });
   function submit(values: MistakeFormOutput) {
+    const errors = validateDynamicFieldValues(dynamicFieldQuery.data ?? [], values.dynamic_fields);
+    setDynamicErrors(errors);
+    if (Object.keys(errors).length > 0) {
+      notifyValidationMessage(Object.values(errors)[0]);
+      return;
+    }
     save.mutate(values);
   }
   return (
@@ -161,6 +178,20 @@ export function MistakeForm({
       <FormField label="یادداشت و راه‌حل صحیح" error={form.formState.errors.notes?.message}>
         <Textarea {...form.register("notes")} rows={5} />
       </FormField>
+      <DynamicFieldsSection
+        fields={dynamicFieldQuery.data ?? []}
+        values={dynamicValues}
+        errors={dynamicErrors}
+        disabled={save.isPending}
+        onChange={(name, value) => {
+          form.setValue(
+            "dynamic_fields",
+            { ...dynamicValues, [name]: value },
+            { shouldDirty: true },
+          );
+          setDynamicErrors((current) => ({ ...current, [name]: "" }));
+        }}
+      />
       {save.isError && (
         <Alert variant="destructive">
           <AlertDescription>{save.error.message}</AlertDescription>

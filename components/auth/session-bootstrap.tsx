@@ -16,13 +16,17 @@
 "use client";
 
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { authApi } from "@/services/api/auth.api";
 import { queryKeys } from "@/services/api/query-keys";
 import { subscribeToAuthEvents } from "@/lib/auth-channel";
+import { isProtectedRoute, loginRedirectFor } from "@/lib/protected-routes";
 import { useAuthStore } from "@/stores/auth-store";
 
 export function SessionBootstrap() {
+  const pathname = usePathname();
+  const router = useRouter();
   const queryClient = useQueryClient();
   const setUser = useAuthStore((state) => state.setUser);
   const setUnauthenticated = useAuthStore((state) => state.setUnauthenticated);
@@ -35,8 +39,11 @@ export function SessionBootstrap() {
   });
   useEffect(() => {
     if (session.data) setUser(session.data.user);
-    else if (session.isError) setUnauthenticated();
-  }, [session.data, session.isError, setUser, setUnauthenticated]);
+    else if (session.isError) {
+      setUnauthenticated();
+      if (isProtectedRoute(pathname)) router.replace(loginRedirectFor(pathname));
+    }
+  }, [pathname, router, session.data, session.isError, setUser, setUnauthenticated]);
   useEffect(
     () =>
       subscribeToAuthEvents((event) => {

@@ -31,11 +31,14 @@ export function createQueryClient() {
         const message = mutation.meta?.successMessage;
         if (typeof message === "string") toast.success(message);
       },
-      onError: (error) => toast.error(errorMessage(error)),
+      onError: (error, _variables, _context, mutation) => {
+        if (shouldSuppressErrorToast(error, mutation.meta)) return;
+        toast.error(errorMessage(error));
+      },
     }),
     queryCache: new QueryCache({
       onError: (error, query) => {
-        if (query.state.data === undefined && query.meta?.suppressErrorToast !== true)
+        if (query.state.data === undefined && !shouldSuppressErrorToast(error, query.meta))
           toast.error(errorMessage(error));
       },
     }),
@@ -54,4 +57,8 @@ export function createQueryClient() {
 
 function errorMessage(error: unknown) {
   return error instanceof Error ? error.message : "خطای پیش‌بینی‌نشده‌ای رخ داد.";
+}
+
+function shouldSuppressErrorToast(error: unknown, meta: Record<string, unknown> | undefined) {
+  return meta?.suppressErrorToast === true || (error instanceof ApiError && error.status === 401);
 }

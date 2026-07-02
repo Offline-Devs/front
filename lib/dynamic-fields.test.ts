@@ -23,4 +23,25 @@ describe("dynamic field runtime validation", () => {
       }),
     ).toEqual({});
   });
+  it("rejects invalid select and number values", () => {
+    expect(
+      validateDynamicFieldValues([dynamicFieldFixture], {
+        [dynamicFieldFixture.name]: "نامعتبر",
+      }),
+    ).toHaveProperty(dynamicFieldFixture.name);
+    expect(
+      validateDynamicFieldValues(
+        [{ ...dynamicFieldFixture, name: "score", field_type: "number" }],
+        { score: "12" },
+      ),
+    ).toHaveProperty("score");
+  });
+  it("accepts canonical and single-digit jalali dates", () => {
+    expect(
+      validateDynamicFieldValues(
+        [{ ...dynamicFieldFixture, name: "review_date", field_type: "date" }],
+        { review_date: "1403/3/3" },
+      ),
+    ).toEqual({});
+  });
 });

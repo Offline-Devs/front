@@ -45,6 +45,7 @@ import {
   type ProfileFormValues,
 } from "@/schemas/profile.schema";
 import { invalidation, invalidateDependencies } from "@/services/api/invalidation";
+import { dynamicFieldsApi } from "@/services/api/dynamic-fields.api";
 import { queryKeys } from "@/services/api/query-keys";
 import { studentApi } from "@/services/api/student.api";
 import { subjectsApi } from "@/services/api/subjects.api";
@@ -81,7 +82,13 @@ export function ProfileForm({ profile, dynamicFields = [], onboarding = false }:
     queryFn: subjectsApi.majors,
     staleTime: 24 * 60 * 60 * 1000,
   });
-  const resolvedDynamicFields = dynamicFields;
+  const dynamicFieldQuery = useQuery({
+    queryKey: queryKeys.dynamicFields("student"),
+    queryFn: () => dynamicFieldsApi.list("student"),
+    initialData: dynamicFields.length ? dynamicFields : undefined,
+    staleTime: 300_000,
+  });
+  const resolvedDynamicFields = dynamicFieldQuery.data ?? [];
   const saveProfile = useMutation({
     meta: {
       successMessage: onboarding ? "پروفایل تکمیل شد؛ خوش آمدید." : "تغییرات پروفایل ذخیره شد.",

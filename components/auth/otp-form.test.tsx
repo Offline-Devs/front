@@ -7,6 +7,7 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { userFixture } from "@/mocks/fixtures";
 import { authApi } from "@/services/api/auth.api";
+import { ApiError } from "@/services/api/client";
 import { useAuthStore } from "@/stores/auth-store";
 import { OtpForm } from "./otp-form";
 
@@ -64,5 +65,73 @@ describe("OTP form", () => {
       }),
     );
     expect(replace).toHaveBeenCalledWith("/admin");
+  });
+
+  it("accepts a six-digit paste from any OTP input", async () => {
+    sessionStorage.setItem("auth.pending-phone", "+989121234567");
+    vi.spyOn(authApi, "verifyOtp").mockResolvedValue({
+      user: { ...userFixture, role: "admin" },
+      expires_in: 3600,
+    });
+
+    renderForm();
+
+    const inputs = await screen.findAllByRole("textbox");
+    fireEvent.paste(inputs[3], {
+      clipboardData: { getData: () => "654321" },
+    });
+
+    expect(inputs.map((input) => (input as HTMLInputElement).value).join("")).toBe("654321");
+    await waitFor(() =>
+      expect(authApi.verifyOtp).toHaveBeenCalledWith({
+        phone: "+989121234567",
+        code: "654321",
+      }),
+    );
+  });
+
+  it("accepts mobile one-time-code autofill on any focused input", async () => {
+    sessionStorage.setItem("auth.pending-phone", "+989121234567");
+    vi.spyOn(authApi, "verifyOtp").mockResolvedValue({
+      user: { ...userFixture, role: "admin" },
+      expires_in: 3600,
+    });
+
+    renderForm();
+
+    const inputs = await screen.findAllByRole("textbox");
+    fireEvent.change(inputs[4], { target: { value: "112233" } });
+
+    expect(inputs.map((input) => (input as HTMLInputElement).value).join("")).toBe("112233");
+    await waitFor(() =>
+      expect(authApi.verifyOtp).toHaveBeenCalledWith({
+        phone: "+989121234567",
+        code: "112233",
+      }),
+    );
+  });
+
+  it("keeps automatic OTP verification errors silent until manual submit", async () => {
+    sessionStorage.setItem("auth.pending-phone", "+989121234567");
+    vi.spyOn(authApi, "verifyOtp").mockRejectedValue(
+      new ApiError(401, { error: "invalid or expired otp" }),
+    );
+
+    renderForm();
+
+    const inputs = await screen.findAllByRole("textbox");
+    fireEvent.change(inputs[0], { target: { value: "123456" } });
+
+    await waitFor(() => expect(authApi.verifyOtp).toHaveBeenCalledTimes(1));
+    expect(screen.queryByRole("alert")).toBeNull();
+
+    const submit = screen
+      .getAllByRole("button")
+      .find((button) => (button as HTMLButtonElement).type === "submit");
+    expect(submit).toBeDefined();
+    fireEvent.click(submit!);
+
+    await waitFor(() => expect(authApi.verifyOtp).toHaveBeenCalledTimes(2));
+    expect(screen.getByRole("alert")).toBeTruthy();
   });
 });

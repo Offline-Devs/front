@@ -26,6 +26,7 @@
  *   - 204 No Content responses return undefined cast to T.
  */
 import { env } from "@/config/env";
+import { isProtectedRoute, loginRedirectFor } from "@/lib/protected-routes";
 import { useAuthStore } from "@/stores/auth-store";
 import type { ApiErrorBody } from "@/types/api";
 import { describeApiError } from "./error-catalog";
@@ -77,9 +78,19 @@ export async function apiRequest<T>(path: string, options: RequestOptions = {}):
     const body = (await response
       .json()
       .catch(() => ({ error: "unknown network error" }))) as ApiErrorBody;
-    if (response.status === 401) useAuthStore.getState().setUnauthenticated();
+    if (response.status === 401) {
+      useAuthStore.getState().setUnauthenticated();
+      redirectProtectedPageToLogin();
+    }
     throw new ApiError(response.status, body, response.headers);
   }
   if (response.status === 204) return undefined as T;
   return response.json() as Promise<T>;
+}
+
+function redirectProtectedPageToLogin() {
+  if (typeof window === "undefined") return;
+  const { pathname, search } = window.location;
+  if (!isProtectedRoute(pathname)) return;
+  window.location.replace(loginRedirectFor(pathname, search));
 }
