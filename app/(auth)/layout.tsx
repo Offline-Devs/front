@@ -18,10 +18,10 @@ import { BrandLogo } from "@/components/ui/brand-logo";
 export default function AuthLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const brand = getBrandConfig();
   return (
-    <main className="brand-grid min-h-screen bg-background p-4 sm:p-6 lg:grid lg:place-items-center">
-      <div className="mx-auto grid min-h-[calc(100vh-2rem)] w-full max-w-6xl overflow-hidden rounded-[1.5rem] border border-primary/10 bg-card shadow-[var(--shadow-lg)] sm:min-h-0 lg:grid-cols-[1fr_.9fr]">
-        <div className="flex flex-col p-6 sm:p-10 lg:p-14">
-          <div className="mb-10 flex items-center justify-between gap-4">
+    <main className="brand-grid min-h-screen bg-background p-3 sm:p-5 lg:grid lg:place-items-center">
+      <div className="mx-auto grid min-h-[calc(100vh-1.5rem)] w-full max-w-6xl overflow-hidden rounded-[1.5rem] border border-primary/10 bg-card shadow-[var(--shadow-lg)] sm:min-h-[calc(100vh-2.5rem)] lg:min-h-[min(760px,calc(100vh-3rem))] lg:grid-cols-[1fr_.9fr]">
+        <div className="flex min-h-0 flex-col p-5 sm:p-8 lg:p-12">
+          <div className="mb-6 flex items-center justify-between gap-4">
             <Link
               href="/"
               className="flex w-fit items-center gap-3 font-black text-[var(--brand-strong)]"
@@ -31,8 +31,8 @@ export default function AuthLayout({ children }: Readonly<{ children: React.Reac
             </Link>
             <ThemeToggle />
           </div>
-          <PageBreadcrumbs className="mb-8 border-b border-primary/10 pb-4" />
-          <div className="my-auto">{children}</div>
+          <PageBreadcrumbs className="mb-5 border-b border-primary/10 pb-3" />
+          <div className="pt-2 sm:pt-3 lg:pt-4">{children}</div>
         </div>
         <div className="relative hidden min-h-[680px] overflow-hidden bg-secondary lg:block">
           <Image
