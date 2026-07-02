@@ -12,8 +12,6 @@ import { notificationApi } from "@/services/api/notification.api";
 import { queryKeys } from "@/services/api/query-keys";
 import type { AppNotification } from "@/types/notification";
 
-const NOTIFICATION_AUTO_CLOSE_MS = 7_000;
-
 function safeHref(href?: string) {
   return href?.startsWith("/") ? href : "/dashboard";
 }
@@ -23,7 +21,6 @@ export function StudentNotifications() {
   const queryClient = useQueryClient();
   const rootRef = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
-  const [remainingMs, setRemainingMs] = useState(NOTIFICATION_AUTO_CLOSE_MS);
 
   const notifications = useQuery({
     queryKey: queryKeys.notifications,
@@ -47,34 +44,6 @@ export function StudentNotifications() {
     return () => document.removeEventListener("mousedown", close);
   }, [open]);
 
-  useEffect(() => {
-    if (!open) return;
-
-    const startedAt = Date.now();
-
-    const intervalId = window.setInterval(() => {
-      const remaining = Math.max(0, NOTIFICATION_AUTO_CLOSE_MS - (Date.now() - startedAt));
-      setRemainingMs(remaining);
-
-      if (remaining <= 0) {
-        setOpen(false);
-        window.clearInterval(intervalId);
-      }
-    }, 100);
-
-    return () => window.clearInterval(intervalId);
-  }, [open]);
-
-  function toggleNotifications() {
-    if (open) {
-      setOpen(false);
-      return;
-    }
-
-    setRemainingMs(NOTIFICATION_AUTO_CLOSE_MS);
-    setOpen(true);
-  }
-
   async function openNotification(notification: AppNotification) {
     setOpen(false);
     if (!notification.is_read) {
@@ -91,10 +60,6 @@ export function StudentNotifications() {
   const items = [...(notifications.data?.notifications ?? [])]
     .sort((a, b) => Date.parse(b.created_at) - Date.parse(a.created_at))
     .slice(0, 5);
-  const timerProgress = Math.max(
-    0,
-    Math.min(100, (remainingMs / NOTIFICATION_AUTO_CLOSE_MS) * 100),
-  );
 
   return (
     <div ref={rootRef} className="relative">
@@ -103,7 +68,7 @@ export function StudentNotifications() {
         size="icon"
         aria-label="اعلان‌ها"
         aria-expanded={open}
-        onClick={toggleNotifications}
+        onClick={() => setOpen((value) => !value)}
       >
         <Bell className="size-5" />
         {unreadCount > 0 && (
@@ -114,15 +79,9 @@ export function StudentNotifications() {
       </Button>
 
       {open && (
-        <div className="absolute end-0 top-full z-50 mt-2 w-72 max-w-[calc(100vw-3rem)] overflow-hidden rounded-md border bg-card shadow-lg sm:w-80 sm:max-w-[calc(100vw-2rem)]">
-          <div className="border-b px-3 py-2.5 sm:px-4 sm:py-3">
+        <div className="absolute end-0 top-full z-50 mt-2 w-80 max-w-[calc(100vw-2rem)] overflow-hidden rounded-md border bg-card shadow-lg">
+          <div className="border-b px-4 py-3">
             <p className="text-sm font-bold">اعلان‌ها</p>
-          </div>
-          <div className="h-1 bg-muted">
-            <div
-              className="h-full bg-primary transition-[width] duration-100 ease-linear"
-              style={{ width: `${timerProgress}%` }}
-            />
           </div>
           {notifications.isLoading ? (
             <div className="grid gap-2 p-3">
@@ -134,13 +93,13 @@ export function StudentNotifications() {
           ) : items.length === 0 ? (
             <div className="p-4 text-sm text-muted-foreground">فعلا اعلانی نیست</div>
           ) : (
-            <ul className="max-h-80 overflow-y-auto p-1.5 sm:max-h-96 sm:p-2">
+            <ul className="max-h-96 overflow-y-auto p-2">
               {items.map((item) => (
                 <li key={item.id}>
                   <button
                     type="button"
                     className={cn(
-                      "grid w-full gap-1 rounded-md p-2.5 text-right text-xs transition-colors hover:bg-muted sm:p-3 sm:text-sm",
+                      "grid w-full gap-1 rounded-md p-3 text-right text-sm transition-colors hover:bg-muted",
                       !item.is_read && "bg-primary/5",
                     )}
                     onClick={() => void openNotification(item)}

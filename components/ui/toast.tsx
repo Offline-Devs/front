@@ -13,8 +13,11 @@
  */
 "use client";
 
+import type { CSSProperties } from "react";
 import { CircleAlert, CircleCheck, Info, TriangleAlert, X } from "lucide-react";
 import { Toaster as SonnerToaster, toast } from "sonner";
+
+const TOAST_DURATION_MS = 4_000;
 
 export { toast };
 export function Toaster() {
@@ -25,7 +28,8 @@ export function Toaster() {
       offset={20}
       gap={10}
       visibleToasts={4}
-      duration={4000}
+      duration={TOAST_DURATION_MS}
+      style={{ "--app-toast-duration": `${TOAST_DURATION_MS}ms` } as CSSProperties}
       icons={{
         success: <CircleCheck className="size-5" />,
         error: <CircleAlert className="size-5" />,
